@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Store - Bosh Sahifa</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        dark: '#0f172a',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body x-data="{ mobileMenu: false }">
+    <!-- Navbar -->
+    <nav class="glass fixed w-full z-40 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center">
+                    <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                        PREMIUM<span class="text-dark font-light ml-1">STORE</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-dark hover:text-blue-600 font-medium transition">Bosh sahifa</a>
+                    <a href="shop.html" class="text-dark hover:text-blue-600 font-medium transition">Mahsulotlar</a>
+                    <a href="about.html" class="text-dark hover:text-blue-600 font-medium transition">Biz haqimizda</a>
+                    <a href="contact.html" class="text-dark hover:text-blue-600 font-medium transition">Aloqa</a>
+                </div>
+
+                <div class="flex items-center space-x-5">
+                    <div class="relative group">
+                        <input type="text" placeholder="Qidiruv..." class="bg-gray-100 border-none rounded-full px-5 py-2 w-0 group-hover:w-48 transition-all duration-500 focus:w-48 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <button class="text-dark hover:text-blue-600 transition"><i class="fas fa-search text-xl"></i></button>
+                    </div>
+                    <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    </a>
+                    <a href="login.html" class="hidden md:block bg-dark text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-600 transition duration-300">Kirish</a>
+                    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-dark text-2xl"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div x-show="mobileMenu" x-transition.opacity class="md:hidden fixed inset-0 bg-white z-50 flex flex-col items-center justify-center space-y-8 text-2xl font-bold text-dark">
+            <button @click="mobileMenu = false" class="absolute top-6 right-6 text-3xl"><i class="fas fa-times"></i></button>
+            <a @click="mobileMenu = false" href="index.html">Bosh sahifa</a>
+            <a @click="mobileMenu = false" href="shop.html">Mahsulotlar</a>
+            <a @click="mobileMenu = false" href="about.html">Biz haqimizda</a>
+            <a @click="mobileMenu = false" href="contact.html">Aloqa</a>
+            <a @click="mobileMenu = false" href="login.html" class="bg-blue-600 text-white px-10 py-3 rounded-full">Kirish</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="h-screen relative flex items-center justify-center premium-gradient overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-blue-500 rounded-full blur-[100px]"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-purple-500 rounded-full blur-[120px]"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <span class="inline-block px-4 py-1.5 bg-blue-600/20 text-blue-400 rounded-full text-sm font-semibold mb-6 tracking-widest uppercase">Yangi Kolleksiya 2026</span>
+            <h1 class="text-5xl md:text-8xl font-black text-white mb-8 leading-[1.1]">Zamon bilan birga <br> <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">odimlashing</span></h1>
+            <p class="text-gray-400 text-lg md:text-xl mb-10 max-w-2xl mx-auto">Eng zamonaviy gadjetlar va aksessuarlarni bizning do'kondan hamyonbop narxlarda topishingiz mumkin.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+                <a href="shop.html" class="w-full sm:w-auto bg-blue-600 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white hover:text-blue-600 transition duration-500 shadow-xl shadow-blue-600/20">Xaridni boshlash</a>
+                <a href="#featured" class="w-full sm:w-auto border border-gray-700 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-800 transition duration-500">Batafsil</a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce text-gray-500 flex flex-col items-center">
+            <span class="text-xs uppercase tracking-widest mb-2">Pastga tushish</span>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-16">
+                <div>
+                    <h2 class="text-4xl font-black text-dark mb-4">Kategoriyalar</h2>
+                    <div class="h-1.5 w-20 bg-blue-600 rounded-full"></div>
+                </div>
+                <a href="shop.html" class="text-blue-600 font-bold hover:underline mb-1">Barchasini ko'rish <i class="fas fa-arrow-right ml-2"></i></a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1491933382434-500287f9b54b?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Elektronika</h3>
+                        <p class="text-gray-300">Eng so'nggi gadjetlar</p>
+                    </div>
+                </div>
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Poyafzallar</h3>
+                        <p class="text-gray-300">Sifatli va qulay</p>
+                    </div>
+                </div>
+                <div class="group relative h-80 rounded-3xl overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex flex-col justify-end p-8">
+                        <h3 class="text-2xl font-bold text-white mb-2">Aksessuarlar</h3>
+                        <p class="text-gray-300">Uslubingiz uchun</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section id="featured" class="py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black text-dark mb-4">Tanlangan Mahsulotlar</h2>
+                <p class="text-gray-500 max-w-2xl mx-auto">Siz uchun eng yaxshilarini saralab oldik. Bugun xarid qiling va sifatli mahsulotga ega bo'ling.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="featured-products-container">
+                <!-- Products will be injected here via script or added manually for first page -->
+                
+                <!-- Sample Product Card -->
+                <div class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="px-2">
+                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block">Elektronika</span>
+                        <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition"><a href="product-detail.html">Premium Smart Soat</a></h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-black text-dark">1 200 000 so'm</span>
+                            <button onclick="addToCart(1)" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="px-2">
+                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block">Aksessuarlar</span>
+                        <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition"><a href="product-detail.html">Charm Hamyon</a></h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-black text-dark">250 000 so'm</span>
+                            <button onclick="addToCart(2)" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="px-2">
+                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block">Elektronika</span>
+                        <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition"><a href="product-detail.html">Simsiz Quloqchinlar</a></h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-black text-dark">450 000 so'm</span>
+                            <button onclick="addToCart(3)" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                        <img src="https://images.unsplash.com/photo-1526170315870-ef682c535476?w=500&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="px-2">
+                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block">Elektronika</span>
+                        <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition"><a href="product-detail.html">Fotoapparat Retro</a></h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-black text-dark">3 500 000 so'm</span>
+                            <button onclick="addToCart(4)" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-24 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-1">
+                    <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-white mb-6 block">
+                        PREMIUM<span class="text-blue-500 ml-1">STORE</span>
+                    </a>
+                    <p class="text-gray-400 mb-8 leading-relaxed">Biz bilan eng zamonaviy va sifatli mahsulotlarga ega bo'ling. Mijozlar qoniqishi bizning oliy maqsadimiz.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-telegram-plane"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Tezkor Linklar</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="index.html" class="hover:text-blue-500 transition">Bosh sahifa</a></li>
+                        <li><a href="shop.html" class="hover:text-blue-500 transition">Mahsulotlar</a></li>
+                        <li><a href="about.html" class="hover:text-blue-500 transition">Biz haqimizda</a></li>
+                        <li><a href="contact.html" class="hover:text-blue-500 transition">Aloqa</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Kategoriyalar</h4>
+                    <ul class="space-y-4 text-gray-400">
+                        <li><a href="#" class="hover:text-blue-500 transition">Elektronika</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Kiyimlar</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Poyafzallar</a></li>
+                        <li><a href="#" class="hover:text-blue-500 transition">Aksessuarlar</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-bold mb-6">Yangiliklar</h4>
+                    <p class="text-gray-400 mb-6">Chegirmalar va yangiliklardan birinchilardan bo'lib xabardor bo'ling.</p>
+                    <form class="relative">
+                        <input type="email" placeholder="Emailingiz" class="w-full bg-gray-800 border-none rounded-full px-6 py-4 text-white focus:ring-2 focus:ring-blue-600 outline-none">
+                        <button class="absolute right-2 top-2 bg-blue-600 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 transition">Yuborish</button>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:row justify-between items-center text-gray-500 text-sm">
+                <p>&copy; 2026 Premium Store. Barcha huquqlar himoyalangan.</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="hover:text-white transition">Maxfiylik siyosati</a>
+                    <a href="#" class="hover:text-white transition">Foydalanish shartlari</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

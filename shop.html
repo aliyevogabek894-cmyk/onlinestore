@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mahsulotlar - Premium Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body x-data="{ mobileMenu: false, activeCategory: 'Hammasi', searchQuery: '' }">
+    <!-- Navbar (Same as index) -->
+    <nav class="glass fixed w-full z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+                    PREMIUM<span class="text-dark font-light ml-1">STORE</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html" class="text-dark hover:text-blue-600 font-medium transition">Bosh sahifa</a>
+                    <a href="shop.html" class="text-blue-600 font-bold transition">Mahsulotlar</a>
+                    <a href="about.html" class="text-dark hover:text-blue-600 font-medium transition">Biz haqimizda</a>
+                    <a href="contact.html" class="text-dark hover:text-blue-600 font-medium transition">Aloqa</a>
+                </div>
+                <div class="flex items-center space-x-5">
+                    <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
+                        <i class="fas fa-shopping-cart text-xl"></i>
+                        <span class="cart-badge absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    </a>
+                    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-dark text-2xl"><i class="fas fa-bars"></i></button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 bg-gray-50 min-h-screen">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
+                <div>
+                    <h1 class="text-4xl font-black text-dark mb-2">Barcha Mahsulotlar</h1>
+                    <p class="text-gray-500">Siz qidirayotgan sifatli mahsulotlar shu yerda.</p>
+                </div>
+                
+                <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4">
+                    <div class="relative">
+                        <input x-model="searchQuery" type="text" placeholder="Mahsulot qidirish..." class="w-full sm:w-72 bg-white border border-gray-200 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition">
+                        <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                    <select x-model="activeCategory" class="bg-white border border-gray-200 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition cursor-pointer">
+                        <option value="Hammasi">Barcha kategoriyalar</option>
+                        <option value="Elektronika">Elektronika</option>
+                        <option value="Aksessuarlar">Aksessuarlar</option>
+                        <option value="Poyafzallar">Poyafzallar</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <template x-for="product in products" :key="product.id">
+                    <div x-show="(activeCategory === 'Hammasi' || product.category === activeCategory) && (product.name.toLowerCase().includes(searchQuery.toLowerCase()))" 
+                         class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                        <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                            <img :src="product.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                        </div>
+                        <div class="px-2">
+                            <span x-text="product.category" class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block"></span>
+                            <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition">
+                                <a :href="'product-detail.html?id=' + product.id" x-text="product.name"></a>
+                            </h3>
+                            <div class="flex items-center justify-between mt-4">
+                                <span x-text="formatPrice(product.price)" class="text-xl font-black text-dark"></span>
+                                <button @click="addToCart(product.id)" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            
+            <!-- Empty State -->
+            <div x-show="products.filter(p => (activeCategory === 'Hammasi' || p.category === activeCategory) && (p.name.toLowerCase().includes(searchQuery.toLowerCase()))).length === 0" 
+                 class="py-24 text-center">
+                <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                    <i class="fas fa-search text-4xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-dark mb-2">Mahsulot topilmadi</h3>
+                <p class="text-gray-500">Boshqa so'z bilan qidirib ko'ring yoki kategoriyani o'zgartiring.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer (Same as index) -->
+    <footer class="bg-dark text-white pt-24 pb-12">
+        <!-- ... (Same footer as index.html) ... -->
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

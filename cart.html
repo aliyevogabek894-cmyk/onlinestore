@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savat - Premium Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body x-data="{ 
+    localCart: JSON.parse(localStorage.getItem('cart')) || [],
+    get totalPrice() {
+        return this.localCart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    },
+    removeItem(id) {
+        this.localCart = this.localCart.filter(i => i.id !== id);
+        this.sync();
+    },
+    updateQty(id, delta) {
+        const item = this.localCart.find(i => i.id === id);
+        if (item) {
+            item.quantity = Math.max(1, item.quantity + delta);
+            this.sync();
+        }
+    },
+    sync() {
+        localStorage.setItem('cart', JSON.stringify(this.localCart));
+        updateCartBadge();
+    }
+}">
+    <nav class="glass fixed w-full z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark">PREMIUM STORE</a>
+            <a href="shop.html" class="text-blue-600 font-bold"><i class="fas fa-arrow-left mr-2"></i> Shopga qaytish</a>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24 bg-gray-50 min-h-screen">
+        <div class="max-w-5xl mx-auto px-4">
+            <h1 class="text-4xl font-black text-dark mb-12">Savat</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Cart Items -->
+                <div class="lg:col-span-2 space-y-6">
+                    <template x-if="localCart.length === 0">
+                        <div class="bg-white p-12 rounded-[2rem] text-center shadow-xl">
+                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
+                                <i class="fas fa-shopping-basket text-3xl"></i>
+                            </div>
+                            <h2 class="text-2xl font-bold text-dark mb-4">Savat bo'sh</h2>
+                            <a href="shop.html" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-dark transition">Xarid qilish</a>
+                        </div>
+                    </template>
+
+                    <template x-for="item in localCart" :key="item.id">
+                        <div class="bg-white p-6 rounded-[2rem] shadow-xl flex items-center space-x-6">
+                            <div class="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0">
+                                <img :src="item.image" class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex-1">
+                                <h3 x-text="item.name" class="text-lg font-bold text-dark"></h3>
+                                <p x-text="formatPrice(item.price)" class="text-blue-600 font-bold"></p>
+                            </div>
+                            <div class="flex items-center bg-gray-50 rounded-xl p-1">
+                                <button @click="updateQty(item.id, -1)" class="w-8 h-8 rounded-lg hover:bg-white">-</button>
+                                <span class="mx-3 font-bold" x-text="item.quantity"></span>
+                                <button @click="updateQty(item.id, 1)" class="w-8 h-8 rounded-lg hover:bg-white">+</button>
+                            </div>
+                            <button @click="removeItem(item.id)" class="text-gray-300 hover:text-red-500 transition px-2">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white p-8 rounded-[2rem] shadow-xl sticky top-32">
+                        <h2 class="text-2xl font-bold text-dark mb-8">Buyurtma</h2>
+                        <div class="space-y-4 mb-8">
+                            <div class="flex justify-between text-gray-500">
+                                <span>Mahsulotlar</span>
+                                <span x-text="formatPrice(totalPrice)"></span>
+                            </div>
+                            <div class="flex justify-between text-gray-500">
+                                <span>Yetkazish</span>
+                                <span class="text-green-600 font-bold">Bepul</span>
+                            </div>
+                            <div class="border-t pt-4 flex justify-between text-2xl font-black text-dark">
+                                <span>Jami:</span>
+                                <span x-text="formatPrice(totalPrice)"></span>
+                            </div>
+                        </div>
+                        <a href="checkout.html" :class="localCart.length === 0 ? 'pointer-events-none opacity-50' : ''" 
+                           class="block w-full bg-dark text-white text-center py-5 rounded-2xl font-bold hover:bg-blue-600 transition shadow-xl">
+                            Buyurtma berish
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

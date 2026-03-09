@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Siz bilan Bog'lanish - Premium Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-white">
+    <!-- Navbar -->
+    <nav class="h-20 flex items-center px-8 border-b">
+        <a href="index.html" class="text-2xl font-black">PREMIUM STORE</a>
+    </nav>
+
+    <main class="py-24 max-w-7xl mx-auto px-4">
+        <div class="text-center mb-20">
+            <h1 class="text-6xl font-black text-dark mb-6">Biz bilan bog'laning</h1>
+            <p class="text-xl text-gray-500 max-w-2xl mx-auto">Har qanday savol yoki takliflaringiz bo'lsa, quyidagi forma orqali yozishingiz mumkin.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
+            <div class="space-y-12">
+                <div class="flex items-start space-x-6">
+                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Manzilimiz</h3>
+                        <p class="text-gray-500">Toshkent shahri, Amir Temur ko'chasi, 108-uy</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-6">
+                    <div class="w-16 h-16 bg-green-50 text-green-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-phone"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Telefon</h3>
+                        <p class="text-gray-500">+998 (71) 200-00-00</p>
+                        <p class="text-gray-500">+998 (90) 123-45-67</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-6">
+                    <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-envelope"></i></div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-2">Email</h3>
+                        <p class="text-gray-500">info@premiumstore.uz</p>
+                        <p class="text-gray-500">support@premiumstore.uz</p>
+                    </div>
+                </div>
+            </div>
+
+            <form class="bg-gray-50 p-12 rounded-[3rem] space-y-6" onsubmit="event.preventDefault(); alert('Xabaringiz yuborildi!'); this.reset();">
+                <div class="space-y-2">
+                    <label class="font-bold text-dark ml-2">Ismingiz</label>
+                    <input type="text" required class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
+                </div>
+                <div class="space-y-2">
+                    <label class="font-bold text-dark ml-2">Email</label>
+                    <input type="email" required class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
+                </div>
+                <div class="space-y-2">
+                    <label class="font-bold text-dark ml-2">Xabar matni</label>
+                    <textarea required rows="4" class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-dark text-white py-5 rounded-2xl font-bold text-lg hover:bg-blue-600 transition shadow-xl">
+                    Yuborish
+                </button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
