@@ -7,63 +7,84 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body class="bg-white">
     <!-- Navbar -->
-    <nav class="h-20 flex items-center px-8 border-b">
-        <a href="index.html" class="text-2xl font-black">PREMIUM STORE</a>
-    </nav>
-
-    <main class="py-24 max-w-7xl mx-auto px-4">
-        <div class="text-center mb-20">
-            <h1 class="text-6xl font-black text-dark mb-6">Biz bilan bog'laning</h1>
-            <p class="text-xl text-gray-500 max-w-2xl mx-auto">Har qanday savol yoki takliflaringiz bo'lsa, quyidagi forma orqali yozishingiz mumkin.</p>
+    <nav class="h-20 flex items-center px-8 border-b justify-between">
+        <a href="index.html" class="text-2xl font-black text-dark">PREMIUM STORE</a>
+        <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+            <button @click="isDark = toggleTheme()" 
+                    class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
+                <i x-show="!isDark" class="fas fa-moon text-xl"></i>
+                <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
+            </button>
+            <a href="shop.html" class="text-indigo-600 font-bold">Shopga qaytish</a>
         </div>
+    </nav>
+    
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/main.js"></script>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-20">
-            <div class="space-y-12">
-                <div class="flex items-start space-x-6">
-                    <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-map-marker-alt"></i></div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2">Manzilimiz</h3>
-                        <p class="text-gray-500">Toshkent shahri, Amir Temur ko'chasi, 108-uy</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-6">
-                    <div class="w-16 h-16 bg-green-50 text-green-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-phone"></i></div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2">Telefon</h3>
-                        <p class="text-gray-500">+998 (71) 200-00-00</p>
-                        <p class="text-gray-500">+998 (90) 123-45-67</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-6">
-                    <div class="w-16 h-16 bg-purple-50 text-purple-600 rounded-[1.5rem] flex items-center justify-center text-2xl flex-shrink-0"><i class="fas fa-envelope"></i></div>
-                    <div>
-                        <h3 class="text-2xl font-bold mb-2">Email</h3>
-                        <p class="text-gray-500">info@premiumstore.uz</p>
-                        <p class="text-gray-500">support@premiumstore.uz</p>
-                    </div>
-                </div>
+    <main class="mesh-gradient-vibrant min-h-screen py-24 px-4 flex items-center">
+        <div class="max-w-7xl mx-auto w-full">
+            <div class="glass p-12 rounded-[4rem] text-center mb-16 border border-white/20 shadow-2xl">
+                <h1 class="text-6xl font-black text-dark mb-6 tracking-tighter">Biz bilan <span class="text-indigo-600">Bog'laning</span></h1>
+                <p class="text-xl text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">Har qanday savol yoki takliflaringiz bo'lsa, quyidagi forma orqali yozishingiz mumkin. Biz sizga yordam berishdan mamnunmiz.</p>
             </div>
-
-            <form class="bg-gray-50 p-12 rounded-[3rem] space-y-6" onsubmit="event.preventDefault(); alert('Xabaringiz yuborildi!'); this.reset();">
-                <div class="space-y-2">
-                    <label class="font-bold text-dark ml-2">Ismingiz</label>
-                    <input type="text" required class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
+    
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <div class="space-y-8">
+                    <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-xl flex items-start space-x-8 group hover:bg-white/30 transition-all duration-500">
+                        <div class="w-20 h-20 bg-indigo-600 text-white rounded-3xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg shadow-indigo-600/30 group-hover:scale-110 transition duration-500"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-black mb-2 text-dark">Manzilimiz</h3>
+                            <p class="text-gray-500 font-medium">Toshkent shahri, Amir Temur ko'chasi, 108-uy</p>
+                        </div>
+                    </div>
+                    <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-xl flex items-start space-x-8 group hover:bg-white/30 transition-all duration-500">
+                        <div class="w-20 h-20 bg-pink-600 text-white rounded-3xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg shadow-pink-600/30 group-hover:scale-110 transition duration-500"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-black mb-2 text-dark">Telefon</h3>
+                            <p class="text-gray-500 font-medium">+998 (71) 200-00-00</p>
+                            <p class="text-gray-500 font-medium">+998 (90) 123-45-67</p>
+                        </div>
+                    </div>
+                    <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-xl flex items-start space-x-8 group hover:bg-white/30 transition-all duration-500">
+                        <div class="w-20 h-20 bg-cyan-600 text-white rounded-3xl flex items-center justify-center text-3xl flex-shrink-0 shadow-lg shadow-cyan-600/30 group-hover:scale-110 transition duration-500"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h3 class="text-2xl font-black mb-2 text-dark">Email</h3>
+                            <p class="text-gray-500 font-medium">info@premiumstore.uz</p>
+                            <p class="text-gray-500 font-medium">support@premiumstore.uz</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="space-y-2">
-                    <label class="font-bold text-dark ml-2">Email</label>
-                    <input type="email" required class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
-                </div>
-                <div class="space-y-2">
-                    <label class="font-bold text-dark ml-2">Xabar matni</label>
-                    <textarea required rows="4" class="w-full bg-white border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition"></textarea>
-                </div>
-                <button type="submit" class="w-full bg-dark text-white py-5 rounded-2xl font-bold text-lg hover:bg-blue-600 transition shadow-xl">
-                    Yuborish
-                </button>
-            </form>
+    
+                <form class="glass p-12 rounded-[4rem] border border-white/20 shadow-2xl space-y-8 relative overflow-hidden" onsubmit="event.preventDefault(); alert('Xabaringiz yuborildi!'); this.reset();">
+                    <div class="absolute -bottom-20 -right-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px]"></div>
+                    <div class="space-y-4">
+                        <label class="font-black text-dark ml-4 text-sm uppercase tracking-widest">Ismingiz</label>
+                        <input type="text" required class="w-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-5 outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark transition-all shadow-inner">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="font-black text-dark ml-4 text-sm uppercase tracking-widest">Email</label>
+                        <input type="email" required class="w-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-5 outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark transition-all shadow-inner">
+                    </div>
+                    <div class="space-y-4">
+                        <label class="font-black text-dark ml-4 text-sm uppercase tracking-widest">Xabar matni</label>
+                        <textarea required rows="4" class="w-full bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-white/10 rounded-2xl px-8 py-5 outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark transition-all shadow-inner"></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 text-white py-6 rounded-[2rem] font-black text-xl hover:bg-dark hover:scale-[1.02] transition-all active:scale-95 shadow-2xl shadow-indigo-600/40 tracking-tighter">
+                        Xabar yuborish <i class="fas fa-paper-plane ml-3"></i>
+                    </button>
+                </form>
+            </div>
         </div>
     </main>
 </body>

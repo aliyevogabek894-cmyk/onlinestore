@@ -59,6 +59,24 @@ function formatPrice(price) {
     return new Intl.NumberFormat('uz-UZ').format(price) + " so'm";
 }
 
+// Theme Logic
+function initTheme() {
+    const theme = localStorage.getItem('theme') || 'light';
+    if (theme === 'dark') {
+        document.body.classList.add('dark');
+    } else {
+        document.body.classList.remove('dark');
+    }
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark');
+    const isDark = document.body.classList.contains('dark');
+    localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    return isDark;
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    initTheme();
     updateCartBadge();
 });

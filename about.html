@@ -6,54 +6,78 @@
     <title>Biz Haqimizda - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body class="bg-gray-50">
-    <nav class="h-24 flex items-center px-8 border-b bg-white">
-        <a href="index.html" class="text-2xl font-black">PREMIUM STORE</a>
+    <nav class="h-24 flex items-center px-8 border-b bg-white dark:bg-gray-900 justify-between">
+        <a href="index.html" class="text-2xl font-black text-dark">PREMIUM STORE</a>
+        <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+            <button @click="isDark = toggleTheme()" 
+                    class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
+                <i x-show="!isDark" class="fas fa-moon text-xl"></i>
+                <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
+            </button>
+            <a href="shop.html" class="text-indigo-600 font-bold">Shopga qaytish</a>
+        </div>
     </nav>
 
-    <main>
-        <section class="py-24 bg-white">
+    <!-- scripts -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/main.js"></script>
+
+    <main class="mesh-gradient-vibrant min-h-screen pt-24 pb-24">
+        <section class="py-24">
             <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <div>
-                    <span class="text-blue-600 font-bold uppercase tracking-widest mb-4 block">Bizning hikoyamiz</span>
-                    <h1 class="text-6xl font-black text-dark mb-8 leading-tight">Sifat va Ishonch birlashgan joyda</h1>
-                    <p class="text-xl text-gray-500 mb-8 leading-relaxed">2020-yilda tashkil etilgan Premium Store bugungi kunda O'zbekistondagi eng yetakchi elektronika va aksessuarlar do'konlaridan biri hisoblanadi. Bizning asosiy maqsadimiz - mijozlarga faqat original va yuqori sifatli mahsulotlarni yetkazib berish.</p>
+                <div class="glass p-12 rounded-[4rem] shadow-2xl border border-white/20">
+                    <span class="text-indigo-400 font-black uppercase tracking-[0.3em] mb-4 block">Bizning hikoyamiz</span>
+                    <h1 class="text-6xl font-black text-dark mb-8 leading-tight tracking-tighter">Sifat va <span class="text-indigo-600">Ishonch</span> birlashgan joyda</h1>
+                    <p class="text-xl text-gray-500 mb-8 leading-relaxed font-medium">2020-yilda tashkil etilgan Premium Store bugungi kunda O'zbekistondagi eng yetakchi elektronika va aksessuarlar do'konlaridan biri hisoblanadi. Bizning asosiy maqsadimiz - mijozlarga faqat original va yuqori sifatli mahsulotlarni yetkazib berish.</p>
                     <div class="grid grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="text-4xl font-black text-blue-600 mb-2">50k+</h4>
-                            <p class="text-gray-400 font-medium">Baxtli mijozlar</p>
+                        <div class="glass p-6 rounded-3xl text-center">
+                            <h4 class="text-5xl font-black text-indigo-600 mb-2">50k+</h4>
+                            <p class="text-gray-400 font-bold tracking-widest uppercase text-[10px]">Baxtli mijozlar</p>
                         </div>
-                        <div>
-                            <h4 class="text-4xl font-black text-blue-600 mb-2">10k+</h4>
-                            <p class="text-gray-400 font-medium">Mahsulotlar</p>
+                        <div class="glass p-6 rounded-3xl text-center">
+                            <h4 class="text-5xl font-black text-indigo-600 mb-2">10k+</h4>
+                            <p class="text-gray-400 font-bold tracking-widest uppercase text-[10px]">Mahsulotlar</p>
                         </div>
                     </div>
                 </div>
-                <div class="rounded-[4rem] overflow-hidden shadow-2xl skew-y-3">
-                    <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=1000&q=80" class="w-full h-full object-cover">
+                <div class="rounded-[4rem] overflow-hidden shadow-2xl rotate-3 scale-105 border-8 border-white/10 group hover:rotate-0 transition duration-1000">
+                    <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=1000&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
                 </div>
             </div>
         </section>
 
-        <section class="py-24 bg-dark text-white">
+        <section class="py-24">
             <div class="max-w-7xl mx-auto px-4 text-center">
-                <h2 class="text-4xl font-black mb-16">Nima uchun aynan biz?</h2>
+                <div class="glass inline-block px-12 py-4 rounded-full mb-16 border border-white/20">
+                    <h2 class="text-4xl font-black text-dark tracking-tighter">Nima uchun aynan biz?</h2>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div class="bg-gray-800 p-12 rounded-[3rem] hover:bg-blue-600 transition duration-500 group">
-                        <div class="w-16 h-16 bg-gray-700 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-3xl mb-8 mx-auto">🚀</div>
-                        <h3 class="text-2xl font-bold mb-4">Tezkor elatish</h3>
-                        <p class="text-gray-400 group-hover:text-blue-100">O'zbekiston bo'ylab 24 soat ichida yetkazib beramiz.</p>
+                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
+                        <div class="w-20 h-20 bg-indigo-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-indigo-600/30 group-hover:scale-110 transition duration-500">🚀</div>
+                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">Tezkor elatish</h3>
+                        <p class="text-gray-500 font-medium">O'zbekiston bo'ylab 24 soat ichida yetkazib beramiz.</p>
                     </div>
-                    <div class="bg-gray-800 p-12 rounded-[3rem] hover:bg-blue-600 transition duration-500 group">
-                        <div class="w-16 h-16 bg-gray-700 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-3xl mb-8 mx-auto">🛡️</div>
-                        <h3 class="text-2xl font-bold mb-4">Rasmiy Kafolat</h3>
-                        <p class="text-gray-400 group-hover:text-blue-100">Barcha mahsulotlarimizga 1 yilgacha kafolat beriladi.</p>
+                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl"></div>
+                        <div class="w-20 h-20 bg-pink-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-pink-600/30 group-hover:scale-110 transition duration-500">🛡️</div>
+                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">Rasmiy Kafolat</h3>
+                        <p class="text-gray-500 font-medium">Barcha mahsulotlarimizga 1 yilgacha kafolat beriladi.</p>
                     </div>
-                    <div class="bg-gray-800 p-12 rounded-[3rem] hover:bg-blue-600 transition duration-500 group">
-                        <div class="w-16 h-16 bg-gray-700 group-hover:bg-white/20 rounded-2xl flex items-center justify-center text-3xl mb-8 mx-auto">🎧</div>
-                        <h3 class="text-2xl font-bold mb-4">24/7 Qo'llab-quvvatlash</h3>
-                        <p class="text-gray-400 group-hover:text-blue-100">Sizning savollaringizga har doim javob berishga tayyormiz.</p>
+                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
+                        <div class="w-20 h-20 bg-cyan-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-cyan-600/30 group-hover:scale-110 transition duration-500">🎧</div>
+                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">24/7 Yordam</h3>
+                        <p class="text-gray-500 font-medium">Sizning savollaringizga har doim javob berishga tayyormiz.</p>
                     </div>
                 </div>
             </div>

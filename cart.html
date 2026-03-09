@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
 </head>
 <body x-data="{ 
     localCart: JSON.parse(localStorage.getItem('cart')) || [],
@@ -33,43 +40,62 @@
     <nav class="glass fixed w-full z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
             <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark">PREMIUM STORE</a>
-            <a href="shop.html" class="text-blue-600 font-bold"><i class="fas fa-arrow-left mr-2"></i> Shopga qaytish</a>
+            <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+                <!-- Theme Toggle -->
+                <button @click="isDark = toggleTheme()" 
+                        class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
+                    <i x-show="!isDark" class="fas fa-moon text-xl"></i>
+                    <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
+                </button>
+                <a href="shop.html" class="text-blue-600 font-bold"><i class="fas fa-arrow-left mr-2"></i> Shopga qaytish</a>
+            </div>
         </div>
     </nav>
 
-    <main class="pt-32 pb-24 bg-gray-50 min-h-screen">
-        <div class="max-w-5xl mx-auto px-4">
-            <h1 class="text-4xl font-black text-dark mb-12">Savat</h1>
+    <main class="mesh-gradient-vibrant min-h-screen pt-32 pb-24 px-4">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 px-4">
+                <div>
+                    <h1 class="text-6xl font-black text-dark dark:text-white tracking-tighter">Savat</h1>
+                    <p class="text-gray-500 font-medium mt-2">Tanlagan mahsulotlaringizni ko'zdan kechiring.</p>
+                </div>
+                <div class="glass px-8 py-4 rounded-3xl border border-white/20 shadow-xl flex items-center space-x-4">
+                    <i class="fas fa-shield-check text-indigo-600 text-xl"></i>
+                    <span class="text-sm font-black text-dark dark:text-white uppercase tracking-widest">Xavfsiz xarid</span>
+                </div>
+            </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <!-- Cart Items -->
-                <div class="lg:col-span-2 space-y-6">
+                <div class="lg:col-span-2 space-y-8">
                     <template x-if="localCart.length === 0">
-                        <div class="bg-white p-12 rounded-[2rem] text-center shadow-xl">
-                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6 text-gray-300">
-                                <i class="fas fa-shopping-basket text-3xl"></i>
+                        <div class="glass p-20 rounded-[4rem] text-center border border-white/20 shadow-2xl relative overflow-hidden">
+                            <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px]"></div>
+                            <div class="w-24 h-24 bg-indigo-600 text-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-indigo-600/30 scale-110">
+                                <i class="fas fa-shopping-basket text-4xl"></i>
                             </div>
-                            <h2 class="text-2xl font-bold text-dark mb-4">Savat bo'sh</h2>
-                            <a href="shop.html" class="inline-block bg-blue-600 text-white px-8 py-3 rounded-full font-bold hover:bg-dark transition">Xarid qilish</a>
+                            <h2 class="text-3xl font-black text-dark dark:text-white mb-6 tracking-tight">Savatingiz bo'sh</h2>
+                            <p class="text-gray-500 font-medium mb-10 max-w-sm mx-auto">Hali hech narsa tanlamadingiz. Do'konimizda juda ko'p qiziqarli mahsulotlar bor!</p>
+                            <a href="shop.html" class="inline-block bg-dark dark:bg-white dark:text-dark text-white px-12 py-5 rounded-[2rem] font-black hover:scale-105 transition-all shadow-xl">Xaridni boshlash</a>
                         </div>
                     </template>
 
                     <template x-for="item in localCart" :key="item.id">
-                        <div class="bg-white p-6 rounded-[2rem] shadow-xl flex items-center space-x-6">
-                            <div class="w-24 h-24 rounded-2xl overflow-hidden bg-gray-100 flex-shrink-0">
+                        <div class="glass p-8 rounded-[3rem] border border-white/20 shadow-2xl flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8 group hover:bg-white/10 transition-all duration-500">
+                            <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-white/5 border border-white/10 shadow-inner group-hover:scale-110 transition duration-500 flex-shrink-0">
                                 <img :src="item.image" class="w-full h-full object-cover">
                             </div>
-                            <div class="flex-1">
-                                <h3 x-text="item.name" class="text-lg font-bold text-dark"></h3>
-                                <p x-text="formatPrice(item.price)" class="text-blue-600 font-bold"></p>
+                            <div class="flex-1 text-center sm:text-left">
+                                <h3 x-text="item.name" class="text-2xl font-black text-dark dark:text-white mb-2 tracking-tight"></h3>
+                                <p x-text="formatPrice(item.price)" class="text-indigo-600 dark:text-indigo-400 font-black text-lg"></p>
                             </div>
-                            <div class="flex items-center bg-gray-50 rounded-xl p-1">
-                                <button @click="updateQty(item.id, -1)" class="w-8 h-8 rounded-lg hover:bg-white">-</button>
-                                <span class="mx-3 font-bold" x-text="item.quantity"></span>
-                                <button @click="updateQty(item.id, 1)" class="w-8 h-8 rounded-lg hover:bg-white">+</button>
+                            <div class="flex items-center glass rounded-2xl p-2 border border-white/10 shadow-inner bg-white/5">
+                                <button @click="updateQty(item.id, -1)" class="w-10 h-10 rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">-</button>
+                                <span class="mx-5 font-black text-lg text-dark dark:text-white" x-text="item.quantity"></span>
+                                <button @click="updateQty(item.id, 1)" class="w-10 h-10 rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">+</button>
                             </div>
-                            <button @click="removeItem(item.id)" class="text-gray-300 hover:text-red-500 transition px-2">
-                                <i class="fas fa-trash-alt"></i>
+                            <button @click="removeItem(item.id)" class="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fas fa-trash-can"></i>
                             </button>
                         </div>
                     </template>
@@ -77,26 +103,29 @@
 
                 <!-- Order Summary -->
                 <div class="lg:col-span-1">
-                    <div class="bg-white p-8 rounded-[2rem] shadow-xl sticky top-32">
-                        <h2 class="text-2xl font-bold text-dark mb-8">Buyurtma</h2>
-                        <div class="space-y-4 mb-8">
-                            <div class="flex justify-between text-gray-500">
-                                <span>Mahsulotlar</span>
-                                <span x-text="formatPrice(totalPrice)"></span>
+                    <div class="glass p-10 rounded-[4rem] border border-white/20 shadow-2xl sticky top-32 relative overflow-hidden">
+                        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-pink-600/10 rounded-full blur-[80px]"></div>
+                        <h2 class="text-3xl font-black text-dark dark:text-white mb-10 tracking-tighter">Buyurtma</h2>
+                        <div class="space-y-6 mb-10">
+                            <div class="flex justify-between items-center px-2">
+                                <span class="text-gray-500 font-bold uppercase tracking-widest text-xs">Mahsulotlar</span>
+                                <span x-text="formatPrice(totalPrice)" class="text-dark dark:text-white font-black"></span>
                             </div>
-                            <div class="flex justify-between text-gray-500">
-                                <span>Yetkazish</span>
-                                <span class="text-green-600 font-bold">Bepul</span>
+                            <div class="flex justify-between items-center px-2">
+                                <span class="text-gray-500 font-bold uppercase tracking-widest text-xs">Yetkazish</span>
+                                <span class="text-indigo-600 dark:text-indigo-400 font-black uppercase text-xs tracking-widest bg-indigo-600/10 px-4 py-1.5 rounded-full">Bepul</span>
                             </div>
-                            <div class="border-t pt-4 flex justify-between text-2xl font-black text-dark">
-                                <span>Jami:</span>
-                                <span x-text="formatPrice(totalPrice)"></span>
+                            <div class="h-px bg-white/10 mx-2"></div>
+                            <div class="flex justify-between items-center px-2 pt-2">
+                                <span class="text-xl font-black text-dark dark:text-white tracking-tight">Jami:</span>
+                                <span x-text="formatPrice(totalPrice)" class="text-3xl font-black text-indigo-600 tracking-tighter"></span>
                             </div>
                         </div>
-                        <a href="checkout.html" :class="localCart.length === 0 ? 'pointer-events-none opacity-50' : ''" 
-                           class="block w-full bg-dark text-white text-center py-5 rounded-2xl font-bold hover:bg-blue-600 transition shadow-xl">
+                        <a href="checkout.html" :class="localCart.length === 0 ? 'pointer-events-none opacity-30 grayscale' : ''" 
+                           class="block w-full bg-dark dark:bg-indigo-600 text-white text-center py-6 rounded-[2rem] font-black text-xl hover:scale-[1.02] transition-all shadow-2xl shadow-indigo-600/30 tracking-tighter">
                             Buyurtma berish
                         </a>
+                        <p class="text-[10px] text-gray-500 font-bold text-center mt-6 uppercase tracking-[0.2em]">Kafolatlangan xavfsiz to'lovlar</p>
                     </div>
                 </div>
             </div>
