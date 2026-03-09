@@ -79,25 +79,25 @@
             <!-- Products Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
                 <template x-for="product in products" :key="product.id">
-                    <div x-show="(activeCategory === 'Hammasi' || product.category === activeCategory) && (product.name.toLowerCase().includes(searchQuery.toLowerCase()))" 
+                    <div x-show="(activeCategory === 'Hammasi' || product.category === activeCategory) && matchesSearch(product)" 
                          class="glass rounded-[2.5rem] p-5 shadow-2xl card-hover group border border-white/20">
                         <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-6 shadow-inner bg-gray-100/10">
                             <img :src="product.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
                             <button class="absolute top-4 right-4 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-xl"><i class="far fa-heart text-xl"></i></button>
                             <div class="absolute bottom-4 left-4">
-                                <span x-text="product.category" class="px-4 py-1.5 bg-indigo-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg"></span>
+                                <span x-text="product.category" class="px-4 py-1.5 bg-indigo-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg dark:neon-glow"></span>
                             </div>
                         </div>
                         <div class="px-2">
-                            <h3 class="text-xl font-black text-dark mb-2 hover:text-indigo-600 transition leading-tight">
+                            <h3 class="text-xl font-black text-dark dark:text-neon mb-2 hover:text-indigo-600 transition leading-tight">
                                 <a :href="'product-detail.html?id=' + product.id" x-text="product.name"></a>
                             </h3>
                             <div class="flex items-center justify-between mt-6">
                                 <div class="flex flex-col">
                                     <span x-show="product.oldPrice" x-text="formatPrice(product.oldPrice)" class="text-xs text-red-500 line-through mb-1 opacity-60"></span>
-                                    <span x-text="formatPrice(product.price)" class="text-2xl font-black text-dark"></span>
+                                    <span x-text="formatPrice(product.price)" class="text-2xl font-black text-dark dark:text-white"></span>
                                 </div>
-                                <button @click="addToCart(product.id)" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center hover:bg-dark hover:scale-105 transition active:scale-95 shadow-xl shadow-indigo-600/30">
+                                <button @click="addToCart(product.id)" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center hover:bg-dark hover:scale-105 transition active:scale-95 shadow-xl shadow-indigo-600/30 dark:neon-glow">
                                     <i class="fas fa-shopping-basket text-xl"></i>
                                 </button>
                             </div>
@@ -107,7 +107,7 @@
             </div>
             
             <!-- Empty State -->
-            <div x-show="products.filter(p => (activeCategory === 'Hammasi' || p.category === activeCategory) && (p.name.toLowerCase().includes(searchQuery.toLowerCase()))).length === 0" 
+            <div x-show="products.filter(p => (activeCategory === 'Hammasi' || p.category === activeCategory) && matchesSearch(p)).length === 0" 
                  class="py-32 text-center glass rounded-[3rem] mt-12 border border-white/20 overflow-hidden relative">
                 <div class="absolute inset-0 opacity-10 mesh-gradient-vibrant"></div>
                 <div class="relative z-10 text-gray-400">
@@ -129,20 +129,38 @@
     <script src="assets/js/main.js"></script>
     <script>
         function shopPage() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const initialCat = urlParams.get('cat') || 'Hammasi';
+            const initialSearch = urlParams.get('q') || '';
+
             return {
                 mobileMenu: false,
-                activeCategory: 'Hammasi',
-                searchQuery: '',
+                activeCategory: initialCat,
+                searchQuery: initialSearch,
                 products: db.getProducts(),
                 formatPrice(price) {
                     return price.toLocaleString() + " so'm";
                 },
+                matchesSearch(product) {
+                    const q = this.searchQuery.toLowerCase();
+                    const nameMatch = product.name.toLowerCase().includes(q);
+                    const catMatch = product.category.toLowerCase().includes(q);
+                    // Also check localized names if needed, but name includes 'Telefon' usually
+                    const categoryMap = {
+                        'Phones': 'telefon',
+                        'Laptops': 'noutbuk',
+                        'Audio': 'audio',
+                        'Gaming': 'geyming'
+                    };
+                    const localizedCatMatch = categoryMap[product.category] ? categoryMap[product.category].includes(q) : false;
+                    
+                    return nameMatch || catMatch || localizedCatMatch;
+                },
                 addToCart(id) {
-                    const product = this.products.find(p => p.id === id);
-                    // Add to cart logic will be in main.js, but let's call it
                     if (window.addToCart) {
                         window.addToCart(id);
                     } else {
+                        const product = this.products.find(p => p.id === id);
                         alert(product.name + " savatchaga qo'shildi!");
                     }
                 }

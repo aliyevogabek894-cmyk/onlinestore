@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uz">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,23 +18,32 @@
         }
     </script>
 </head>
+
 <body class="mesh-gradient-vibrant min-h-screen font-sans selection:bg-indigo-500/30" x-data="adminPanel()">
-    
+
     <!-- Sidebar -->
     <div class="fixed left-0 top-0 h-full w-64 glass-dark text-white p-8 hidden lg:block border-r border-white/10 z-50">
-        <h1 class="text-3xl font-black mb-12 tracking-tighter text-indigo-400">ADMIN<span class="text-white font-light opacity-50">.HUB</span></h1>
+        <h1 class="text-3xl font-black mb-12 tracking-tighter text-indigo-400">ADMIN<span
+                class="text-white font-light opacity-50">.HUB</span></h1>
         <nav class="space-y-6">
-            <button @click="view = 'dashboard'" :class="view === 'dashboard' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'" class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
+            <button @click="view = 'dashboard'"
+                :class="view === 'dashboard' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
+                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-chart-pie mr-4 text-xl"></i> Dashboard
             </button>
-            <button @click="view = 'products'" :class="view === 'products' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'" class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
+            <button @click="view = 'products'"
+                :class="view === 'products' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
+                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-boxes-stacked mr-4 text-xl"></i> Mahsulotlar
             </button>
-            <button @click="view = 'users'" :class="view === 'users' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'" class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
+            <button @click="view = 'users'"
+                :class="view === 'users' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
+                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-user-group mr-4 text-xl"></i> Foydalanuvchilar
             </button>
             <div class="pt-12 border-t border-white/10">
-                <a href="index.html" class="w-full text-left px-5 py-4 rounded-2xl transition-all text-gray-400 hover:text-white hover:bg-white/5 flex items-center font-bold">
+                <a href="index.html"
+                    class="w-full text-left px-5 py-4 rounded-2xl transition-all text-gray-400 hover:text-white hover:bg-white/5 flex items-center font-bold">
                     <i class="fas fa-arrow-left-long mr-4 text-xl"></i> Saytga qaytish
                 </a>
             </div>
@@ -48,18 +58,20 @@
                 <h2 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="viewTitle()"></h2>
                 <p class="text-gray-500 font-medium mt-2">Boshqaruv paneli orqali do'konni nazorat qiling.</p>
             </div>
-            <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+            <div class="flex items-center space-x-6"
+                x-data="{ isDark: document.documentElement.classList.contains('dark') }">
                 <!-- Theme Toggle -->
-                <button @click="isDark = toggleTheme()" 
-                        class="p-4 rounded-2xl glass hover:bg-white/30 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition-all duration-300 shadow-xl border border-white/20">
+                <button @click="isDark = toggleTheme()"
+                    class="p-4 rounded-2xl glass hover:bg-white/30 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition-all duration-300 shadow-xl border border-white/20">
                     <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                     <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
                 </button>
                 <div class="flex items-center space-x-4 glass p-2 pr-6 rounded-3xl border border-white/20 shadow-xl">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff" class="w-12 h-12 rounded-2xl shadow-lg">
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff"
+                        class="w-12 h-12 rounded-2xl shadow-lg">
                     <div>
                         <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Admin</p>
-                        <p class="text-sm font-bold text-dark dark:text-white">Og'abek Aliyev</p>
+                        <p class="text-sm font-bold text-dark dark:text-white">Og'abek Aliyev Aliyeva Madina</p>
                     </div>
                 </div>
             </div>
@@ -68,25 +80,33 @@
         <!-- Dashboard View -->
         <template x-if="view === 'dashboard'">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+                <div
+                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
                     <div class="absolute -top-12 -right-12 w-32 h-32 bg-indigo-600/10 rounded-full blur-3xl"></div>
-                    <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-600/30 group-hover:rotate-12 transition duration-500">
+                    <div
+                        class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-600/30 group-hover:rotate-12 transition duration-500">
                         <i class="fas fa-box-open text-2xl"></i>
                     </div>
                     <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Jami mahsulotlar</p>
-                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="products.length"></h3>
+                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="products.length">
+                    </h3>
                 </div>
-                <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+                <div
+                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
                     <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-600/10 rounded-full blur-3xl"></div>
-                    <div class="w-16 h-16 bg-pink-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-pink-600/30 group-hover:rotate-12 transition duration-500">
+                    <div
+                        class="w-16 h-16 bg-pink-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-pink-600/30 group-hover:rotate-12 transition duration-500">
                         <i class="fas fa-users-gear text-2xl"></i>
                     </div>
                     <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Ro'yxatdan o'tganlar</p>
-                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="users.length"></h3>
+                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="users.length">
+                    </h3>
                 </div>
-                <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+                <div
+                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
                     <div class="absolute -top-12 -right-12 w-32 h-32 bg-cyan-600/10 rounded-full blur-3xl"></div>
-                    <div class="w-16 h-16 bg-cyan-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-cyan-600/30 group-hover:rotate-12 transition duration-500">
+                    <div
+                        class="w-16 h-16 bg-cyan-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-cyan-600/30 group-hover:rotate-12 transition duration-500">
                         <i class="fas fa-truck-ramp-box text-2xl"></i>
                     </div>
                     <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Yangi buyurtmalar</p>
@@ -100,10 +120,12 @@
             <div class="space-y-10">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
                     <div class="relative w-full sm:w-96">
-                        <input type="text" placeholder="Mahsulot qidirish..." class="w-full glass-dark-50 dark:glass p-5 rounded-2xl border border-white/10 outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark dark:text-white font-medium shadow-inner">
+                        <input type="text" x-model="adminSearch" placeholder="Mahsulot qidirish..."
+                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark dark:text-white font-medium shadow-inner">
                         <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-gray-500"></i>
                     </div>
-                    <button @click="showAddModal = true" class="w-full sm:w-auto bg-dark dark:bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-indigo-600/30 flex items-center justify-center">
+                    <button @click="showAddModal = true"
+                        class="w-full sm:w-auto bg-dark dark:bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-indigo-600/30 flex items-center justify-center">
                         <i class="fas fa-plus-circle mr-3 text-xl"></i> Yangi mahsulot
                     </button>
                 </div>
@@ -112,32 +134,43 @@
                     <table class="w-full text-left">
                         <thead class="bg-indigo-600/10 border-b border-white/10">
                             <tr>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Mahsulot</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Kategoriya</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Narx</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em] text-right">Amallar</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
+                                    Mahsulot</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
+                                    Kategoriya</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
+                                    Narx</th>
+                                <th
+                                    class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em] text-right">
+                                    Amallar</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-white/10">
-                            <template x-for="p in products" :key="p.id">
+                            <template x-for="p in filteredProducts()" :key="p.id">
                                 <tr class="hover:bg-white/10 transition-all group">
                                     <td class="px-10 py-6 flex items-center">
-                                        <div class="w-16 h-16 rounded-2xl overflow-hidden mr-6 shadow-xl group-hover:scale-110 transition duration-500">
+                                        <div
+                                            class="w-16 h-16 rounded-2xl overflow-hidden mr-6 shadow-xl group-hover:scale-110 transition duration-500">
                                             <img :src="p.image" class="w-full h-full object-cover">
                                         </div>
-                                        <span class="font-black text-dark dark:text-white text-lg tracking-tight" x-text="p.name"></span>
+                                        <span class="font-black text-dark dark:text-white text-lg tracking-tight"
+                                            x-text="p.name"></span>
                                     </td>
                                     <td class="px-10 py-6">
-                                        <span class="px-5 py-2 bg-indigo-600/20 rounded-full text-[10px] font-black uppercase text-indigo-400 tracking-wider border border-indigo-600/20" x-text="p.category"></span>
+                                        <span
+                                            class="px-5 py-2 bg-indigo-600/20 rounded-full text-[10px] font-black uppercase text-indigo-400 tracking-wider border border-indigo-600/20"
+                                            x-text="p.category"></span>
                                     </td>
                                     <td class="px-10 py-6">
                                         <div class="flex items-center space-x-3">
-                                            <input type="number" x-model="p.price" @change="updatePrice(p)" class="w-36 bg-white/50 dark:bg-gray-900/50 border border-white/10 rounded-xl px-4 py-2 font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-600/20 transition shadow-inner">
+                                            <input type="number" x-model="p.price" @change="updatePrice(p)"
+                                                class="w-36 bg-white/50 dark:bg-gray-900/50 border border-white/10 rounded-xl px-4 py-2 font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-600/20 transition shadow-inner">
                                             <span class="text-gray-400 font-bold">uzs</span>
                                         </div>
                                     </td>
                                     <td class="px-10 py-6 text-right">
-                                        <button @click="deleteProduct(p.id)" class="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center ml-auto">
+                                        <button @click="deleteProduct(p.id)"
+                                            class="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center ml-auto">
                                             <i class="fas fa-trash-can"></i>
                                         </button>
                                     </td>
@@ -153,8 +186,10 @@
         <template x-if="view === 'users'">
             <div class="space-y-10">
                 <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
-                    <h3 class="text-3xl font-black text-dark dark:text-white tracking-tighter">Barcha foydalanuvchilar</h3>
-                    <button @click="exportUsers()" class="w-full sm:w-auto bg-green-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-green-600/30 flex items-center justify-center">
+                    <h3 class="text-3xl font-black text-dark dark:text-white tracking-tighter">Barcha foydalanuvchilar
+                    </h3>
+                    <button @click="exportUsers()"
+                        class="w-full sm:w-auto bg-green-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-green-600/30 flex items-center justify-center">
                         <i class="fas fa-file-csv mr-3 text-xl"></i> Excel ga ula (Export)
                     </button>
                 </div>
@@ -163,9 +198,12 @@
                     <table class="w-full text-left">
                         <thead class="bg-indigo-600/10 border-b border-white/10">
                             <tr>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Ism familiya</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Elektron pochta</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Ro'yxatdan o'tgan</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Ism
+                                    familiya</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
+                                    Elektron pochta</th>
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
+                                    Ro'yxatdan o'tgan</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-white/10">
@@ -173,15 +211,19 @@
                                 <tr class="hover:bg-white/10 transition-all group">
                                     <td class="px-10 py-6">
                                         <div class="flex items-center">
-                                            <div class="w-12 h-12 rounded-xl bg-indigo-600/20 flex items-center justify-center text-indigo-600 font-black mr-4" x-text="user.name.charAt(0)"></div>
-                                            <span class="font-black text-dark dark:text-white text-lg tracking-tight" x-text="user.name"></span>
+                                            <div class="w-12 h-12 rounded-xl bg-indigo-600/20 flex items-center justify-center text-indigo-600 font-black mr-4"
+                                                x-text="user.name.charAt(0)"></div>
+                                            <span class="font-black text-dark dark:text-white text-lg tracking-tight"
+                                                x-text="user.name"></span>
                                         </div>
                                     </td>
                                     <td class="px-10 py-6">
                                         <span class="text-gray-500 font-bold" x-text="user.email"></span>
                                     </td>
                                     <td class="px-10 py-6">
-                                        <span class="px-5 py-2 bg-gray-500/10 rounded-full text-[10px] font-black uppercase text-gray-400 tracking-wider border border-white/10" x-text="user.joinedDate"></span>
+                                        <span
+                                            class="px-5 py-2 bg-gray-500/10 rounded-full text-[10px] font-black uppercase text-gray-400 tracking-wider border border-white/10"
+                                            x-text="user.joinedDate"></span>
                                     </td>
                                 </tr>
                             </template>
@@ -201,24 +243,32 @@
     </div>
 
     <!-- Add Product Modal -->
-    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl" x-transition x-cloak>
-        <div class="glass-dark w-full max-w-xl rounded-[4rem] p-12 shadow-2xl border border-white/20 relative overflow-hidden" @click.away="showAddModal = false">
+    <div x-show="showAddModal"
+        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl" x-transition
+        x-cloak>
+        <div class="glass w-full max-w-xl rounded-[4rem] p-12 shadow-2xl border border-white/20 relative overflow-hidden"
+            @click.away="showAddModal = false">
             <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px]"></div>
             <div class="relative z-10">
                 <div class="flex justify-between items-center mb-10">
                     <h3 class="text-4xl font-black text-white tracking-tighter">Yangi mahsulot</h3>
-                    <button @click="showAddModal = false" class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-white hover:bg-white/20 transition-all">
+                    <button @click="showAddModal = false"
+                        class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-white hover:bg-white/20 transition-all">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
                 <form @submit.prevent="saveNewProduct()" class="space-y-6">
                     <div class="space-y-3">
-                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Mahsulot nomi</label>
-                        <input type="text" x-model="newProduct.name" required class="w-full glass-dark-50 p-5 rounded-2xl border border-white/10 outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
+                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Mahsulot
+                            nomi</label>
+                        <input type="text" x-model="newProduct.name" required
+                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
                     </div>
                     <div class="space-y-3">
-                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Kategoriya</label>
-                        <select x-model="newProduct.category" class="w-full glass-dark-50 p-5 rounded-2xl border border-white/10 outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner appearance-none cursor-pointer">
+                        <label
+                            class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Kategoriya</label>
+                        <select x-model="newProduct.category"
+                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner appearance-none cursor-pointer">
                             <option value="Phones">Telefonlar</option>
                             <option value="Laptops">Noutbuklar</option>
                             <option value="Smart Watches">Smart soatlar</option>
@@ -228,17 +278,24 @@
                     </div>
                     <div class="grid grid-cols-2 gap-6">
                         <div class="space-y-3">
-                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Narxi (UZS)</label>
-                            <input type="number" x-model="newProduct.price" required class="w-full glass-dark-50 p-5 rounded-2xl border border-white/10 outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Narxi
+                                (UZS)</label>
+                            <input type="number" x-model="newProduct.price" required
+                                class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
                         </div>
                         <div class="space-y-3">
-                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Rasm URL</label>
-                            <input type="text" x-model="newProduct.image" required class="w-full glass-dark-50 p-5 rounded-2xl border border-white/10 outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
+                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Rasm
+                                URL</label>
+                            <input type="text" x-model="newProduct.image" required
+                                class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
                         </div>
                     </div>
                     <div class="flex space-x-6 mt-12 pt-4">
-                        <button type="button" @click="showAddModal = false" class="flex-1 glass text-white font-black py-6 rounded-[2rem] hover:bg-white/10 transition-all tracking-tighter">Bekor qilish</button>
-                        <button type="submit" class="flex-1 bg-indigo-600 text-white font-black py-6 rounded-[2rem] hover:bg-dark transition-all shadow-2xl shadow-indigo-600/40 tracking-tighter">Saqlash</button>
+                        <button type="button" @click="showAddModal = false"
+                            class="flex-1 glass text-white font-black py-6 rounded-[2rem] hover:bg-white/10 transition-all tracking-tighter">Bekor
+                            qilish</button>
+                        <button type="submit"
+                            class="flex-1 bg-indigo-600 text-white font-black py-6 rounded-[2rem] hover:bg-dark transition-all shadow-2xl shadow-indigo-600/40 tracking-tighter">Saqlash</button>
                     </div>
                 </form>
             </div>
@@ -251,6 +308,7 @@
                 view: 'dashboard',
                 products: db.getProducts(),
                 users: db.getUsers(),
+                adminSearch: '',
                 showAddModal: false,
                 newProduct: {
                     name: '',
@@ -259,6 +317,16 @@
                     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
                     description: 'Premium mahsulot.',
                     stock: 10
+                },
+                filteredProducts() {
+                    const q = this.adminSearch.toLowerCase();
+                    return this.products.filter(p => {
+                        const nameMatch = p.name.toLowerCase().includes(q);
+                        const catMatch = p.category.toLowerCase().includes(q);
+                        const categoryMap = { 'Phones': 'telefon', 'Laptops': 'noutbuk', 'Audio': 'audio', 'Gaming': 'geyming' };
+                        const localizedCatMatch = categoryMap[p.category] ? categoryMap[p.category].includes(q) : false;
+                        return nameMatch || catMatch || localizedCatMatch;
+                    });
                 },
                 viewTitle() {
                     return {
@@ -278,7 +346,7 @@
                     }
                 },
                 saveNewProduct() {
-                    const saved = db.addProduct({...this.newProduct, price: Number(this.newProduct.price)});
+                    const saved = db.addProduct({ ...this.newProduct, price: Number(this.newProduct.price) });
                     this.products = db.getProducts();
                     this.showAddModal = false;
                     this.newProduct = { name: '', category: 'Phones', price: '', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80', description: 'Premium mahsulot.', stock: 10 };
@@ -291,4 +359,5 @@
         }
     </script>
 </body>
+
 </html>
