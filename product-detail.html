@@ -8,11 +8,13 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
 </head>
 <body x-data="{ mobileMenu: false, product: null, quantity: 1 }" x-init="
     const urlParams = new URLSearchParams(window.location.search);
     const id = parseInt(urlParams.get('id')) || 1;
-    product = products.find(p => p.id === id);
+    const allProducts = db.getProducts();
+    product = allProducts.find(p => p.id === id);
 ">
     <!-- Navbar -->
     <nav class="glass fixed w-full z-40">

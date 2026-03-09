@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil - Premium Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
+</head>
+<body x-data="profilePage()" class="bg-gray-50">
+    <nav class="glass fixed w-full z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+            <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark">PREMIUM STORE</a>
+            <div class="flex items-center space-x-6">
+                <a href="index.html" class="text-dark font-medium hover:text-blue-600 transition">Bosh sahifa</a>
+                <button @click="logout()" class="text-red-500 font-bold hover:underline">Chiqish</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-32 pb-24">
+        <div class="max-w-4xl mx-auto px-4">
+            <template x-if="user">
+                <div class="space-y-8">
+                    <!-- Profile Header -->
+                    <div class="bg-white p-12 rounded-[3rem] shadow-xl flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-10 text-center md:text-left">
+                        <div class="w-32 h-32 bg-blue-600 rounded-full flex items-center justify-center text-white text-5xl font-black shadow-2xl shadow-blue-600/30" x-text="user.name.charAt(0)"></div>
+                        <div class="flex-1">
+                            <h1 x-text="user.name" class="text-4xl font-black text-dark mb-2"></h1>
+                            <p x-text="user.email" class="text-gray-400 text-lg mb-4"></p>
+                            <span class="px-4 py-1.5 bg-green-100 text-green-600 rounded-full text-sm font-bold">Faol mijoz</span>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-gray-400 text-sm uppercase tracking-widest mb-1">A'zo bo'ldi</p>
+                            <p x-text="user.joinedDate" class="font-black text-xl text-dark"></p>
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center">
+                            <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-shopping-bag text-xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-black">0</h3>
+                            <p class="text-gray-400 font-medium">Buyurtmalar</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center">
+                            <div class="w-12 h-12 bg-purple-50 text-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-heart text-xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-black text-dark">0</h3>
+                            <p class="text-gray-400 font-medium">Sevimlilar</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-[2.5rem] shadow-xl text-center">
+                            <div class="w-12 h-12 bg-orange-50 text-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-ticket-alt text-xl"></i>
+                            </div>
+                            <h3 class="text-3xl font-black text-dark">0</h3>
+                            <p class="text-gray-400 font-medium">Kuponlar</p>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Mockup -->
+                    <div class="bg-white p-10 rounded-[3rem] shadow-xl">
+                        <h2 class="text-2xl font-black text-dark mb-8">Oxirgi buyurtmalar</h2>
+                        <div class="text-center py-12 text-gray-400">
+                            <i class="fas fa-box-open text-4xl mb-4 opacity-20"></i>
+                            <p>Sizda hali buyurtmalar yo'q.</p>
+                            <a href="shop.html" class="inline-block mt-4 text-blue-600 font-bold hover:underline">Xaridni boshlash</a>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <template x-if="!user">
+                <div class="bg-white p-20 rounded-[3rem] shadow-xl text-center">
+                    <i class="fas fa-lock text-5xl text-gray-200 mb-8"></i>
+                    <h2 class="text-3xl font-black text-dark mb-4">Kirish kutilmoqda</h2>
+                    <p class="text-gray-400 mb-10">Profilni ko'rish uchun iltimos tizimga kiring.</p>
+                    <a href="login.html" class="bg-blue-600 text-white px-12 py-4 rounded-full font-bold shadow-xl shadow-blue-600/30 hover:bg-dark transition">Kirish</a>
+                </div>
+            </template>
+        </div>
+    </main>
+
+    <script>
+        function profilePage() {
+            const user = JSON.parse(localStorage.getItem('ps_current_user'));
+            return {
+                user: user,
+                logout() {
+                    localStorage.removeItem('ps_current_user');
+                    window.location.href = 'index.html';
+                }
+            }
+        }
+    </script>
+</body>
+</html>

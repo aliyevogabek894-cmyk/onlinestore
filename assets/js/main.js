@@ -1,39 +1,3 @@
-// Product Data
-const products = [
-    {
-        id: 1,
-        name: "Premium Smart Soat",
-        price: 1200000,
-        category: "Elektronika",
-        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80",
-        description: "Eng so'nggi texnologiyalar bilan jihozlangan premium smart soat."
-    },
-    {
-        id: 2,
-        name: "Charm Hamyon",
-        price: 250000,
-        category: "Aksessuarlar",
-        image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80",
-        description: "Tabiiy charmdan tayyorlangan sifatli hamyon."
-    },
-    {
-        id: 3,
-        name: "Simsiz Quloqchinlar",
-        price: 450000,
-        category: "Elektronika",
-        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80",
-        description: "Kristalldek tiniq ovoz va qulay dizayn."
-    },
-    {
-        id: 4,
-        name: "Fotoapparat Retro",
-        price: 3500000,
-        category: "Elektronika",
-        image: "https://images.unsplash.com/photo-1526170315870-ef682c535476?w=500&q=80",
-        description: "Retro uslubidagi zamonaviy fotoapparat."
-    }
-];
-
 // Cart Logic
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -43,7 +7,12 @@ function saveCart() {
 }
 
 function addToCart(productId) {
-    const product = products.find(p => p.id === productId);
+    // Get products from central DB
+    const allProducts = typeof db !== 'undefined' ? db.getProducts() : [];
+    const product = allProducts.find(p => p.id === productId);
+    
+    if (!product) return;
+
     const existing = cart.find(item => item.id === productId);
     
     if (existing) {
@@ -53,7 +22,11 @@ function addToCart(productId) {
     }
     
     saveCart();
-    showNotification(`${product.name} savatga qo'shildi!`);
+    if (typeof showNotification === 'function') {
+        showNotification(`${product.name} savatga qo'shildi!`);
+    } else {
+        alert(`${product.name} savatga qo'shildi!`);
+    }
 }
 
 function updateCartBadge() {

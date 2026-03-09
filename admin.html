@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Premium Store</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen" x-data="adminPanel()">
+    
+    <!-- Sidebar -->
+    <div class="fixed left-0 top-0 h-full w-64 bg-dark text-white p-6 hidden lg:block">
+        <h1 class="text-2xl font-black mb-10 text-blue-500">ADMIN<span class="text-white font-light">PANEL</span></h1>
+        <nav class="space-y-4">
+            <button @click="view = 'dashboard'" :class="view === 'dashboard' ? 'bg-blue-600' : 'hover:bg-gray-800'" class="w-full text-left px-4 py-3 rounded-xl transition flex items-center">
+                <i class="fas fa-chart-line mr-3"></i> Dashboard
+            </button>
+            <button @click="view = 'products'" :class="view === 'products' ? 'bg-blue-600' : 'hover:bg-gray-800'" class="w-full text-left px-4 py-3 rounded-xl transition flex items-center">
+                <i class="fas fa-box mr-3"></i> Mahsulotlar
+            </button>
+            <button @click="view = 'users'" :class="view === 'users' ? 'bg-blue-600' : 'hover:bg-gray-800'" class="w-full text-left px-4 py-3 rounded-xl transition flex items-center">
+                <i class="fas fa-users mr-3"></i> Foydalanuvchilar
+            </button>
+            <a href="index.html" class="w-full text-left px-4 py-3 rounded-xl transition flex items-center hover:bg-gray-800">
+                <i class="fas fa-external-link-alt mr-3"></i> Saytga qaytish
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64 p-8">
+        <!-- Top Header -->
+        <header class="flex justify-between items-center mb-10">
+            <h2 class="text-3xl font-bold text-dark" x-text="viewTitle()"></h2>
+            <div class="flex items-center space-x-4">
+                <span class="text-gray-500">Xush kelibsiz, Admin</span>
+                <img src="https://ui-avatars.com/api/?name=Admin&background=2563eb&color=fff" class="w-10 h-10 rounded-full">
+            </div>
+        </header>
+
+        <!-- Dashboard View -->
+        <template x-if="view === 'dashboard'">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-box text-xl"></i>
+                    </div>
+                    <p class="text-gray-500 font-medium">Jami mahsulotlar</p>
+                    <h3 class="text-3xl font-black mt-1" x-text="products.length"></h3>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-green-100 text-green-600 rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <p class="text-gray-500 font-medium">Ro'yxatdan o'tganlar</p>
+                    <h3 class="text-3xl font-black mt-1" x-text="users.length"></h3>
+                </div>
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                    <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center mb-4">
+                        <i class="fas fa-shopping-bag text-xl"></i>
+                    </div>
+                    <p class="text-gray-500 font-medium">Yangi buyurtmalar</p>
+                    <h3 class="text-3xl font-black mt-1">0</h3>
+                </div>
+            </div>
+        </template>
+
+        <!-- Products View -->
+        <template x-if="view === 'products'">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <div class="relative w-72">
+                        <input type="text" placeholder="Qidirish..." class="w-full px-5 py-3 rounded-2xl border-none ring-1 ring-gray-200 focus:ring-2 focus:ring-blue-600 outline-none shadow-sm">
+                    </div>
+                    <button @click="showAddModal = true" class="bg-dark text-white px-8 py-3 rounded-2xl font-bold hover:bg-blue-600 transition shadow-lg">
+                        <i class="fas fa-plus mr-2"></i> Yangi mahsulot
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Mahsulot</th>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Kategoriya</th>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Narx</th>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs text-right">Amallar</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <template x-for="p in products" :key="p.id">
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="px-6 py-4 flex items-center">
+                                        <img :src="p.image" class="w-12 h-12 rounded-xl object-cover mr-4">
+                                        <span class="font-bold text-dark" x-text="p.name"></span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-3 py-1 bg-gray-100 rounded-full text-xs font-semibold text-gray-600" x-text="p.category"></span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <input type="number" x-model="p.price" @change="updatePrice(p)" class="w-32 bg-gray-100 border-none rounded-lg px-2 py-1 font-bold text-dark focus:ring-2 focus:ring-blue-500 outline-none"> so'm
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <button @click="deleteProduct(p.id)" class="text-red-400 hover:text-red-600 transition p-2">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+
+        <!-- Users View -->
+        <template x-if="view === 'users'">
+            <div class="space-y-6">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold">Barcha foydalanuvchilar</h3>
+                    <button @click="exportUsers()" class="bg-green-600 text-white px-8 py-3 rounded-2xl font-bold hover:bg-green-700 transition shadow-lg">
+                        <i class="fas fa-file-excel mr-2"></i> Excel ga ula (Export)
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-50 border-b border-gray-100">
+                            <tr>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Ism</th>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Email</th>
+                                <th class="px-6 py-4 font-bold text-gray-500 uppercase text-xs">Sana</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <template x-for="user in users" :key="user.id">
+                                <tr>
+                                    <td class="px-6 py-4 font-bold text-dark" x-text="user.name"></td>
+                                    <td class="px-6 py-4 text-gray-500" x-text="user.email"></td>
+                                    <td class="px-6 py-4 text-gray-400 text-sm" x-text="user.joinedDate"></td>
+                                </tr>
+                            </template>
+                            <template x-if="users.length === 0">
+                                <tr>
+                                    <td colspan="3" class="px-6 py-10 text-center text-gray-400">Hali foydalanuvchilar yo'q.</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div x-show="showAddModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-cloak>
+        <div class="bg-white w-full max-w-lg rounded-[2.5rem] p-10 shadow-2xl" @click.away="showAddModal = false">
+            <h3 class="text-2xl font-black mb-6">Yangi mahsulot qo'shish</h3>
+            <form @submit.prevent="saveNewProduct()" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Nomi</label>
+                    <input type="text" x-model="newProduct.name" required class="w-full bg-gray-100 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-blue-600">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-2">Kategoriya</label>
+                    <select x-model="newProduct.category" class="w-full bg-gray-100 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-blue-600">
+                        <option value="Phones">Telefonlar</option>
+                        <option value="Laptops">Noutbuklar</option>
+                        <option value="Smart Watches">Smart soatlar</option>
+                        <option value="Accessories">Aksessuarlar</option>
+                        <option value="Electronics">Elektronika</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Narxi</label>
+                        <input type="number" x-model="newProduct.price" required class="w-full bg-gray-100 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-2">Rasm URL</label>
+                        <input type="text" x-model="newProduct.image" required class="w-full bg-gray-100 border-none rounded-2xl px-5 py-3 outline-none focus:ring-2 focus:ring-blue-600">
+                    </div>
+                </div>
+                <div class="flex space-x-4 mt-8">
+                    <button type="button" @click="showAddModal = false" class="flex-1 bg-gray-100 text-gray-600 font-bold py-4 rounded-2xl hover:bg-gray-200 transition">Bekor qilish</button>
+                    <button type="submit" class="flex-1 bg-blue-600 text-white font-bold py-4 rounded-2xl hover:bg-dark transition">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function adminPanel() {
+            return {
+                view: 'dashboard',
+                products: db.getProducts(),
+                users: db.getUsers(),
+                showAddModal: false,
+                newProduct: {
+                    name: '',
+                    category: 'Phones',
+                    price: '',
+                    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
+                    description: 'Premium mahsulot.',
+                    stock: 10
+                },
+                viewTitle() {
+                    return {
+                        'dashboard': 'Dashboard',
+                        'products': 'Mahsulotlar boshqaruvi',
+                        'users': 'Foydalanuvchilar'
+                    }[this.view];
+                },
+                updatePrice(product) {
+                    db.updateProduct(product);
+                    alert("Narx o'zgartirildi!");
+                },
+                deleteProduct(id) {
+                    if (confirm("Rostdan ham o'chirmoqchimisiz?")) {
+                        db.deleteProduct(id);
+                        this.products = db.getProducts();
+                    }
+                },
+                saveNewProduct() {
+                    const saved = db.addProduct({...this.newProduct, price: Number(this.newProduct.price)});
+                    this.products = db.getProducts();
+                    this.showAddModal = false;
+                    this.newProduct = { name: '', category: 'Phones', price: '', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80', description: 'Premium mahsulot.', stock: 10 };
+                    alert("Mahsulot muvaffaqiyatli qo'shildi!");
+                },
+                exportUsers() {
+                    db.exportUsersToCSV();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

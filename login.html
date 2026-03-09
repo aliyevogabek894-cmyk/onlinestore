@@ -15,19 +15,39 @@
             <p class="text-gray-400 mt-2">Profajlingizga kirish uchun ma'lumotlarni kiriting.</p>
         </div>
 
-        <form class="space-y-6" onsubmit="event.preventDefault(); window.location.href='index.html';">
+        <form class="space-y-6" id="loginForm">
             <div class="space-y-2">
-                <label class="font-bold text-dark ml-2">Email yoki login</label>
-                <input type="text" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
+                <label class="font-bold text-dark ml-2">Email</label>
+                <input type="email" id="email" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
             </div>
             <div class="space-y-2">
                 <label class="font-bold text-dark ml-2">Parol</label>
-                <input type="password" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
+                <input type="password" id="password" required class="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-600 transition">
             </div>
             <button type="submit" class="w-full bg-blue-600 text-white py-5 rounded-2xl font-bold text-lg hover:bg-dark transition shadow-xl shadow-blue-600/20">
                 Kirish
             </button>
         </form>
+
+        <script src="assets/js/db.js"></script>
+        <script>
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+
+                const users = db.getUsers();
+                const user = users.find(u => u.email === email && u.password === password);
+
+                if (user) {
+                    localStorage.setItem('ps_current_user', JSON.stringify(user));
+                    alert("Xush kelibsiz, " + user.name + "!");
+                    window.location.href = 'index.html';
+                } else {
+                    alert("Email yoki parol noto'g'ri!");
+                }
+            });
+        </script>
 
         <p class="text-center mt-10 text-gray-500">
             Akkountingiz yo'qmi? <a href="register.html" class="text-blue-600 font-bold">Ro'yxatdan o'tish</a>

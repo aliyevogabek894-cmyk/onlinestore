@@ -7,8 +7,18 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50" x-data="{ 
+    cart: JSON.parse(localStorage.getItem('cart')) || [],
+    get totalPrice() {
+        return this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    },
+    formatPrice(price) {
+        return new Intl.NumberFormat('uz-UZ').format(price) + ' so\'m';
+    }
+}">
     <nav class="h-24 flex items-center px-8 max-w-7xl mx-auto">
         <a href="index.html" class="text-2xl font-black tracking-tighter">PREMIUM STORE</a>
     </nav>
@@ -38,9 +48,12 @@
                 </div>
 
                 <div class="bg-blue-50 p-8 rounded-[2rem] border border-blue-100 mb-8">
-                    <div class="flex items-center space-x-4 mb-4">
-                        <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center"><i class="fas fa-info-circle"></i></div>
-                        <h3 class="font-bold text-blue-900">To'lov haqida</h3>
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center"><i class="fas fa-shopping-bag"></i></div>
+                            <h3 class="font-bold text-blue-900">Jami summa</h3>
+                        </div>
+                        <span class="text-2xl font-black text-blue-900" x-text="formatPrice(totalPrice)"></span>
                     </div>
                     <p class="text-blue-700">Hozirda faqat mahsulotni olgandan so'ng naqd yoki karta orqali to'lov mavjud.</p>
                 </div>

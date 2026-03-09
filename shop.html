@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
 </head>
-<body x-data="{ mobileMenu: false, activeCategory: 'Hammasi', searchQuery: '' }">
+<body x-data="shopPage()">
     <!-- Navbar (Same as index) -->
     <nav class="glass fixed w-full z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -49,9 +50,11 @@
                     </div>
                     <select x-model="activeCategory" class="bg-white border border-gray-200 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition cursor-pointer">
                         <option value="Hammasi">Barcha kategoriyalar</option>
-                        <option value="Elektronika">Elektronika</option>
-                        <option value="Aksessuarlar">Aksessuarlar</option>
-                        <option value="Poyafzallar">Poyafzallar</option>
+                        <option value="Phones">Telefonlar</option>
+                        <option value="Laptops">Noutbuklar</option>
+                        <option value="Smart Watches">Smart soatlar</option>
+                        <option value="Accessories">Aksessuarlar</option>
+                        <option value="Electronics">Elektronika</option>
                     </select>
                 </div>
             </div>
@@ -97,5 +100,27 @@
     </footer>
 
     <script src="assets/js/main.js"></script>
+    <script>
+        function shopPage() {
+            return {
+                mobileMenu: false,
+                activeCategory: 'Hammasi',
+                searchQuery: '',
+                products: db.getProducts(),
+                formatPrice(price) {
+                    return price.toLocaleString() + " so'm";
+                },
+                addToCart(id) {
+                    const product = this.products.find(p => p.id === id);
+                    // Add to cart logic will be in main.js, but let's call it
+                    if (window.addToCart) {
+                        window.addToCart(id);
+                    } else {
+                        alert(product.name + " savatchaga qo'shildi!");
+                    }
+                }
+            }
+        }
+    </script>
 </body>
 </html>

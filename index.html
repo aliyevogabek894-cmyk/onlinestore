@@ -40,16 +40,27 @@
                     <a href="contact.html" class="text-dark hover:text-blue-600 font-medium transition">Aloqa</a>
                 </div>
 
-                <div class="flex items-center space-x-5">
-                    <div class="relative group">
+                <div class="flex items-center space-x-5" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')) }">
+                    <div class="relative group hidden lg:block">
                         <input type="text" placeholder="Qidiruv..." class="bg-gray-100 border-none rounded-full px-5 py-2 w-0 group-hover:w-48 transition-all duration-500 focus:w-48 focus:ring-2 focus:ring-blue-500 outline-none">
                         <button class="text-dark hover:text-blue-600 transition"><i class="fas fa-search text-xl"></i></button>
                     </div>
+                    <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
                     <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span class="cart-badge absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
                     </a>
-                    <a href="login.html" class="hidden md:block bg-dark text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-600 transition duration-300">Kirish</a>
+                    
+                    <template x-if="user">
+                        <a href="profile.html" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 transition">
+                            <i class="fas fa-user-circle text-blue-600 text-xl"></i>
+                            <span x-text="user.name" class="font-bold text-sm hidden sm:inline"></span>
+                        </a>
+                    </template>
+                    <template x-if="!user">
+                        <a href="login.html" class="hidden md:block bg-dark text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-600 transition duration-300">Kirish</a>
+                    </template>
+                    
                     <button @click="mobileMenu = !mobileMenu" class="md:hidden text-dark text-2xl"><i class="fas fa-bars"></i></button>
                 </div>
             </div>
@@ -60,8 +71,8 @@
             <button @click="mobileMenu = false" class="absolute top-6 right-6 text-3xl"><i class="fas fa-times"></i></button>
             <a @click="mobileMenu = false" href="index.html">Bosh sahifa</a>
             <a @click="mobileMenu = false" href="shop.html">Mahsulotlar</a>
-            <a @click="mobileMenu = false" href="about.html">Biz haqimizda</a>
-            <a @click="mobileMenu = false" href="contact.html">Aloqa</a>
+            <a @click="mobileMenu = false" href="profile.html">Profilim</a>
+            <a @click="mobileMenu = false" href="admin.html">Admin</a>
             <a @click="mobileMenu = false" href="login.html" class="bg-blue-600 text-white px-10 py-3 rounded-full">Kirish</a>
         </div>
     </nav>
@@ -257,6 +268,31 @@
         </div>
     </footer>
 
+    <script src="assets/js/db.js"></script>
     <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('featured-products-container');
+            const products = db.getProducts().slice(0, 4); // Show first 4 on home
+            
+            container.innerHTML = products.map(p => `
+                <div class="bg-white rounded-[2rem] p-4 shadow-xl shadow-gray-200/50 card-hover group">
+                    <div class="relative aspect-square rounded-2xl overflow-hidden mb-6">
+                        <img src="${p.image}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                        ${p.isNew ? '<span class="absolute top-4 left-4 bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase">Yangi</span>' : ''}
+                        <button class="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-lg"><i class="far fa-heart"></i></button>
+                    </div>
+                    <div class="px-2">
+                        <span class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-2 block">${p.category}</span>
+                        <h3 class="text-lg font-bold text-dark mb-2 hover:text-blue-600 transition"><a href="product-detail.html?id=${p.id}">${p.name}</a></h3>
+                        <div class="flex items-center justify-between mt-4">
+                            <span class="text-xl font-black text-dark">${p.price.toLocaleString()} so'm</span>
+                            <button onclick="addToCart(${p.id})" class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center hover:bg-dark transition shadow-lg shadow-blue-600/20"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        });
+    </script>
 </body>
 </html>
