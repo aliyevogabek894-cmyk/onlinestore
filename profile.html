@@ -3,126 +3,191 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profil - Premium Store</title>
+    <title>Mening Profilim - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        const _u = JSON.parse(localStorage.getItem('ps_current_user'));
+        if (!_u) window.location.href = 'login.html';
     </script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .z-tab { font-size: 13px; font-weight: 600; padding: 12px 20px; color: #666; border-bottom: 2px solid transparent; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+        .z-tab.active { color: #1A6CDB; border-bottom-color: #1A6CDB; font-weight: 800; }
+        .z-tab:hover { color: #1A6CDB; }
+        .z-footer { background: #1B1B1B; color: #ccc; }
+        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
+        .z-footer a:hover { color: white; }
+        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body x-data="profilePage()" class="mesh-gradient-vibrant min-h-screen">
-    <nav class="glass fixed w-full z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-indigo-600">PREMIUM<span class="text-dark dark:text-white font-light ml-1 opacity-50">HUB</span></a>
-            <div class="flex items-center space-x-8" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')) }">
-                <div x-data="{ isDark: document.documentElement.classList.contains('dark') }">
-                    <button @click="isDark = toggleTheme()" 
-                            class="p-2.5 rounded-2xl glass hover:bg-white/20 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
-                        <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                        <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
+<body class="bg-[#F8F8F8] min-h-screen" x-data="profilePage()">
+
+    <!-- Promo Bar -->
+    <div class="bg-[#1B1B1B] text-white py-2 px-4 text-center text-[12px] font-semibold">
+        🚚 Bepul yetkazish + 365 kun bepul qaytarish
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+            <div class="flex items-center h-[72px] justify-between gap-6">
+                <a href="index.html" class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
+                <div class="flex items-center gap-4 text-sm">
+                    <a href="shop.html" class="text-gray-500 hover:text-[#1A6CDB] font-semibold transition">Do'kon</a>
+                    <a href="cart.html" class="flex items-center gap-2 text-gray-500 hover:text-[#1A6CDB] font-semibold transition">
+                        <i class="fas fa-shopping-bag"></i> Savat
+                    </a>
+                    <button @click="logout()" class="bg-[#D93025] text-white font-bold text-xs px-4 py-2 hover:bg-red-700 transition">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Chiqish
                     </button>
                 </div>
-                <template x-if="user && user.role === 'admin'">
-                    <a href="admin.html" class="text-dark dark:text-white font-bold hover:text-indigo-600 transition">Admin</a>
-                </template>
-                <a href="index.html" class="text-dark dark:text-white font-bold hover:text-indigo-600 transition">Bosh sahifa</a>
-                <button @click="logout()" class="text-red-500 font-black hover:scale-105 transition-all">Chiqish</button>
             </div>
         </div>
-    </nav>
-    
-    <script src="assets/js/main.js"></script>
+    </header>
 
-    <main class="pt-32 pb-24 px-4">
-        <div class="max-w-4xl mx-auto">
-            <template x-if="user">
-                <div class="space-y-12">
-                    <!-- Profile Header -->
-                    <div class="glass p-12 rounded-[4rem] border border-white/20 shadow-2xl flex flex-col md:flex-row items-center space-y-8 md:space-y-0 md:space-x-12 relative overflow-hidden">
-                        <div class="absolute -top-32 -left-32 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px]"></div>
-                        <div class="w-40 h-40 bg-indigo-600 text-white rounded-[3rem] flex items-center justify-center text-6xl font-black shadow-2xl shadow-indigo-600/30 relative z-10" x-text="user.name.charAt(0)"></div>
-                        <div class="flex-1 text-center md:text-left relative z-10">
-                            <h1 x-text="user.name" class="text-5xl font-black text-dark dark:text-white mb-3 tracking-tighter"></h1>
-                            <p x-text="user.email" class="text-gray-500 font-bold text-xl mb-6"></p>
-                            <span class="px-6 py-2 bg-indigo-600 text-white rounded-full text-xs font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20">Premium Mijoz</span>
-                        </div>
-                        <div class="glass rounded-[2rem] p-8 text-center backdrop-blur-3xl relative z-10 items-center justify-center flex flex-col">
-                            <p class="text-gray-500 text-[10px] font-black uppercase tracking-[0.3em] mb-3">A'zo bo'ldi</p>
-                            <p x-text="user.joinedDate" class="font-black text-2xl text-dark dark:text-white tracking-tighter"></p>
-                        </div>
-                    </div>
+    <!-- Profile Hero -->
+    <div class="bg-[#1B1B1B] text-white">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-12 flex items-center gap-6">
+            <div class="w-20 h-20 bg-[#1A6CDB] rounded-sm flex items-center justify-center text-3xl font-black flex-shrink-0" x-text="currentUser && currentUser.name.charAt(0)"></div>
+            <div>
+                <p class="text-[11px] font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Premium Account</p>
+                <h1 class="text-2xl font-black tracking-tight" x-text="currentUser && currentUser.name"></h1>
+                <p class="text-gray-400 text-sm font-medium mt-1" x-text="currentUser && currentUser.email"></p>
+            </div>
+            <div x-show="currentUser && currentUser.role === 'admin'" class="ml-auto">
+                <a href="admin.html" class="bg-[#1A6CDB] text-white font-bold text-sm px-6 py-3 hover:bg-blue-700 transition flex items-center gap-2">
+                    <i class="fas fa-shield-alt"></i> Admin Panel
+                </a>
+            </div>
+        </div>
 
-                    <!-- Statistics -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl text-center group hover:scale-105 transition-all duration-500 relative overflow-hidden">
-                            <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-indigo-600/10 rounded-full blur-3xl"></div>
-                            <div class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-indigo-600/20 group-hover:rotate-12 transition duration-500">
-                                <i class="fas fa-shopping-basket text-2xl"></i>
-                            </div>
-                            <h3 class="text-4xl font-black text-dark dark:text-white tracking-tighter">0</h3>
-                            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] mt-2">Buyurtmalar</p>
-                        </div>
-                        <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl text-center group hover:scale-105 transition-all duration-500 relative overflow-hidden">
-                            <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-pink-600/10 rounded-full blur-3xl"></div>
-                            <div class="w-16 h-16 bg-pink-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-pink-600/20 group-hover:rotate-12 transition duration-500">
-                                <i class="fas fa-heart text-2xl"></i>
-                            </div>
-                            <h3 class="text-4xl font-black text-dark dark:text-white tracking-tighter">12</h3>
-                            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] mt-2">Sevimlilar</p>
-                        </div>
-                        <div class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl text-center group hover:scale-105 transition-all duration-500 relative overflow-hidden">
-                            <div class="absolute -bottom-12 -right-12 w-24 h-24 bg-cyan-600/10 rounded-full blur-3xl"></div>
-                            <div class="w-16 h-16 bg-cyan-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg shadow-cyan-600/20 group-hover:rotate-12 transition duration-500">
-                                <i class="fas fa-ticket text-2xl"></i>
-                            </div>
-                            <h3 class="text-4xl font-black text-dark dark:text-white tracking-tighter">3</h3>
-                            <p class="text-gray-500 font-bold uppercase tracking-widest text-[10px] mt-2">Kuponlar</p>
-                        </div>
-                    </div>
+        <!-- Tabs -->
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+            <div class="flex border-t border-white/10 overflow-x-auto">
+                <button @click="tab = 'overview'" :class="tab === 'overview' ? 'border-b-2 border-white text-white' : 'text-gray-400 hover:text-white'" class="text-sm font-bold px-6 py-4 border-b-2 border-transparent transition whitespace-nowrap">Umumiy ko'rinish</button>
+                <button @click="tab = 'orders'" :class="tab === 'orders' ? 'border-b-2 border-white text-white' : 'text-gray-400 hover:text-white'" class="text-sm font-bold px-6 py-4 border-b-2 border-transparent transition whitespace-nowrap">Buyurtmalarim</button>
+                <button @click="tab = 'settings'" :class="tab === 'settings' ? 'border-b-2 border-white text-white' : 'text-gray-400 hover:text-white'" class="text-sm font-bold px-6 py-4 border-b-2 border-transparent transition whitespace-nowrap">Sozlamalar</button>
+            </div>
+        </div>
+    </div>
 
-                    <!-- Recent Orders Section -->
-                    <div class="glass p-12 rounded-[4rem] border border-white/20 shadow-2xl relative overflow-hidden">
-                        <div class="absolute -top-32 -right-32 w-64 h-64 bg-indigo-600/5 rounded-full blur-[100px]"></div>
-                        <h2 class="text-3xl font-black text-dark dark:text-white mb-10 tracking-tighter relative z-10">Oxirgi buyurtmalar</h2>
-                        <div class="relative z-10 text-center py-16">
-                            <div class="w-24 h-24 glass rounded-full flex items-center justify-center mx-auto mb-8 shadow-inner">
-                                <i class="fas fa-box-open text-5xl text-gray-500 opacity-30"></i>
-                            </div>
-                            <p class="text-xl font-bold text-gray-500 mb-8">Sizda hali buyurtmalar mavjud emas.</p>
-                            <a href="shop.html" class="inline-block bg-dark dark:bg-indigo-600 text-white px-12 py-5 rounded-[2rem] font-black text-lg hover:scale-105 transition-all shadow-xl shadow-indigo-600/20 tracking-tighter">Xaridni boshlash</a>
-                        </div>
-                    </div>
+    <!-- Content -->
+    <main class="max-w-[1440px] mx-auto px-4 md:px-8 py-10">
+
+        <!-- Overview Tab -->
+        <div x-show="tab === 'overview'">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white border border-gray-200 p-8 shadow-sm">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Umumiy buyurtmalar</p>
+                    <p class="text-4xl font-black text-[#1B1B1B]">0</p>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Barcha vaqt uchun</p>
                 </div>
-            </template>
-            <template x-if="!user">
-                <div class="glass p-24 rounded-[5rem] border border-white/20 shadow-2xl text-center relative overflow-hidden">
-                    <div class="absolute inset-0 opacity-10 bg-indigo-600 blur-[150px]"></div>
-                    <div class="relative z-10">
-                        <i class="fas fa-lock text-7xl text-indigo-600/30 mb-10"></i>
-                        <h2 class="text-5xl font-black text-dark dark:text-white mb-6 tracking-tighter">Kirish kutilmoqda</h2>
-                        <p class="text-xl text-gray-500 font-bold mb-12 max-w-sm mx-auto leading-relaxed">Profil ma'lumotlarini ko'rish uchun iltimos tizimga kiring.</p>
-                        <a href="login.html" class="bg-indigo-600 text-white px-16 py-6 rounded-[2rem] font-black text-2xl shadow-2xl shadow-indigo-600/40 hover:scale-110 transition-all tracking-tighter">Tizimga kirish</a>
-                    </div>
+                <div class="bg-white border border-gray-200 p-8 shadow-sm">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Saqlangan mahsulotlar</p>
+                    <p class="text-4xl font-black text-[#1B1B1B]">0</p>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Wishlist</p>
                 </div>
-            </template>
+                <div class="bg-white border border-gray-200 p-8 shadow-sm">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Yozilgan izohlar</p>
+                    <p class="text-4xl font-black text-[#1B1B1B]">0</p>
+                    <p class="text-xs font-medium text-gray-400 mt-2">Mahsulot baholari</p>
+                </div>
+            </div>
+
+            <!-- Quick actions -->
+            <div class="bg-white border border-gray-200 p-8 shadow-sm mb-6">
+                <h2 class="text-[11px] font-black uppercase tracking-widest text-gray-500 mb-6 pb-4 border-b border-gray-100">Tezkor harakatlar</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a href="shop.html" class="flex items-center gap-4 p-4 border border-gray-200 hover:border-[#1A6CDB] hover:bg-blue-50 transition group">
+                        <div class="w-10 h-10 bg-gray-100 flex items-center justify-center group-hover:bg-[#1A6CDB] group-hover:text-white transition text-gray-500">
+                            <i class="fas fa-shopping-bag text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-[#1B1B1B]">Xarid qilish</p>
+                            <p class="text-xs text-gray-400">Do'konga o'tish</p>
+                        </div>
+                    </a>
+                    <a href="cart.html" class="flex items-center gap-4 p-4 border border-gray-200 hover:border-[#1A6CDB] hover:bg-blue-50 transition group">
+                        <div class="w-10 h-10 bg-gray-100 flex items-center justify-center group-hover:bg-[#1A6CDB] group-hover:text-white transition text-gray-500">
+                            <i class="fas fa-cart-shopping text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-[#1B1B1B]">Mening savatim</p>
+                            <p class="text-xs text-gray-400">Savatni ko'rish</p>
+                        </div>
+                    </a>
+                    <a href="contact.html" class="flex items-center gap-4 p-4 border border-gray-200 hover:border-[#1A6CDB] hover:bg-blue-50 transition group">
+                        <div class="w-10 h-10 bg-gray-100 flex items-center justify-center group-hover:bg-[#1A6CDB] group-hover:text-white transition text-gray-500">
+                            <i class="fas fa-headset text-sm"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-[#1B1B1B]">Qo'llab-quvvatlash</p>
+                            <p class="text-xs text-gray-400">Yordam so'rash</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div x-show="tab === 'orders'" x-cloak>
+            <div class="bg-white border border-gray-200 p-16 text-center shadow-sm">
+                <i class="fas fa-receipt text-6xl text-gray-200 mb-5 block"></i>
+                <h2 class="text-lg font-black text-[#1B1B1B] mb-3">Hali buyurtmalar yo'q</h2>
+                <p class="text-sm text-gray-400 mb-8">Birinchi buyurtmangizni bering!</p>
+                <a href="shop.html" class="inline-block bg-[#1A6CDB] text-white font-bold px-10 py-4 hover:bg-[#1558b8] transition">Xarid qilish</a>
+            </div>
+        </div>
+
+        <!-- Settings Tab -->
+        <div x-show="tab === 'settings'" x-cloak>
+            <div class="bg-white border border-gray-200 p-8 shadow-sm max-w-2xl">
+                <h2 class="text-[11px] font-black uppercase tracking-widest text-gray-500 mb-6 pb-4 border-b border-gray-100">Shaxsiy ma'lumotlar</h2>
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Ism familya</label>
+                        <input type="text" :value="currentUser && currentUser.name" class="border-2 border-gray-200 px-4 py-3 text-sm font-bold w-full outline-none focus:border-[#1A6CDB]">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-400 mb-2">Email</label>
+                        <input type="email" :value="currentUser && currentUser.email" class="border-2 border-gray-200 px-4 py-3 text-sm font-bold w-full outline-none focus:border-[#1A6CDB]">
+                    </div>
+                    <button class="bg-[#1A6CDB] text-white font-black text-sm px-8 py-3 hover:bg-[#1558b8] transition">Saqlash</button>
+                </div>
+            </div>
         </div>
     </main>
 
+    <!-- Footer -->
+    <footer class="z-footer mt-16">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-10">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="text-[20px] font-black text-white">premium<span class="text-[#1A6CDB]">store</span></div>
+                <div class="flex gap-6">
+                    <a href="shop.html">Do'kon</a>
+                    <a href="about.html">Biz haqimizda</a>
+                    <a href="contact.html">Aloqa</a>
+                </div>
+            </div>
+            <div class="border-t border-white/10 mt-6 pt-6 text-center text-xs text-gray-600">© 2024 Premium Store. Barcha huquqlar himoyalangan.</div>
+        </div>
+    </footer>
+
     <script>
         function profilePage() {
-            const user = JSON.parse(localStorage.getItem('ps_current_user'));
             return {
-                user: user,
+                currentUser: JSON.parse(localStorage.getItem('ps_current_user')),
+                tab: 'overview',
                 logout() {
-                    localStorage.removeItem('ps_current_user');
-                    window.location.href = 'index.html';
+                    if (confirm('Chiqmoqchimisiz?')) {
+                        localStorage.removeItem('ps_current_user');
+                        window.location.href = 'index.html';
+                    }
                 }
             }
         }

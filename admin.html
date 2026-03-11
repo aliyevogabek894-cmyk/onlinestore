@@ -1,190 +1,147 @@
 <!DOCTYPE html>
 <html lang="uz">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Premium Store</title>
+    <title>Admin Dashboard - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-
-        // Admin Access Check
+        // Strict Admin Access Check
         const user = JSON.parse(localStorage.getItem('ps_current_user'));
         if (!user || user.role !== 'admin') {
-            alert('Siz admin emassiz!');
-            window.location.href = 'index.html';
+            window.location.href = 'login.html';
         }
     </script>
 </head>
-
-<body class="mesh-gradient-vibrant min-h-screen font-sans selection:bg-indigo-500/30" x-data="adminPanel()" :class="mobileMenu ? 'overflow-hidden' : ''">
-
+<body x-data="adminPanel()" class="bg-bg-secondary min-h-screen font-sans flex text-gray-900">
     <!-- Sidebar -->
-    <div :class="mobileMenu ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
-        class="fixed left-0 top-0 h-full w-64 glass-dark text-white p-8 border-r border-white/10 z-50 transition-transform duration-300 lg:block bg-indigo-950/90 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none">
-        <div class="flex justify-between items-center mb-12">
-            <h1 class="text-3xl font-black tracking-tighter text-indigo-400">ADMIN<span
-                    class="text-white font-light opacity-50">.HUB</span></h1>
-            <button @click="mobileMenu = false" class="lg:hidden text-2xl"><i class="fas fa-times"></i></button>
+    <aside class="w-72 bg-gray-900 text-white flex flex-col fixed h-full z-50">
+        <div class="p-8 border-b border-gray-800">
+            <h1 class="text-2xl font-black tracking-tighter serif italic">ADMIN<span class="not-italic font-normal text-blue-400">.HUB</span></h1>
+            <p class="text-[9px] font-black uppercase tracking-[0.3em] text-gray-500 mt-2">Boshqaruv Paneli</p>
         </div>
-        <nav class="space-y-6">
-            <button @click="view = 'dashboard'; mobileMenu = false"
-                :class="view === 'dashboard' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
-                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
-                <i class="fas fa-chart-pie mr-4 text-xl"></i> Dashboard
+        
+        <nav class="flex-1 p-6 space-y-2">
+            <button @click="view = 'dashboard'" :class="view === 'dashboard' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'" class="w-full flex items-center space-x-4 px-4 py-3 font-black text-xs uppercase tracking-widest transition">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
             </button>
-            <button @click="view = 'products'; mobileMenu = false"
-                :class="view === 'products' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
-                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
-                <i class="fas fa-boxes-stacked mr-4 text-xl"></i> Mahsulotlar
+            <button @click="view = 'products'" :class="view === 'products' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'" class="w-full flex items-center space-x-4 px-4 py-3 font-black text-xs uppercase tracking-widest transition">
+                <i class="fas fa-box"></i>
+                <span>Mahsulotlar</span>
             </button>
-            <button @click="view = 'users'; mobileMenu = false"
-                :class="view === 'users' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
-                class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
-                <i class="fas fa-user-group mr-4 text-xl"></i> Foydalanuvchilar
+            <button @click="view = 'users'" :class="view === 'users' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white'" class="w-full flex items-center space-x-4 px-4 py-3 font-black text-xs uppercase tracking-widest transition">
+                <i class="fas fa-users"></i>
+                <span>Foydalanuvchilar</span>
             </button>
-            <div class="pt-12 border-t border-white/10">
-                <a href="index.html"
-                    class="w-full text-left px-5 py-4 rounded-2xl transition-all text-gray-400 hover:text-white hover:bg-white/5 flex items-center font-bold">
-                    <i class="fas fa-arrow-left-long mr-4 text-xl"></i> Saytga qaytish
-                </a>
-            </div>
         </nav>
-    </div>
+
+        <div class="p-6 border-t border-gray-800">
+            <a href="index.html" class="flex items-center space-x-4 px-4 py-3 text-gray-400 hover:text-white transition font-black text-xs uppercase tracking-widest">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Saytga o'tish</span>
+            </a>
+        </div>
+    </aside>
 
     <!-- Main Content -->
-    <div class="lg:ml-64 p-10">
-        <!-- Top Header -->
-        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 px-4 gap-8">
-            <div class="flex items-center w-full justify-between md:justify-start">
-                <div>
-                    <h2 class="text-3xl md:text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="viewTitle()"></h2>
-                    <p class="text-gray-500 font-medium mt-2 text-sm md:text-base">Boshqaruv paneli orqali do'konni nazorat qiling.</p>
-                </div>
-                <button @click="mobileMenu = true" class="lg:hidden text-dark dark:text-white text-3xl p-4 glass rounded-2xl"><i class="fas fa-bars"></i></button>
+    <main class="flex-1 ml-72 p-12">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <h2 class="text-3xl font-black serif italic text-gray-900 uppercase tracking-tighter" x-text="viewTitle()"></h2>
+                <div class="h-1 w-20 bg-blue-600 mt-2"></div>
             </div>
-            <div class="flex items-center space-x-6"
-                x-data="{ isDark: document.documentElement.classList.contains('dark') }">
-                <!-- Theme Toggle -->
-                <button @click="isDark = toggleTheme()"
-                    class="p-4 rounded-2xl glass hover:bg-white/30 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition-all duration-300 shadow-xl border border-white/20">
-                    <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                    <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
-                </button>
-                <div class="flex items-center space-x-4 glass p-2 pr-6 rounded-3xl border border-white/20 shadow-xl">
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=4f46e5&color=fff"
-                        class="w-12 h-12 rounded-2xl shadow-lg">
-                    <div>
-                        <p class="text-xs font-black text-gray-500 uppercase tracking-widest">Admin</p>
-                        <p class="text-sm font-bold text-dark dark:text-white">Og'abek Aliyev Aliyeva Madina</p>
-                    </div>
+            <div class="flex items-center space-x-6">
+                <div class="text-right">
+                    <p class="text-xs font-black uppercase tracking-widest text-gray-900" x-text="user ? user.name : 'Admin'"></p>
+                    <p class="text-[10px] font-bold text-blue-500 uppercase tracking-widest">Bosh Administrator</p>
                 </div>
+                <img :src="'https://ui-avatars.com/api/?name=' + (user ? user.name : 'Admin') + '&background=003953&color=fff'" class="w-12 h-12 shadow-xl border-2 border-white">
             </div>
         </header>
 
-        <!-- Dashboard View -->
+        <!-- View: Dashboard -->
         <template x-if="view === 'dashboard'">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                <div
-                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
-                    <div class="absolute -top-12 -right-12 w-32 h-32 bg-indigo-600/10 rounded-full blur-3xl"></div>
-                    <div
-                        class="w-16 h-16 bg-indigo-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-indigo-600/30 group-hover:rotate-12 transition duration-500">
-                        <i class="fas fa-box-open text-2xl"></i>
+            <div class="space-y-10">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="bg-white p-8 border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Sotuvlar (Bugun)</p>
+                        <h3 class="text-4xl font-black serif italic text-gray-900">2,450,000 <span class="text-xs not-italic font-bold text-gray-400">so'm</span></h3>
+                        <div class="mt-4 flex items-center text-green-500 text-xs font-black">
+                            <i class="fas fa-arrow-up mr-2"></i> 12% o'sish
+                        </div>
                     </div>
-                    <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Jami mahsulotlar</p>
-                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="products.length">
-                    </h3>
+                    <div class="bg-white p-8 border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Buyurtmalar</p>
+                        <h3 class="text-4xl font-black serif italic text-gray-900">142</h3>
+                        <div class="mt-4 flex items-center text-blue-500 text-xs font-black">
+                            <i class="fas fa-shopping-bag mr-2"></i> +8 yangi
+                        </div>
+                    </div>
+                    <div class="bg-white p-8 border border-gray-200 shadow-sm">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Mijozlar</p>
+                        <h3 class="text-4xl font-black serif italic text-gray-900" x-text="users.length"></h3>
+                        <div class="mt-4 flex items-center text-blue-500 text-xs font-black">
+                            <i class="fas fa-users mr-2"></i> Aktiv
+                        </div>
+                    </div>
                 </div>
-                <div
-                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
-                    <div class="absolute -top-12 -right-12 w-32 h-32 bg-pink-600/10 rounded-full blur-3xl"></div>
-                    <div
-                        class="w-16 h-16 bg-pink-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-pink-600/30 group-hover:rotate-12 transition duration-500">
-                        <i class="fas fa-users-gear text-2xl"></i>
+
+                <div class="bg-white border border-gray-200 p-8 shadow-sm">
+                    <h3 class="text-sm font-black uppercase tracking-widest text-gray-900 mb-8 border-b border-gray-50 pb-4">Tizim holati</h3>
+                    <div class="h-64 flex items-center justify-center bg-gray-50 border border-dashed border-gray-200">
+                        <p class="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Statistika grafikka tayyorlanmoqda...</p>
                     </div>
-                    <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Ro'yxatdan o'tganlar</p>
-                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="users.length">
-                    </h3>
-                </div>
-                <div
-                    class="glass p-10 rounded-[3rem] border border-white/20 shadow-2xl relative overflow-hidden group hover:scale-[1.02] transition-all duration-500">
-                    <div class="absolute -top-12 -right-12 w-32 h-32 bg-cyan-600/10 rounded-full blur-3xl"></div>
-                    <div
-                        class="w-16 h-16 bg-cyan-600 text-white rounded-2xl flex items-center justify-center mb-8 shadow-lg shadow-cyan-600/30 group-hover:rotate-12 transition duration-500">
-                        <i class="fas fa-truck-ramp-box text-2xl"></i>
-                    </div>
-                    <p class="text-gray-500 font-bold uppercase tracking-widest text-xs mb-2">Yangi buyurtmalar</p>
-                    <h3 class="text-5xl font-black text-dark dark:text-white tracking-tighter">0</h3>
                 </div>
             </div>
         </template>
 
-        <!-- Products View -->
+        <!-- View: Products -->
         <template x-if="view === 'products'">
-            <div class="space-y-10">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
-                    <div class="relative w-full sm:w-96">
-                        <input type="text" x-model="adminSearch" placeholder="Mahsulot qidirish..."
-                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark dark:text-white font-medium shadow-inner">
-                        <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-gray-500"></i>
+            <div class="space-y-8">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                    <div class="relative w-full md:w-96">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" x-model="adminSearch" placeholder="Qidirish..." class="w-full pl-12 pr-4 py-3 border border-gray-200 outline-none focus:border-blue-600 text-xs font-bold uppercase tracking-widest">
                     </div>
-                    <button @click="showAddModal = true"
-                        class="w-full sm:w-auto bg-dark dark:bg-indigo-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-indigo-600/30 flex items-center justify-center">
-                        <i class="fas fa-plus-circle mr-3 text-xl"></i> Yangi mahsulot
+                    <button @click="showAddModal = true" class="bg-gray-900 text-white px-8 py-3 font-black uppercase tracking-widest text-[10px] hover:bg-blue-600 transition shadow-lg">
+                        Yangi mahsulot
                     </button>
                 </div>
 
-                <div class="glass rounded-[3rem] border border-white/20 shadow-2xl overflow-hidden">
+                <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
                     <table class="w-full text-left">
-                        <thead class="bg-indigo-600/10 border-b border-white/10">
-                            <tr>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
-                                    Mahsulot</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
-                                    Kategoriya</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
-                                    Narx</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em] text-right">
-                                    Amallar</th>
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Rasm</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Nomi</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Kategoriya</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Narxi</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400 text-right">Amallar</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/10">
-                            <template x-for="p in filteredProducts()" :key="p.id">
-                                <tr class="hover:bg-white/10 transition-all group">
-                                    <td class="px-10 py-6 flex items-center">
-                                        <div
-                                            class="w-16 h-16 rounded-2xl overflow-hidden mr-6 shadow-xl group-hover:scale-110 transition duration-500">
-                                            <img :src="p.image" class="w-full h-full object-cover">
-                                        </div>
-                                        <span class="font-black text-dark dark:text-white text-lg tracking-tight"
-                                            x-text="p.name"></span>
+                        <tbody class="divide-y divide-gray-50">
+                            <template x-for="product in filteredProducts()" :key="product.id">
+                                <tr class="hover:bg-gray-50/50 transition">
+                                    <td class="px-8 py-4">
+                                        <img :src="product.image" class="w-12 h-12 object-contain bg-white border border-gray-100">
                                     </td>
-                                    <td class="px-10 py-6">
-                                        <span
-                                            class="px-5 py-2 bg-indigo-600/20 rounded-full text-[10px] font-black uppercase text-indigo-400 tracking-wider border border-indigo-600/20"
-                                            x-text="p.category"></span>
+                                    <td class="px-8 py-4">
+                                        <p class="text-xs font-black text-gray-900" x-text="product.name"></p>
+                                        <p class="text-[9px] font-bold text-gray-400 uppercase tracking-widest" x-text="'ID: #' + product.id"></p>
                                     </td>
-                                    <td class="px-10 py-6">
-                                        <div class="flex items-center space-x-3">
-                                            <input type="number" x-model="p.price" @change="updatePrice(p)"
-                                                class="w-36 bg-white/50 dark:bg-gray-900/50 border border-white/10 rounded-xl px-4 py-2 font-black text-indigo-600 outline-none focus:ring-4 focus:ring-indigo-600/20 transition shadow-inner">
-                                            <span class="text-gray-400 font-bold">uzs</span>
-                                        </div>
+                                    <td class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-500" x-text="product.category"></td>
+                                    <td class="px-8 py-4">
+                                        <input type="number" x-model="product.price" @change="updatePrice(product)" class="bg-gray-50 border border-gray-200 px-3 py-1 w-32 text-xs font-black text-gray-900 outline-none focus:border-blue-600">
                                     </td>
-                                    <td class="px-10 py-6 text-right">
-                                        <button @click="deleteProduct(p.id)"
-                                            class="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center ml-auto">
-                                            <i class="fas fa-trash-can"></i>
+                                    <td class="px-8 py-4 text-right">
+                                        <button @click="deleteProduct(product.id)" class="text-red-400 hover:text-red-600 transition p-2">
+                                            <i class="fas fa-trash-alt"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -195,56 +152,29 @@
             </div>
         </template>
 
-        <!-- Users View -->
+        <!-- View: Users -->
         <template x-if="view === 'users'">
-            <div class="space-y-10">
-                <div class="flex flex-col sm:flex-row justify-between items-center gap-6">
-                    <h3 class="text-3xl font-black text-dark dark:text-white tracking-tighter">Barcha foydalanuvchilar
-                    </h3>
-                    <button @click="exportUsers()"
-                        class="w-full sm:w-auto bg-green-600 text-white px-10 py-5 rounded-2xl font-black hover:scale-105 transition-all shadow-2xl shadow-green-600/30 flex items-center justify-center">
-                        <i class="fas fa-file-csv mr-3 text-xl"></i> Excel ga ula (Export)
-                    </button>
+            <div class="space-y-8">
+                <div class="flex justify-between items-center">
+                    <p class="text-xs font-black uppercase tracking-widest text-gray-500" x-text="users.length + ' ta foydalanuvchi'"></p>
+                    <button @click="exportUsers()" class="text-blue-600 font-black text-[10px] uppercase tracking-widest hover:underline">CSV Export</button>
                 </div>
-
-                <div class="glass rounded-[3rem] border border-white/20 shadow-2xl overflow-hidden">
+                <div class="bg-white border border-gray-200 shadow-sm overflow-hidden">
                     <table class="w-full text-left">
-                        <thead class="bg-indigo-600/10 border-b border-white/10">
-                            <tr>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">Ism
-                                    familiya</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
-                                    Elektron pochta</th>
-                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
-                                    Ro'yxatdan o'tgan</th>
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100">
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Ism</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Email</th>
+                                <th class="px-8 py-4 text-[10px] font-black uppercase tracking-widest text-gray-400">Roli</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/10">
-                            <template x-for="user in users" :key="user.id">
-                                <tr class="hover:bg-white/10 transition-all group">
-                                    <td class="px-10 py-6">
-                                        <div class="flex items-center">
-                                            <div class="w-12 h-12 rounded-xl bg-indigo-600/20 flex items-center justify-center text-indigo-600 font-black mr-4"
-                                                x-text="user.name.charAt(0)"></div>
-                                            <span class="font-black text-dark dark:text-white text-lg tracking-tight"
-                                                x-text="user.name"></span>
-                                        </div>
-                                    </td>
-                                    <td class="px-10 py-6">
-                                        <span class="text-gray-500 font-bold" x-text="user.email"></span>
-                                    </td>
-                                    <td class="px-10 py-6">
-                                        <span
-                                            class="px-5 py-2 bg-gray-500/10 rounded-full text-[10px] font-black uppercase text-gray-400 tracking-wider border border-white/10"
-                                            x-text="user.joinedDate"></span>
-                                    </td>
-                                </tr>
-                            </template>
-                            <template x-if="users.length === 0">
-                                <tr>
-                                    <td colspan="3" class="px-10 py-20 text-center">
-                                        <i class="fas fa-users-slash text-5xl text-gray-600/20 mb-4 block"></i>
-                                        <p class="text-gray-500 font-bold">Hozircha foydalanuvchilar mavjud emas.</p>
+                        <tbody class="divide-y divide-gray-50">
+                            <template x-for="u in users">
+                                <tr class="hover:bg-gray-50/50">
+                                    <td class="px-8 py-6 font-black text-xs text-gray-900" x-text="u.name"></td>
+                                    <td class="px-8 py-6 font-bold text-xs text-gray-500" x-text="u.email"></td>
+                                    <td class="px-8 py-6">
+                                        <span :class="u.role === 'admin' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-500'" class="px-3 py-1 text-[9px] font-black uppercase tracking-widest" x-text="u.role"></span>
                                     </td>
                                 </tr>
                             </template>
@@ -253,73 +183,51 @@
                 </div>
             </div>
         </template>
-    </div>
+    </main>
 
-    <!-- Add Product Modal -->
-    <div x-show="showAddModal"
-        class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xl" x-transition
-        x-cloak>
-        <div class="glass w-full max-w-xl rounded-[4rem] p-12 shadow-2xl border border-white/20 relative overflow-hidden"
-            @click.away="showAddModal = false">
-            <div class="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px]"></div>
-            <div class="relative z-10">
-                <div class="flex justify-between items-center mb-10">
-                    <h3 class="text-4xl font-black text-white tracking-tighter">Yangi mahsulot</h3>
-                    <button @click="showAddModal = false"
-                        class="w-12 h-12 glass rounded-2xl flex items-center justify-center text-white hover:bg-white/20 transition-all">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+    <!-- Modal: Add Product -->
+    <template x-if="showAddModal">
+        <div class="fixed inset-0 bg-gray-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-6">
+            <div @click.away="showAddModal = false" class="bg-white max-w-xl w-full p-10 border border-gray-200 shadow-2xl">
+                <h3 class="text-xl font-black serif italic text-gray-900 uppercase tracking-tighter mb-10">Yangi mahsulot qo'shish</h3>
                 <form @submit.prevent="saveNewProduct()" class="space-y-6">
-                    <div class="space-y-3">
-                        <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Mahsulot
-                            nomi</label>
-                        <input type="text" x-model="newProduct.name" required
-                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
-                    </div>
-                    <div class="space-y-3">
-                        <label
-                            class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Kategoriya</label>
-                        <select x-model="newProduct.category"
-                            class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner appearance-none cursor-pointer">
-                            <option value="Phones">Telefonlar</option>
-                            <option value="Laptops">Noutbuklar</option>
-                            <option value="Smart Watches">Smart soatlar</option>
-                            <option value="Accessories">Aksessuarlar</option>
-                            <option value="Electronics">Elektronika</option>
-                        </select>
-                    </div>
                     <div class="grid grid-cols-2 gap-6">
-                        <div class="space-y-3">
-                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Narxi
-                                (UZS)</label>
-                            <input type="number" x-model="newProduct.price" required
-                                class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
+                        <div class="col-span-2 space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Nomi</label>
+                            <input type="text" x-model="newProduct.name" required class="w-full border border-gray-200 px-4 py-3 outline-none focus:border-blue-600 text-xs font-bold uppercase tracking-widest">
                         </div>
-                        <div class="space-y-3">
-                            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest ml-4">Rasm
-                                URL</label>
-                            <input type="text" x-model="newProduct.image" required
-                                class="w-full glass p-5 rounded-2xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-white font-bold transition shadow-inner">
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Kategoriya</label>
+                            <select x-model="newProduct.category" class="w-full border border-gray-200 px-4 py-3 outline-none focus:border-blue-600 text-xs font-black uppercase tracking-widest">
+                                <option value="Phones">Telefonlar</option>
+                                <option value="Laptops">Noutbuklar</option>
+                                <option value="Audio">Audio</option>
+                                <option value="Gaming">Geyming</option>
+                            </select>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Narxi (so'm)</label>
+                            <input type="number" x-model="newProduct.price" required class="w-full border border-gray-200 px-4 py-3 outline-none focus:border-blue-600 text-xs font-bold uppercase tracking-widest">
+                        </div>
+                        <div class="col-span-2 space-y-2">
+                            <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Rasm URL</label>
+                            <input type="text" x-model="newProduct.image" required class="w-full border border-gray-200 px-4 py-3 outline-none focus:border-blue-600 text-xs font-bold uppercase tracking-widest">
                         </div>
                     </div>
-                    <div class="flex space-x-6 mt-12 pt-4">
-                        <button type="button" @click="showAddModal = false"
-                            class="flex-1 glass text-white font-black py-6 rounded-[2rem] hover:bg-white/10 transition-all tracking-tighter">Bekor
-                            qilish</button>
-                        <button type="submit"
-                            class="flex-1 bg-indigo-600 text-white font-black py-6 rounded-[2rem] hover:bg-dark transition-all shadow-2xl shadow-indigo-600/40 tracking-tighter">Saqlash</button>
+                    <div class="flex gap-4 pt-6">
+                        <button type="button" @click="showAddModal = false" class="flex-1 py-4 border border-gray-200 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-gray-50 transition">Bekor qilish</button>
+                        <button type="submit" class="flex-1 py-4 bg-blue-600 text-white font-black text-[10px] uppercase tracking-[0.2em] hover:bg-blue-700 transition shadow-lg">Saqlash</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
+    </template>
 
     <script>
         function adminPanel() {
             return {
+                user: JSON.parse(localStorage.getItem('ps_current_user')),
                 view: 'dashboard',
-                mobileMenu: false,
                 products: db.getProducts(),
                 users: db.getUsers(),
                 adminSearch: '',
@@ -337,34 +245,32 @@
                     return this.products.filter(p => {
                         const nameMatch = p.name.toLowerCase().includes(q);
                         const catMatch = p.category.toLowerCase().includes(q);
-                        const categoryMap = { 'Phones': 'telefon', 'Laptops': 'noutbuk', 'Audio': 'audio', 'Gaming': 'geyming' };
-                        const localizedCatMatch = categoryMap[p.category] ? categoryMap[p.category].includes(q) : false;
-                        return nameMatch || catMatch || localizedCatMatch;
+                        return nameMatch || catMatch;
                     });
                 },
                 viewTitle() {
                     return {
-                        'dashboard': 'Dashboard',
-                        'products': 'Mahsulotlar boshqaruvi',
-                        'users': 'Foydalanuvchilar'
+                        'dashboard': 'Dashboard Overview',
+                        'products': 'Product Management',
+                        'users': 'User Database'
                     }[this.view];
                 },
                 updatePrice(product) {
                     db.updateProduct(product);
-                    alert("Narx o'zgartirildi!");
+                    alert("Narx yangilandi!");
                 },
                 deleteProduct(id) {
-                    if (confirm("Rostdan ham o'chirmoqchimisiz?")) {
+                    if (confirm("Mahsulotni o'chirishni tasdiqlaysizmi?")) {
                         db.deleteProduct(id);
                         this.products = db.getProducts();
                     }
                 },
                 saveNewProduct() {
-                    const saved = db.addProduct({ ...this.newProduct, price: Number(this.newProduct.price) });
+                    db.addProduct({ ...this.newProduct, price: Number(this.newProduct.price) });
                     this.products = db.getProducts();
                     this.showAddModal = false;
                     this.newProduct = { name: '', category: 'Phones', price: '', image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80', description: 'Premium mahsulot.', stock: 10 };
-                    alert("Mahsulot muvaffaqiyatli qo'shildi!");
+                    alert("Mahsulot qo'shildi!");
                 },
                 exportUsers() {
                     db.exportUsersToCSV();
@@ -373,5 +279,4 @@
         }
     </script>
 </body>
-
 </html>

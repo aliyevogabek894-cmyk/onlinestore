@@ -5,136 +5,169 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Savat - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
+    <script src="assets/js/db.js"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .z-btn-primary { background: #1A6CDB; color: white; font-weight: 800; font-size: 15px; padding: 18px 32px; text-align: center; transition: background 0.15s; cursor: pointer; width: 100%; display: block; border: none; }
+        .z-btn-primary:hover { background: #1558b8; }
+        .z-input { border: 2px solid #e8e8e8; padding: 12px 14px; font-size: 14px; outline: none; transition: border-color 0.15s; width: 48px; text-align: center; }
+        .z-input:focus { border-color: #1A6CDB; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body x-data="{ 
-    localCart: JSON.parse(localStorage.getItem('cart')) || [],
-    get totalPrice() {
-        return this.localCart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
-    },
-    removeItem(id) {
-        this.localCart = this.localCart.filter(i => i.id !== id);
-        this.sync();
-    },
-    updateQty(id, delta) {
-        const item = this.localCart.find(i => i.id === id);
-        if (item) {
-            item.quantity = Math.max(1, item.quantity + delta);
-            this.sync();
-        }
-    },
-    sync() {
-        localStorage.setItem('cart', JSON.stringify(this.localCart));
-        updateCartBadge();
-    }
-}">
-    <nav class="glass fixed w-full z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
-            <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark">PREMIUM STORE</a>
-            <div class="flex items-center space-x-6" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
-                <!-- Theme Toggle -->
-                <button @click="isDark = toggleTheme()" 
-                        class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
-                    <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                    <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
-                </button>
-                <template x-if="user && user.role === 'admin'">
-                    <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
-                </template>
-                <a href="shop.html" class="text-blue-600 font-bold"><i class="fas fa-arrow-left mr-2"></i> Shopga qaytish</a>
+<body class="bg-[#F8F8F8] min-h-screen" x-data="cartPage()">
+
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+            <div class="flex items-center h-[72px] justify-between">
+                <a href="index.html" class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
+                <div class="hidden md:flex items-center gap-6 text-[12px] font-semibold text-gray-500">
+                    <span><i class="fas fa-truck text-[#1A6CDB] mr-1.5"></i> Bepul yetkazish</span>
+                    <span><i class="fas fa-shield-alt text-green-500 mr-1.5"></i> Xavfsiz to'lov</span>
+                    <span><i class="fas fa-undo text-orange-400 mr-1.5"></i> 365 kun qaytarish</span>
+                </div>
+                <a href="shop.html" class="text-sm font-bold text-[#1A6CDB] hover:underline">
+                    <i class="fas fa-chevron-left text-xs mr-1"></i> Xaridni davom ettirish
+                </a>
             </div>
         </div>
-    </nav>
 
-    <main class="mesh-gradient-vibrant min-h-screen pt-32 pb-24 px-4">
-        <div class="max-w-6xl mx-auto">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 px-4">
-                <div>
-                    <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white tracking-tighter">Savat</h1>
-                    <p class="text-gray-500 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Tanlagan mahsulotlaringiz.</p>
-                </div>
-                <div class="glass px-8 py-4 rounded-3xl border border-white/20 shadow-xl flex items-center space-x-4">
-                    <i class="fas fa-shield-check text-indigo-600 text-xl"></i>
-                    <span class="text-sm font-black text-dark dark:text-white uppercase tracking-widest">Xavfsiz xarid</span>
+        <!-- Steps indicator -->
+        <div class="border-t border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-8 py-3 flex items-center gap-2 text-xs font-semibold">
+                <span class="text-[#1A6CDB] font-black">1. Savat</span>
+                <i class="fas fa-chevron-right text-gray-300 text-[9px]"></i>
+                <span class="text-gray-400">2. To'lov ma'lumotlari</span>
+                <i class="fas fa-chevron-right text-gray-300 text-[9px]"></i>
+                <span class="text-gray-400">3. Tasdiqlash</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-[1440px] mx-auto px-4 md:px-8 py-8">
+        <h1 class="text-2xl font-black text-[#1B1B1B] mb-6">Mening Savatim <span class="text-gray-400 text-lg font-medium" x-text="'(' + items.length + ' ta mahsulot)'"></span></h1>
+
+        <!-- Empty Cart -->
+        <div x-show="items.length === 0" x-cloak class="bg-white border border-gray-200 py-20 text-center">
+            <i class="fas fa-shopping-bag text-7xl text-gray-200 mb-6 block"></i>
+            <h2 class="text-xl font-black text-[#1B1B1B] mb-3">Savatingiz bo'sh</h2>
+            <p class="text-gray-400 font-medium mb-8">Sevimli mahsulotlaringizni savatga qo'shing</p>
+            <a href="shop.html" class="inline-block bg-[#1A6CDB] text-white font-bold px-10 py-4 hover:bg-[#1558b8] transition">Do'konga o'tish</a>
+        </div>
+
+        <!-- Cart with items -->
+        <div x-show="items.length > 0" class="flex flex-col lg:flex-row gap-8">
+
+            <!-- Cart Items -->
+            <div class="flex-1 space-y-3">
+                <template x-for="(item, index) in items" :key="item.id">
+                    <div class="bg-white border border-gray-200 p-6 flex gap-6 group">
+                        <a :href="'product-detail.html?id=' + item.id" class="flex-shrink-0">
+                            <img :src="item.image" :alt="item.name" class="w-28 h-28 object-contain bg-gray-50 p-2 border border-gray-100">
+                        </a>
+                        <div class="flex-1">
+                            <div class="flex items-start justify-between gap-4">
+                                <div>
+                                    <a :href="'product-detail.html?id=' + item.id" class="text-sm font-bold text-[#1B1B1B] hover:text-[#1A6CDB] transition leading-snug block mb-1" x-text="item.name"></a>
+                                    <p class="text-[11px] font-semibold text-gray-400 uppercase tracking-wider">Mahsulot ID: #<span x-text="item.id"></span></p>
+                                </div>
+                                <span class="text-lg font-black text-[#1B1B1B] flex-shrink-0" x-text="fmt(item.price * item.qty)"></span>
+                            </div>
+                            <div class="flex items-center justify-between mt-4">
+                                <div class="flex items-center border border-gray-200">
+                                    <button @click="changeQty(index, -1)" class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition text-gray-600 font-bold text-lg">−</button>
+                                    <span class="w-10 h-10 flex items-center justify-center text-sm font-black border-x border-gray-200" x-text="item.qty"></span>
+                                    <button @click="changeQty(index, 1)" class="w-10 h-10 flex items-center justify-center hover:bg-gray-50 transition text-gray-600 font-bold text-lg">+</button>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <a :href="'product-detail.html?id=' + item.id" class="text-xs font-semibold text-gray-400 hover:text-[#1A6CDB] transition"><i class="far fa-heart mr-1"></i>Saqlab qo'yish</a>
+                                    <button @click="removeItem(index)" class="text-xs font-semibold text-gray-400 hover:text-[#D93025] transition"><i class="fas fa-trash-alt mr-1"></i>O'chirish</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+                <!-- Promo code -->
+                <div class="bg-white border border-gray-200 p-6">
+                    <h3 class="text-[11px] font-black uppercase tracking-widest text-gray-700 mb-4">Promo kod</h3>
+                    <div class="flex gap-0">
+                        <input type="text" placeholder="Promo kodni kiriting" class="border-2 border-gray-200 px-4 py-3 text-sm font-medium flex-1 outline-none focus:border-[#1A6CDB]">
+                        <button class="bg-[#1B1B1B] text-white px-6 py-3 text-sm font-bold hover:bg-[#1A6CDB] transition">Qo'llash</button>
+                    </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <!-- Cart Items -->
-                <div class="lg:col-span-2 space-y-8">
-                    <template x-if="localCart.length === 0">
-                        <div class="glass p-20 rounded-[4rem] text-center border border-white/20 shadow-2xl relative overflow-hidden">
-                            <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-600/10 rounded-full blur-[100px]"></div>
-                            <div class="w-24 h-24 bg-indigo-600 text-white rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-2xl shadow-indigo-600/30 scale-110">
-                                <i class="fas fa-shopping-basket text-4xl"></i>
-                            </div>
-                            <h2 class="text-3xl font-black text-dark dark:text-white mb-6 tracking-tight">Savatingiz bo'sh</h2>
-                            <p class="text-gray-500 font-medium mb-10 max-w-sm mx-auto">Hali hech narsa tanlamadingiz. Do'konimizda juda ko'p qiziqarli mahsulotlar bor!</p>
-                            <a href="shop.html" class="inline-block bg-dark dark:bg-white dark:text-dark text-white px-12 py-5 rounded-[2rem] font-black hover:scale-105 transition-all shadow-xl">Xaridni boshlash</a>
+            <!-- Order Summary -->
+            <div class="w-full lg:w-96 flex-shrink-0">
+                <div class="bg-white border border-gray-200 p-8 sticky top-36">
+                    <h2 class="text-[11px] font-black uppercase tracking-widest text-gray-700 mb-6 pb-4 border-b border-gray-100">Buyurtma xulosasi</h2>
+                    <div class="space-y-3 mb-6">
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-medium">Mahsulotlar (<span x-text="totalQty"></span>)</span>
+                            <span class="font-bold" x-text="fmt(subtotal)"></span>
                         </div>
-                    </template>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-medium">Yetkazish</span>
+                            <span class="font-bold text-green-600">Bepul</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-gray-500 font-medium">Chegirma</span>
+                            <span class="font-bold text-[#D93025]">－0</span>
+                        </div>
+                    </div>
+                    <div class="border-t-2 border-[#1B1B1B] pt-4 mb-6">
+                        <div class="flex justify-between items-center">
+                            <span class="font-black text-[#1B1B1B]">JAMI</span>
+                            <span class="text-2xl font-black text-[#1B1B1B]" x-text="fmt(subtotal)"></span>
+                        </div>
+                    </div>
 
-                    <template x-for="item in localCart" :key="item.id">
-                        <div class="glass p-4 sm:p-8 rounded-3xl sm:rounded-[3rem] border border-white/20 shadow-2xl flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8 group hover:bg-white/10 transition-all duration-500">
-                            <div class="w-20 h-20 sm:w-32 sm:h-32 rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white/5 border border-white/10 shadow-inner group-hover:scale-110 transition duration-500 flex-shrink-0">
-                                <img :src="item.image" class="w-full h-full object-cover">
-                            </div>
-                            <div class="flex-1 text-center sm:text-left">
-                                <h3 x-text="item.name" class="text-lg sm:text-2xl font-black text-dark dark:text-white mb-1 tracking-tight"></h3>
-                                <p x-text="formatPrice(item.price)" class="text-indigo-600 dark:text-indigo-400 font-black text-base sm:text-lg"></p>
-                            </div>
-                            <div class="flex items-center glass rounded-xl sm:rounded-2xl p-1 sm:p-2 border border-white/10 shadow-inner bg-white/5">
-                                <button @click="updateQty(item.id, -1)" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">-</button>
-                                <span class="mx-3 sm:mx-5 font-black text-base sm:text-lg text-dark dark:text-white" x-text="item.quantity"></span>
-                                <button @click="updateQty(item.id, 1)" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">+</button>
-                            </div>
-                            <button @click="removeItem(item.id)" class="w-10 h-10 sm:w-12 sm:h-12 bg-red-500/10 text-red-500 rounded-xl sm:rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-                                <i class="fas fa-trash-can text-sm sm:text-base"></i>
-                            </button>
-                        </div>
-                    </template>
-                </div>
+                    <a href="checkout.html" class="z-btn-primary">To'lovga o'tish <i class="fas fa-arrow-right ml-2 text-sm"></i></a>
 
-                <!-- Order Summary -->
-                <div class="lg:col-span-1">
-                    <div class="glass p-10 rounded-[4rem] border border-white/20 shadow-2xl sticky top-32 relative overflow-hidden">
-                        <div class="absolute -bottom-24 -right-24 w-48 h-48 bg-pink-600/10 rounded-full blur-[80px]"></div>
-                        <h2 class="text-3xl font-black text-dark dark:text-white mb-10 tracking-tighter">Buyurtma</h2>
-                        <div class="space-y-6 mb-10">
-                            <div class="flex justify-between items-center px-2">
-                                <span class="text-gray-500 font-bold uppercase tracking-widest text-xs">Mahsulotlar</span>
-                                <span x-text="formatPrice(totalPrice)" class="text-dark dark:text-white font-black"></span>
-                            </div>
-                            <div class="flex justify-between items-center px-2">
-                                <span class="text-gray-500 font-bold uppercase tracking-widest text-xs">Yetkazish</span>
-                                <span class="text-indigo-600 dark:text-indigo-400 font-black uppercase text-xs tracking-widest bg-indigo-600/10 px-4 py-1.5 rounded-full">Bepul</span>
-                            </div>
-                            <div class="h-px bg-white/10 mx-2"></div>
-                            <div class="flex justify-between items-center px-2 pt-2">
-                                <span class="text-xl font-black text-dark dark:text-white tracking-tight">Jami:</span>
-                                <span x-text="formatPrice(totalPrice)" class="text-3xl font-black text-indigo-600 tracking-tighter"></span>
-                            </div>
-                        </div>
-                        <a href="checkout.html" :class="localCart.length === 0 ? 'pointer-events-none opacity-30 grayscale' : ''" 
-                           class="block w-full bg-dark dark:bg-indigo-600 text-white text-center py-6 rounded-[2rem] font-black text-xl hover:scale-[1.02] transition-all shadow-2xl shadow-indigo-600/30 tracking-tighter">
-                            Buyurtma berish
-                        </a>
-                        <p class="text-[10px] text-gray-500 font-bold text-center mt-6 uppercase tracking-[0.2em]">Kafolatlangan xavfsiz to'lovlar</p>
+                    <div class="mt-6 space-y-2 text-[11px] font-medium text-gray-400">
+                        <div class="flex items-center gap-2"><i class="fas fa-lock text-green-500"></i> Xavfsiz SSL shifrlash</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-undo text-orange-400"></i> 365 kun bepul qaytarish</div>
+                        <div class="flex items-center gap-2"><i class="fas fa-truck text-[#1A6CDB]"></i> 1-3 kun ichida yetkazish</div>
+                    </div>
+
+                    <!-- Payment icons -->
+                    <div class="flex gap-2 mt-5 pt-5 border-t border-gray-100">
+                        <div class="border border-gray-200 px-2 py-1 text-[10px] font-bold text-gray-400">VISA</div>
+                        <div class="border border-gray-200 px-2 py-1 text-[10px] font-bold text-gray-400">MC</div>
+                        <div class="border border-gray-200 px-2 py-1 text-[10px] font-bold text-gray-400">HUMO</div>
+                        <div class="border border-gray-200 px-2 py-1 text-[10px] font-bold text-gray-400">UZCARD</div>
+                        <div class="border border-gray-200 px-2 py-1 text-[10px] font-bold text-gray-400">CLICK</div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <script src="assets/js/main.js"></script>
+    <script>
+        function cartPage() {
+            return {
+                items: [],
+                init() { this.load(); },
+                load() { this.items = JSON.parse(localStorage.getItem('ps_cart') || '[]'); },
+                save() { localStorage.setItem('ps_cart', JSON.stringify(this.items)); },
+                changeQty(i, delta) {
+                    this.items[i].qty = Math.max(1, this.items[i].qty + delta);
+                    this.save();
+                },
+                removeItem(i) {
+                    this.items.splice(i, 1);
+                    this.save();
+                },
+                get subtotal() { return this.items.reduce((s, i) => s + i.price * i.qty, 0); },
+                get totalQty() { return this.items.reduce((s, i) => s + i.qty, 0); },
+                fmt(n) { return new Intl.NumberFormat('uz-UZ').format(n) + " so'm"; }
+            }
+        }
+    </script>
 </body>
 </html>

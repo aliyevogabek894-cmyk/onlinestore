@@ -6,7 +6,7 @@ function saveCart() {
     updateCartBadge();
 }
 
-function addToCart(productId) {
+function addToCart(productId, qty = 1) {
     // Get products from central DB
     const allProducts = typeof db !== 'undefined' ? db.getProducts() : [];
     const product = allProducts.find(p => p.id === productId);
@@ -16,16 +16,17 @@ function addToCart(productId) {
     const existing = cart.find(item => item.id === productId);
     
     if (existing) {
-        existing.quantity += 1;
+        existing.quantity += qty;
     } else {
-        cart.push({ ...product, quantity: 1 });
+        cart.push({ ...product, quantity: qty });
     }
     
     saveCart();
+    const msg = qty > 1 ? `${qty} ta ${product.name} savatga qo'shildi!` : `${product.name} savatga qo'shildi!`;
     if (typeof showNotification === 'function') {
-        showNotification(`${product.name} savatga qo'shildi!`);
+        showNotification(msg);
     } else {
-        alert(`${product.name} savatga qo'shildi!`);
+        alert(msg);
     }
 }
 

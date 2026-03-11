@@ -3,231 +3,640 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Premium Store - Bosh Sahifa</title>
+    <title>Premium Store - Elektronika va Aksessuarlar | Bepul Yetkazish</title>
+    <meta name="description" content="Premium Store - O'zbekistonda eng yaxshi elektron qurilmalar. Bepul yetkazish va 365 kunlik qaytarish kafolati.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
     <script src="assets/js/main.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#2563eb',
-                        dark: '#0f172a',
-                    }
-                }
-            }
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        :root {
+            --zappos-blue: #1A6CDB;
+            --zappos-dark: #1B1B1B;
+            --zappos-red: #D93025;
+            --zappos-yellow: #FFCB00;
         }
-    </script>
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
+        .z-header { border-bottom: 1px solid #e8e8e8; }
+        .z-nav-item { font-size: 13px; font-weight: 600; color: #1B1B1B; padding: 10px 14px; white-space: nowrap; transition: color 0.15s; }
+        .z-nav-item:hover { color: #1A6CDB; }
+        .z-nav-item.sale { color: #D93025; }
+        .z-search-input { border: 2px solid #1B1B1B; height: 44px; border-radius: 0; outline: none; font-size: 14px; font-weight: 500; }
+        .z-search-input:focus { border-color: #1A6CDB; }
+        .z-search-btn { background: #1B1B1B; color: white; height: 44px; padding: 0 20px; font-weight: 700; font-size: 13px; border-radius: 0; transition: background 0.15s; }
+        .z-search-btn:hover { background: #1A6CDB; }
+        .z-btn-primary { background: #1A6CDB; color: white; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; padding: 12px 28px; border-radius: 4px; transition: background 0.15s; display: inline-block; }
+        .z-btn-primary:hover { background: #1558b8; }
+        .z-btn-outline { border: 2px solid #1B1B1B; color: #1B1B1B; font-weight: 700; font-size: 14px; padding: 11px 28px; border-radius: 4px; transition: all 0.15s; display: inline-block; }
+        .z-btn-outline:hover { background: #1B1B1B; color: white; }
+        .z-product-card { border: 1px solid #e8e8e8; transition: box-shadow 0.2s, transform 0.2s; }
+        .z-product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
+        .z-product-card:hover .z-product-name { color: #1A6CDB; }
+        .z-tag-new { background: #1A6CDB; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
+        .z-tag-sale { background: #D93025; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
+        .z-hero-banner { background: #F2F2F2; position: relative; overflow: hidden; }
+        .z-section-title { font-size: 22px; font-weight: 800; color: #1B1B1B; letter-spacing: -0.02em; }
+        .z-cat-card { position: relative; overflow: hidden; cursor: pointer; }
+        .z-cat-card img { transition: transform 0.4s; display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover; }
+        .z-cat-card:hover img { transform: scale(1.04); }
+        .z-cat-card .z-cat-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: white; font-weight: 800; font-size: 14px; text-align: center; padding: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
+        .star-rating { color: #F5A623; font-size: 12px; }
+        .z-footer { background: #1B1B1B; color: #ccc; }
+        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
+        .z-footer a:hover { color: white; }
+        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+        .z-promo-bar { background: #1B1B1B; color: white; font-size: 12px; font-weight: 600; }
+        .z-top-banner { background: #E8F0FE; font-size: 13px; font-weight: 600; color: #1B1B1B; border-bottom: 1px solid #d0d9f0; }
+        .scroll-carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
+        .scroll-carousel::-webkit-scrollbar { display: none; }
+        .scroll-carousel > * { scroll-snap-align: start; flex-shrink: 0; }
+        .z-brand-img { width: 120px; height: 70px; object-fit: contain; border: 1px solid #e8e8e8; padding: 10px; background: white; transition: border-color 0.15s; }
+        .z-brand-img:hover { border-color: #1A6CDB; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body x-data="{ mobileMenu: false }">
-    <!-- Navbar -->
-    <nav class="glass fixed w-full z-40 transition-all duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center">
-                    <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                        PREMIUM<span class="text-dark font-light ml-1">STORE</span>
-                    </a>
-                </div>
-                
-                <!-- Desktop Navigation -->
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-indigo-600 font-bold transition">Bosh sahifa</a>
-                    <a href="shop.html" class="text-dark hover:text-indigo-600 font-medium transition">Mahsulotlar</a>
-                    <a href="about.html" class="text-dark hover:text-indigo-600 font-medium transition">Biz haqimizda</a>
-                    <a href="contact.html" class="text-dark hover:text-indigo-600 font-medium transition">Aloqa</a>
+<body class="bg-white" x-data="homePage()">
+
+    <!-- ===== TOP PROMO BAR ===== -->
+    <div class="z-promo-bar py-2 px-4 text-center">
+        <span>🚚 Barcha buyurtmalarga BEPUL yetkazish &nbsp;|&nbsp; 📦 365 kunlik bepul qaytarish &nbsp;|&nbsp; ⭐ 24/7 müşteri xizmati</span>
+    </div>
+
+    <!-- ===== MAIN HEADER ===== -->
+    <header class="z-header bg-white">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+
+            <!-- Row 1: Logo + Search + Icons -->
+            <div class="flex items-center h-[72px] gap-6">
+                <!-- Logo -->
+                <a href="index.html" class="flex-shrink-0">
+                    <div class="text-[26px] font-black tracking-[-0.04em] text-[#1B1B1B] leading-none">
+                        premium<span class="text-[#1A6CDB]">store</span>
+                        <span class="block text-[9px] font-bold tracking-[0.25em] text-gray-400 uppercase mt-0.5">Electronics & Accessories</span>
+                    </div>
+                </a>
+
+                <!-- Search Bar -->
+                <div class="flex-1 flex">
+                    <input
+                        type="text"
+                        x-model="searchQuery"
+                        @keydown.enter="doSearch()"
+                        placeholder="Mahsulotlarni qidiring (telefon, noutbuk, audio...)"
+                        class="z-search-input flex-1 px-4"
+                    >
+                    <button @click="doSearch()" class="z-search-btn flex items-center gap-2">
+                        <i class="fas fa-search text-sm"></i>
+                        <span class="hidden sm:inline">Qidirish</span>
+                    </button>
                 </div>
 
-                <div class="flex items-center space-x-5" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
-                    <!-- Theme Toggle -->
-                    <button @click="isDark = toggleTheme()" 
-                            class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
-                        <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                        <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
-                    </button>
-                    
-                    <div class="relative group hidden lg:block" x-data="{ query: '' }">
-                        <input type="text" x-model="query" @keydown.enter="window.location.href='shop.html?q=' + query" placeholder="Qidiruv..." class="bg-gray-100 border-none rounded-full px-5 py-2 w-0 group-hover:w-48 transition-all duration-500 focus:w-48 focus:ring-2 focus:ring-blue-500 outline-none">
-                        <button @click="window.location.href='shop.html?q=' + query" class="text-dark hover:text-blue-600 transition"><i class="fas fa-search text-xl"></i></button>
-                    </div>
-                    <template x-if="user && user.role === 'admin'">
-                        <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
-                    </template>
-                    <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="cart-badge absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
-                    </a>
-                    
-                    <template x-if="user">
-                        <a href="profile.html" class="flex items-center space-x-2 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 transition">
-                            <i class="fas fa-user-circle text-blue-600 text-xl"></i>
-                            <span x-text="user.name" class="font-bold text-sm hidden sm:inline"></span>
+                <!-- Right Icons -->
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <!-- Account -->
+                    <template x-if="!currentUser">
+                        <a href="login.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                            <i class="far fa-user text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                            <span class="text-[10px] font-semibold text-gray-500 mt-0.5 hidden lg:block">Kirish</span>
                         </a>
                     </template>
-                    <template x-if="!user">
-                        <a href="login.html" class="hidden md:block bg-dark text-white px-6 py-2.5 rounded-full font-medium hover:bg-blue-600 transition duration-300">Kirish</a>
+                    <template x-if="currentUser">
+                        <a href="profile.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                            <div class="w-[22px] h-[22px] rounded-full bg-[#1A6CDB] text-white text-[11px] font-black flex items-center justify-center" x-text="currentUser.name.charAt(0)"></div>
+                            <span class="text-[10px] font-semibold text-gray-500 mt-0.5 hidden lg:block">Profil</span>
+                        </a>
                     </template>
-                    
-                    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-dark text-2xl"><i class="fas fa-bars"></i></button>
+
+                    <!-- Wishlist -->
+                    <a href="#" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                        <i class="far fa-heart text-[18px] text-gray-600 group-hover:text-[#D93025]"></i>
+                        <span class="text-[10px] font-semibold text-gray-500 mt-0.5 hidden lg:block">Saqlangan</span>
+                    </a>
+
+                    <!-- Cart -->
+                    <a href="cart.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group relative">
+                        <div class="relative">
+                            <i class="fas fa-shopping-bag text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                            <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-2 -right-2 bg-[#D93025] text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center leading-none"></span>
+                        </div>
+                        <span class="text-[10px] font-semibold text-gray-500 mt-0.5 hidden lg:block">Savat</span>
+                    </a>
+
+                    <!-- Admin (only for admin users) -->
+                    <template x-if="currentUser && currentUser.role === 'admin'">
+                        <a href="admin.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                            <i class="fas fa-shield-alt text-[18px] text-[#1A6CDB]"></i>
+                            <span class="text-[10px] font-semibold text-[#1A6CDB] mt-0.5 hidden lg:block">Admin</span>
+                        </a>
+                    </template>
                 </div>
             </div>
-        </div>
-        
-        <!-- Mobile Menu -->
-        <div x-show="mobileMenu" x-transition.opacity class="md:hidden fixed inset-0 bg-white/95 dark:bg-black/95 backdrop-blur-2xl z-50 flex flex-col items-center justify-center space-y-6 text-2xl font-bold text-dark">
-            <button @click="mobileMenu = false" class="absolute top-6 right-6 text-4xl text-gray-500"><i class="fas fa-times"></i></button>
-            <a @click="mobileMenu = false" href="index.html" class="hover:text-indigo-600 transition">Bosh sahifa</a>
-            <a @click="mobileMenu = false" href="shop.html" class="hover:text-indigo-600 transition">Mahsulotlar</a>
-            <a @click="mobileMenu = false" href="profile.html" class="hover:text-indigo-600 transition">Profilim</a>
-            <template x-if="user && user.role === 'admin'">
-                <a @click="mobileMenu = false" href="admin.html" class="hover:text-indigo-600 transition">Admin</a>
-            </template>
-            <a @click="mobileMenu = false" href="login.html" class="bg-indigo-600 text-white px-12 py-4 rounded-full shadow-lg shadow-indigo-600/30">Kirish</a>
-        </div>
-    </nav>
 
-    <main class="mesh-gradient-vibrant">
-        <!-- Hero Section -->
-        <section class="h-screen flex items-center relative overflow-hidden">
-            <div class="absolute inset-0 opacity-20 mesh-gradient-vibrant scale-150"></div>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full text-center">
-                <div class="glass p-16 rounded-[4rem] backdrop-blur-3xl border border-white/20 shadow-2xl relative overflow-hidden">
-                    <div class="absolute -top-24 -left-24 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px]"></div>
-                    <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-pink-600/20 rounded-full blur-[100px]"></div>
-                    <h2 class="text-indigo-600 font-black tracking-[0.4em] uppercase text-sm mb-6 flex items-center justify-center lg:justify-start">
-                    <span class="w-12 h-px bg-indigo-600 mr-4 group-hover:w-20 transition-all duration-700"></span> 
-                    <span class="dark:text-neon">Premium Sifat</span>
-                </h2>
-                <h1 class="text-3xl sm:text-7xl lg:text-8xl font-black text-dark dark:text-white mb-4 sm:mb-8 tracking-tighter leading-[1.1] lg:leading-[0.9]">
-                    Kelajak <br> <span class="text-indigo-600 drop-shadow-2xl">Texnologiyasi</span> <br> Shu Yerda.
-                </h1>
-                <p class="text-base sm:text-xl text-gray-500 font-bold mb-8 sm:mb-12 max-w-xl mx-auto lg:mx-0 leading-relaxed">
-                    Eng so'nggi noutbuklar, smartfonlar va aksessuarlar. O'zbekiston bo'ylab tezkor yetkazib berish.
-                </p>
-                <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6">
-                    <a href="shop.html" class="group relative px-8 py-4 sm:px-12 sm:py-6 bg-dark dark:bg-indigo-600 dark:neon-glow text-white rounded-2xl sm:rounded-[2rem] font-black text-lg sm:text-xl overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-2xl">
- Shopga o'tish</a>
-                        <a href="about.html" class="px-8 py-4 sm:px-12 sm:py-6 glass text-dark rounded-2xl sm:rounded-[2rem] font-black text-lg sm:text-xl hover:bg-white/40 transition-all border border-white/30">Biz haqimizda</a>
+            <!-- Row 2: Category Navigation -->
+            <nav class="flex items-center border-t border-gray-100 overflow-x-auto scrollbar-hide -mx-4 px-4 md:-mx-8 md:px-8">
+                <a href="shop.html?cat=all" class="z-nav-item">Barchasi</a>
+                <a href="shop.html?cat=Phones" class="z-nav-item">Telefonlar</a>
+                <a href="shop.html?cat=Laptops" class="z-nav-item">Noutbuklar</a>
+                <a href="shop.html?cat=Audio" class="z-nav-item">Audio</a>
+                <a href="shop.html?cat=Gaming" class="z-nav-item">Geyming</a>
+                <a href="shop.html?cat=Smart Watches" class="z-nav-item">Smart Soatlar</a>
+                <a href="shop.html?cat=Accessories" class="z-nav-item">Aksessuarlar</a>
+                <a href="about.html" class="z-nav-item">Brendlar</a>
+                <a href="shop.html?sale=1" class="z-nav-item sale">Chegirma 🔥</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+
+        <!-- ===== HERO BANNER ===== -->
+        <section class="z-hero-banner" x-data="{ slide: 0, slides: [
+            { bg: 'from-[#0A1628] to-[#1A3A6B]', img: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=900&q=80', tag: 'Yangi keldi', title: 'iPhone 15 Pro', sub: 'Titanium dizayn. A17 Pro chip. Eng kuchli iPhone.', btn: 'Hozir xarid qiling', link: 'shop.html?cat=Phones', color: 'text-blue-300' },
+            { bg: 'from-[#0D1B0A] to-[#1A3A1A]', img: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=900&q=80', tag: 'Top tanlov', title: 'MacBook Pro M3', sub: 'Eng qudratli MacBook. Dizaynerlar uchun yaratilgan.', btn: 'Batafsil ko\'proq', link: 'shop.html?cat=Laptops', color: 'text-green-300' },
+            { bg: 'from-[#1A0A0A] to-[#4A1A1A]', img: 'https://images.unsplash.com/photo-1606813907291-d86ebb9c74ad?w=900&q=80', tag: 'Chegirma -15%', title: 'PlayStation 5', sub: 'Kelajak avlod o\'yinlari. Ultratez SSD. 4K raytracing.', btn: 'Fursatni qo\'ldan berma', link: 'shop.html?cat=Gaming', color: 'text-red-300' }
+        ]" x-init="setInterval(() => slide = (slide + 1) % slides.length, 5000)">
+            <div class="max-w-[1440px] mx-auto">
+                <template x-for="(s, i) in slides">
+                    <div x-show="slide === i" x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" :class="s.bg" class="bg-gradient-to-r min-h-[460px] flex items-center px-8 md:px-16 relative overflow-hidden" style="display:none" x-cloak>
+                        <!-- Background decoration -->
+                        <div class="absolute inset-0 opacity-5">
+                            <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
+                        </div>
+                        <div class="flex-1 text-white z-10 max-w-xl">
+                            <span :class="s.color" class="text-sm font-black uppercase tracking-[0.3em] mb-4 block" x-text="s.tag"></span>
+                            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight tracking-tighter" x-text="s.title"></h2>
+                            <p class="text-gray-300 text-lg mb-10 font-medium leading-relaxed" x-text="s.sub"></p>
+                            <div class="flex gap-4 flex-wrap">
+                                <a :href="s.link" class="bg-white text-[#1B1B1B] font-black text-sm px-8 py-4 hover:bg-gray-100 transition tracking-wide">
+                                    <span x-text="s.btn"></span>
+                                </a>
+                                <a :href="s.link" class="border border-white/40 text-white font-semibold text-sm px-8 py-4 hover:bg-white/10 transition">
+                                    Barchasi →
+                                </a>
+                            </div>
+                        </div>
+                        <div class="hidden lg:flex flex-1 items-center justify-center relative h-[460px]">
+                            <img :src="s.img" alt="Hero" class="max-h-[420px] max-w-[380px] object-contain drop-shadow-2xl" loading="lazy">
+                        </div>
+                    </div>
+                </template>
+                <!-- Slide dots -->
+                <div class="flex justify-center gap-2 py-4 bg-white border-b border-gray-100">
+                    <template x-for="(s, i) in slides">
+                        <button @click="slide = i" :class="slide === i ? 'bg-[#1A6CDB] w-8' : 'bg-gray-200 w-2'" class="h-2 rounded-full transition-all duration-300"></button>
+                    </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== QUICK CATEGORY BROWSE ===== -->
+        <section class="bg-white py-10 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-4">
+                    <a href="shop.html?cat=Phones" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-mobile-alt text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Telefonlar</span>
+                    </a>
+                    <a href="shop.html?cat=Laptops" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-laptop text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Noutbuklar</span>
+                    </a>
+                    <a href="shop.html?cat=Audio" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-headphones text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Audio</span>
+                    </a>
+                    <a href="shop.html?cat=Gaming" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-gamepad text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Geyming</span>
+                    </a>
+                    <a href="shop.html?cat=Smart Watches" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-clock text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Soatlar</span>
+                    </a>
+                    <a href="shop.html?cat=Accessories" class="flex flex-col items-center gap-3 group p-4 hover:bg-gray-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-blue-50 transition">
+                            <i class="fas fa-keyboard text-xl text-gray-600 group-hover:text-[#1A6CDB] transition"></i>
+                        </div>
+                        <span class="text-xs font-700 text-gray-700 text-center leading-tight font-semibold">Aksessuarlar</span>
+                    </a>
+                    <a href="shop.html?sale=1" class="flex flex-col items-center gap-3 group p-4 hover:bg-red-50 rounded-lg transition">
+                        <div class="w-14 h-14 bg-red-50 rounded-full flex items-center justify-center group-hover:bg-red-100 transition">
+                            <i class="fas fa-percent text-xl text-[#D93025]"></i>
+                        </div>
+                        <span class="text-xs font-700 text-[#D93025] text-center leading-tight font-semibold">Chegirma</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== FEATURED CATEGORY GRID (Zappos style 4 large tiles) ===== -->
+        <section class="bg-[#F8F8F8] py-12 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <!-- Tile 1 - Phones -->
+                    <a href="shop.html?cat=Phones" class="z-cat-card bg-white border border-gray-200 block group">
+                        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=600&q=80" alt="Telefonlar" class="w-full aspect-square object-cover">
+                        <div class="p-5 border-t border-gray-100">
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-1">Katalog</p>
+                            <h3 class="text-lg font-black text-[#1B1B1B] group-hover:text-[#1A6CDB] transition">Telefonlar</h3>
+                            <p class="text-sm text-gray-500 mt-1">400+ mahsulot</p>
+                            <span class="mt-3 inline-block text-sm font-bold text-[#1A6CDB] group-hover:underline">Ko'rish →</span>
+                        </div>
+                    </a>
+                    <!-- Tile 2 - Laptops -->
+                    <a href="shop.html?cat=Laptops" class="z-cat-card bg-white border border-gray-200 block group">
+                        <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600&q=80" alt="Noutbuklar" class="w-full aspect-square object-cover">
+                        <div class="p-5 border-t border-gray-100">
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-1">Katalog</p>
+                            <h3 class="text-lg font-black text-[#1B1B1B] group-hover:text-[#1A6CDB] transition">Noutbuklar</h3>
+                            <p class="text-sm text-gray-500 mt-1">200+ mahsulot</p>
+                            <span class="mt-3 inline-block text-sm font-bold text-[#1A6CDB] group-hover:underline">Ko'rish →</span>
+                        </div>
+                    </a>
+                    <!-- Tile 3 - Audio -->
+                    <a href="shop.html?cat=Audio" class="z-cat-card bg-white border border-gray-200 block group">
+                        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" alt="Audio" class="w-full aspect-square object-cover">
+                        <div class="p-5 border-t border-gray-100">
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-1">Katalog</p>
+                            <h3 class="text-lg font-black text-[#1B1B1B] group-hover:text-[#1A6CDB] transition">Audio Qurilmalar</h3>
+                            <p class="text-sm text-gray-500 mt-1">150+ mahsulot</p>
+                            <span class="mt-3 inline-block text-sm font-bold text-[#1A6CDB] group-hover:underline">Ko'rish →</span>
+                        </div>
+                    </a>
+                    <!-- Tile 4 - Gaming -->
+                    <a href="shop.html?cat=Gaming" class="z-cat-card bg-white border border-gray-200 block group">
+                        <img src="https://images.unsplash.com/photo-1590814915072-a9e56fe5e00a?w=600&q=80" alt="Geyming" class="w-full aspect-square object-cover">
+                        <div class="p-5 border-t border-gray-100">
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mb-1">Katalog</p>
+                            <h3 class="text-lg font-black text-[#1B1B1B] group-hover:text-[#1A6CDB] transition">Geyming</h3>
+                            <p class="text-sm text-gray-500 mt-1">100+ mahsulot</p>
+                            <span class="mt-3 inline-block text-sm font-bold text-[#1A6CDB] group-hover:underline">Ko'rish →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== TRUST BADGES (Zappos style horizontal bar) ===== -->
+        <section class="bg-white border-b border-gray-100 py-6">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 divide-x divide-gray-100">
+                    <div class="flex items-center gap-4 px-6 first:pl-0">
+                        <i class="fas fa-truck text-2xl text-[#1A6CDB]"></i>
+                        <div>
+                            <p class="text-sm font-black text-[#1B1B1B]">Bepul yetkazish</p>
+                            <p class="text-xs text-gray-400 font-medium">Barcha buyurtmalarga</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 px-6">
+                        <i class="fas fa-undo-alt text-2xl text-[#1A6CDB]"></i>
+                        <div>
+                            <p class="text-sm font-black text-[#1B1B1B]">365 kun qaytarish</p>
+                            <p class="text-xs text-gray-400 font-medium">Hech qanday savol bermay</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 px-6">
+                        <i class="fas fa-shield-check text-2xl text-[#1A6CDB]"></i>
+                        <div>
+                            <p class="text-sm font-black text-[#1B1B1B]">Xavfsiz to'lov</p>
+                            <p class="text-xs text-gray-400 font-medium">256-bit SSL shifrlash</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 px-6">
+                        <i class="fas fa-headset text-2xl text-[#1A6CDB]"></i>
+                        <div>
+                            <p class="text-sm font-black text-[#1B1B1B]">24/7 Qo'llab-quvvatlash</p>
+                            <p class="text-xs text-gray-400 font-medium">Mutaxassis jamoamiz</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Categories Section -->
-        <section class="py-12 sm:py-32 relative">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex flex-col sm:flex-row justify-between items-center sm:items-end mb-16 px-4 gap-4">
-                    <div class="text-center sm:text-left">
-                        <h2 class="text-4xl sm:text-5xl font-black text-dark tracking-tighter">Kategoriyalar</h2>
-                        <div class="h-2 w-24 bg-indigo-600 mt-4 rounded-full shadow-lg shadow-indigo-600/50 mx-auto sm:mx-0"></div>
+        <!-- ===== NEW ARRIVALS PRODUCT CAROUSEL ===== -->
+        <section class="bg-white py-12 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Hozir mashhur</p>
+                        <h2 class="z-section-title">Yangi Kelganlar</h2>
                     </div>
-                    <a href="shop.html" class="text-indigo-600 font-black hover:underline tracking-tighter text-xl">Hammasini ko'rish →</a>
+                    <a href="shop.html" class="text-sm font-bold text-[#1A6CDB] hover:underline flex items-center gap-1">Barchasini ko'rish <i class="fas fa-chevron-right text-xs"></i></a>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <template x-for="cat in ['Phones', 'Laptops', 'Audio', 'Gaming']" :key="cat">
-                        <div @click="window.location.href='shop.html?cat=' + cat" class="glass p-10 rounded-[3rem] text-center cursor-pointer hover:bg-white/40 group transition-all duration-700 shadow-xl border border-white/20">
-                            <div class="w-24 h-24 bg-white/50 backdrop-blur-xl rounded-[2rem] flex items-center justify-center text-4xl mb-6 mx-auto shadow-inner group-hover:scale-110 group-hover:rotate-6 transition duration-500" x-text="cat === 'Phones' ? '📱' : cat === 'Laptops' ? '💻' : cat === 'Audio' ? '🎧' : '🎮'"></div>
-                            <h3 x-text="cat === 'Phones' ? 'Telefonlar' : cat === 'Laptops' ? 'Noutbuklar' : cat === 'Audio' ? 'Audio' : 'Geyming'" class="text-2xl font-black text-dark tracking-tight"></h3>
-                        </div>
+
+                <div class="scroll-carousel" id="newArrivalsCarousel">
+                    <template x-for="product in newArrivals" :key="product.id">
+                        <a :href="'product-detail.html?id=' + product.id" class="z-product-card bg-white w-[220px] md:w-[240px] block group">
+                            <div class="relative aspect-square bg-gray-50 overflow-hidden">
+                                <img :src="product.image" :alt="product.name" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300">
+                                <div class="absolute top-3 left-3 flex flex-col gap-1">
+                                    <span x-show="product.isNew" class="z-tag-new">YANGI</span>
+                                    <span x-show="product.oldPrice" class="z-tag-sale">CHEGIRMA</span>
+                                </div>
+                                <button @click.prevent="addToCartQ(product.id, 1)" class="absolute bottom-3 right-3 bg-[#1A6CDB] text-white w-9 h-9 flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-lg">
+                                    <i class="fas fa-cart-plus text-sm"></i>
+                                </button>
+                            </div>
+                            <div class="p-4 border-t border-gray-100">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1" x-text="product.category"></p>
+                                <h3 class="z-product-name text-sm font-bold text-[#1B1B1B] mb-2 line-clamp-2 leading-snug group-hover:text-[#1A6CDB] transition" x-text="product.name"></h3>
+                                <div class="star-rating mb-2">
+                                    <template x-for="s in product.rating"><i class="fas fa-star"></i></template>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base font-black text-[#1B1B1B]" x-text="formatPrice(product.price)"></span>
+                                    <span x-show="product.oldPrice" class="text-sm text-gray-400 line-through" x-text="formatPrice(product.oldPrice)"></span>
+                                </div>
+                            </div>
+                        </a>
                     </template>
                 </div>
             </div>
         </section>
 
-        <!-- Featured Products -->
-        <section class="py-16 sm:py-32">
-            <div class="max-w-7xl mx-auto px-4">
-                <h2 class="text-3xl sm:text-5xl font-black text-dark mb-10 sm:mb-16 tracking-tighter text-center">Top Mahsulotlar</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12" x-data="{ dbProducts: db.getProducts(), formatPrice(p) { return p.toLocaleString() + ' so\'m' } }">
-                    <template x-for="p in dbProducts.slice(0, 4)" :key="p.id">
-                        <div class="glass rounded-[3rem] p-6 shadow-2xl card-hover group border border-white/10 relative overflow-hidden">
-                            <div class="absolute -top-20 -right-20 w-40 h-40 bg-indigo-500/5 rounded-full blur-[60px]"></div>
-                            <div class="relative aspect-square rounded-[2.5rem] overflow-hidden mb-8 shadow-inner bg-gray-100/10">
-                                <img :src="p.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
-                                <span class="absolute top-4 left-4 px-4 py-1.5 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg">Premium</span>
+        <!-- ===== PROMO BANNER - SALE ===== -->
+        <section class="bg-[#1B1B1B] py-14">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div class="text-white text-center md:text-left">
+                    <p class="text-sm font-black uppercase tracking-[0.4em] text-yellow-400 mb-3">Maxsus taklif</p>
+                    <h2 class="text-4xl md:text-5xl font-black leading-tight tracking-tighter">Chegirmali <br>mahsulotlar</h2>
+                    <p class="text-gray-400 text-base mt-4 font-medium">Tanlangan mahsulotlarda 30% gacha chegirma. Faqat cheklangan vaqt uchun.</p>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="shop.html?sale=1" class="bg-yellow-400 text-[#1B1B1B] font-black text-sm px-10 py-4 hover:bg-yellow-300 transition text-center">
+                        Chegirmalarni Ko'rish
+                    </a>
+                    <a href="shop.html" class="border border-white/30 text-white font-semibold text-sm px-10 py-4 hover:bg-white/10 transition text-center">
+                        Barcha Mahsulotlar
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BEST SELLERS CAROUSEL ===== -->
+        <section class="bg-[#F8F8F8] py-12 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <div>
+                        <p class="text-xs font-black uppercase tracking-[0.3em] text-gray-400 mb-2">Ko'p sotilgan</p>
+                        <h2 class="z-section-title">Eng Mashhur Mahsulotlar</h2>
+                    </div>
+                    <a href="shop.html" class="text-sm font-bold text-[#1A6CDB] hover:underline flex items-center gap-1">Barchasini ko'rish <i class="fas fa-chevron-right text-xs"></i></a>
+                </div>
+
+                <div class="scroll-carousel">
+                    <template x-for="product in bestSellers" :key="product.id">
+                        <a :href="'product-detail.html?id=' + product.id" class="z-product-card bg-white w-[220px] md:w-[240px] block group">
+                            <div class="relative aspect-square bg-gray-50 overflow-hidden">
+                                <img :src="product.image" :alt="product.name" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300">
+                                <div class="absolute top-3 left-3 flex flex-col gap-1">
+                                    <span x-show="product.isNew" class="z-tag-new">YANGI</span>
+                                    <span x-show="product.oldPrice" class="z-tag-sale">CHEGIRMA</span>
+                                </div>
+                                <button @click.prevent="addToCartQ(product.id, 1)" class="absolute bottom-3 right-3 bg-[#1A6CDB] text-white w-9 h-9 flex items-center justify-center opacity-0 group-hover:opacity-100 transition shadow-lg">
+                                    <i class="fas fa-cart-plus text-sm"></i>
+                                </button>
                             </div>
-                            <h3 class="text-2xl font-black text-dark mb-2 tracking-tight truncate" x-text="p.name"></h3>
-                            <div class="flex items-center justify-between mt-8">
-                                <p class="text-2xl font-black text-dark" x-text="formatPrice(p.price)"></p>
-                                <a :href="'product-detail.html?id=' + p.id" class="w-12 h-12 bg-dark text-white rounded-2xl flex items-center justify-center hover:bg-indigo-600 hover:scale-110 transition active:scale-95 shadow-xl"><i class="fas fa-arrow-right"></i></a>
+                            <div class="p-4 border-t border-gray-100">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1" x-text="product.category"></p>
+                                <h3 class="z-product-name text-sm font-bold text-[#1B1B1B] mb-2 line-clamp-2 leading-snug group-hover:text-[#1A6CDB] transition" x-text="product.name"></h3>
+                                <div class="star-rating mb-2">
+                                    <template x-for="s in product.rating"><i class="fas fa-star"></i></template>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-base font-black text-[#1B1B1B]" x-text="formatPrice(product.price)"></span>
+                                    <span x-show="product.oldPrice" class="text-sm text-gray-400 line-through" x-text="formatPrice(product.oldPrice)"></span>
+                                </div>
                             </div>
-                        </div>
+                        </a>
                     </template>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== BRAND SPOTLIGHT ===== -->
+        <section class="bg-white py-12 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="flex items-center justify-between mb-8">
+                    <h2 class="z-section-title">Mashhur Brendlar</h2>
+                    <a href="about.html" class="text-sm font-bold text-[#1A6CDB] hover:underline">Barcha brendlar →</a>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+                    <a href="shop.html?cat=Phones" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Apple</span>
+                    </a>
+                    <a href="shop.html?cat=Phones" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Samsung</span>
+                    </a>
+                    <a href="shop.html?cat=Laptops" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Dell</span>
+                    </a>
+                    <a href="shop.html?cat=Audio" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Sony</span>
+                    </a>
+                    <a href="shop.html?cat=Gaming" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Xbox</span>
+                    </a>
+                    <a href="shop.html?cat=Accessories" class="border border-gray-200 p-6 flex items-center justify-center hover:border-[#1A6CDB] transition group bg-white">
+                        <span class="font-black text-xl text-gray-700 group-hover:text-[#1A6CDB] transition tracking-tighter">Logitech</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SPLIT BANNERS ===== -->
+        <section class="bg-[#F8F8F8] py-8 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-2 gap-5">
+                <a href="shop.html?cat=Audio" class="group relative overflow-hidden bg-[#0A1628] flex items-center p-10 min-h-[240px]">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&q=80" alt="Audio" class="absolute right-0 top-0 h-full object-cover opacity-50 w-1/2 group-hover:scale-105 transition duration-500">
+                    <div class="relative z-10 text-white">
+                        <p class="text-xs font-black uppercase tracking-[0.4em] text-blue-300 mb-3">Yangi kolleksiya</p>
+                        <h3 class="text-3xl font-black tracking-tighter leading-tight mb-4">Premium<br>Audio Dunyosi</h3>
+                        <span class="text-sm font-bold text-blue-200 group-hover:text-white transition">Kashf eting →</span>
+                    </div>
+                </a>
+                <a href="shop.html?cat=Smart Watches" class="group relative overflow-hidden bg-[#F5F0E8] flex items-center p-10 min-h-[240px] border border-gray-200">
+                    <img src="https://images.unsplash.com/photo-1434493907317-a46b5bc78344?w=400&q=80" alt="Smart Watch" class="absolute right-0 top-0 h-full object-cover opacity-70 w-1/2 group-hover:scale-105 transition duration-500">
+                    <div class="relative z-10">
+                        <p class="text-xs font-black uppercase tracking-[0.4em] text-gray-500 mb-3">Smart soatlar</p>
+                        <h3 class="text-3xl font-black tracking-tighter text-[#1B1B1B] leading-tight mb-4">Qo'lingizda<br>Aqlli Texnologiya</h3>
+                        <span class="text-sm font-bold text-[#1A6CDB] group-hover:underline">Ko'rish →</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- ===== EMAIL SIGNUP (Zappos style) ===== -->
+        <section class="bg-[#E8F0FE] py-14 border-b border-gray-200">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div>
+                    <h2 class="text-2xl font-black text-[#1B1B1B] tracking-tighter mb-2">Yangiliklar va chegirmalardan xabardor bo'ling</h2>
+                    <p class="text-sm text-gray-500 font-medium">Yangi mahsulotlar va eksklyuziv takliflarimizdan birinchi bo'lib xabar toping.</p>
+                </div>
+                <div class="flex w-full md:w-auto">
+                    <input type="email" placeholder="Email manzilingiz" class="border-2 border-[#1B1B1B] px-5 py-4 outline-none text-sm font-medium w-full md:w-80 focus:border-[#1A6CDB]">
+                    <button class="bg-[#1B1B1B] text-white px-8 py-4 font-black whitespace-nowrap text-sm hover:bg-[#1A6CDB] transition">
+                        Obuna bo'lish
+                    </button>
                 </div>
             </div>
         </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white pt-24 pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
-                <div class="col-span-1 md:col-span-1">
-                    <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-white mb-6 block">
-                        PREMIUM<span class="text-blue-500 ml-1">STORE</span>
-                    </a>
-                    <p class="text-gray-400 mb-8 leading-relaxed">Biz bilan eng zamonaviy va sifatli mahsulotlarga ega bo'ling. Mijozlar qoniqishi bizning oliy maqsadimiz.</p>
-                    <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition"><i class="fab fa-telegram-plane"></i></a>
+    <!-- ===== FOOTER (Zappos 4-column style) ===== -->
+    <footer class="z-footer">
+        <!-- Main Footer Links -->
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-14">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+                <!-- Brand Column -->
+                <div class="col-span-2 md:col-span-4 lg:col-span-1">
+                    <div class="text-[22px] font-black tracking-[-0.04em] text-white leading-none mb-4">
+                        premium<span class="text-[#1A6CDB]">store</span>
+                    </div>
+                    <p class="text-gray-500 text-sm font-medium leading-relaxed mb-6">O'zbekistonda eng ishonchli online elektronika do'koni. Yuqori sifat, tez yetkazish va 365 kunlik qaytarish kafolati.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#1A6CDB] hover:text-white transition text-sm"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#e1306c] hover:text-white transition text-sm"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#1877f2] hover:text-white transition text-sm"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#ff0000] hover:text-white transition text-sm"><i class="fab fa-youtube"></i></a>
                     </div>
                 </div>
-                
+
+                <!-- Do'kon -->
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Tezkor Linklar</h4>
-                    <ul class="space-y-4 text-gray-400">
-                        <li><a href="index.html" class="hover:text-blue-500 transition">Bosh sahifa</a></li>
-                        <li><a href="shop.html" class="hover:text-blue-500 transition">Mahsulotlar</a></li>
-                        <li><a href="about.html" class="hover:text-blue-500 transition">Biz haqimizda</a></li>
-                        <li><a href="contact.html" class="hover:text-blue-500 transition">Aloqa</a></li>
+                    <h4>Do'kon</h4>
+                    <ul>
+                        <li><a href="shop.html?cat=Phones">Telefonlar</a></li>
+                        <li><a href="shop.html?cat=Laptops">Noutbuklar</a></li>
+                        <li><a href="shop.html?cat=Audio">Audio</a></li>
+                        <li><a href="shop.html?cat=Gaming">Geyming</a></li>
+                        <li><a href="shop.html?cat=Smart Watches">Smart Soatlar</a></li>
+                        <li><a href="shop.html?sale=1">Chegirmalar 🔥</a></li>
                     </ul>
                 </div>
-                
+
+                <!-- Kompaniya -->
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Kategoriyalar</h4>
-                    <ul class="space-y-4 text-gray-400">
-                        <li><a href="#" class="hover:text-blue-500 transition">Elektronika</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition">Kiyimlar</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition">Poyafzallar</a></li>
-                        <li><a href="#" class="hover:text-blue-500 transition">Aksessuarlar</a></li>
+                    <h4>Kompaniya</h4>
+                    <ul>
+                        <li><a href="about.html">Biz haqimizda</a></li>
+                        <li><a href="contact.html">Aloqa</a></li>
+                        <li><a href="#">Karera</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Hamkorlar</a></li>
                     </ul>
                 </div>
-                
+
+                <!-- Mijozlarga yordam -->
                 <div>
-                    <h4 class="text-lg font-bold mb-6">Yangiliklar</h4>
-                    <p class="text-gray-400 mb-6">Chegirmalar va yangiliklardan birinchilardan bo'lib xabardor bo'ling.</p>
-                    <form class="relative group">
-                        <input type="email" placeholder="Emailingiz" class="w-full bg-gray-800 border-none rounded-full px-6 py-4 text-white focus:ring-2 focus:ring-blue-600 outline-none pr-32">
-                        <button class="absolute right-2 top-2 bg-blue-600 text-white px-6 py-2 rounded-full font-bold hover:bg-blue-700 transition md:static md:w-full md:mt-2 lg:absolute lg:right-2 lg:top-2 lg:w-auto lg:mt-0">Yuborish</button>
-                    </form>
+                    <h4>Mijozlarga yordam</h4>
+                    <ul>
+                        <li><a href="#">Ko'p so'raladigan savollar</a></li>
+                        <li><a href="#">Yetkazish va qaytarish</a></li>
+                        <li><a href="#">Buyurtma holati</a></li>
+                        <li><a href="#">Kafolat siyosati</a></li>
+                        <li><a href="#">Aloqa: +998 71 200-00-00</a></li>
+                    </ul>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-800 pt-8 flex flex-col md:row justify-between items-center text-gray-500 text-sm">
-                <p>&copy; 2026 Premium Store. Barcha huquqlar himoyalangan.</p>
-                <div class="flex space-x-6 mt-4 md:mt-0">
-                    <a href="#" class="hover:text-white transition">Maxfiylik siyosati</a>
-                    <a href="#" class="hover:text-white transition">Foydalanish shartlari</a>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="border-t border-white/10">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-gray-600 text-xs">© 2024 Premium Store. Barcha huquqlar himoyalangan.</p>
+                <div class="flex items-center gap-6">
+                    <a href="#" class="text-gray-600 hover:text-white text-xs">Foydalanish shartlari</a>
+                    <a href="#" class="text-gray-600 hover:text-white text-xs">Maxfiylik siyosati</a>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs font-medium">VISA</div>
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs font-medium">Mastercard</div>
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs font-medium">Humo</div>
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs font-medium">Click</div>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- Notification Toast -->
+    <div id="notification" class="fixed bottom-6 right-6 z-[9999] transition-all duration-300 translate-y-20 opacity-0">
+        <div class="bg-[#1B1B1B] text-white px-6 py-4 shadow-2xl max-w-sm flex items-center gap-3">
+            <i class="fas fa-check-circle text-green-400"></i>
+            <span id="notifText" class="text-sm font-semibold"></span>
+        </div>
+    </div>
+
     <script>
-        // Any extra initialization
-    </script>
+        function homePage() {
+            return {
+                currentUser: JSON.parse(localStorage.getItem('ps_current_user')),
+                searchQuery: '',
+                cartCount: 0,
+                newArrivals: [],
+                bestSellers: [],
+                init() {
+                    this.loadProducts();
+                    this.updateCartCount();
+                    window.addEventListener('storage', () => this.updateCartCount());
+                },
+                loadProducts() {
+                    const all = db.getProducts();
+                    this.newArrivals = all.filter(p => p.isNew).slice(0, 10);
+                    this.bestSellers = all.filter(p => p.isPopular).slice(0, 10);
+                    if (this.newArrivals.length === 0) this.newArrivals = all.slice(0, 10);
+                    if (this.bestSellers.length === 0) this.bestSellers = all.slice(0, 10);
+                },
+                updateCartCount() {
+                    const cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
+                    this.cartCount = cart.reduce((sum, i) => sum + i.qty, 0);
+                },
+                formatPrice(p) {
+                    if (!p && p !== 0) return '';
+                    return new Intl.NumberFormat('uz-UZ').format(p) + ' so\'m';
+                },
+                doSearch() {
+                    if (this.searchQuery.trim()) {
+                        window.location.href = 'shop.html?q=' + encodeURIComponent(this.searchQuery.trim());
+                    }
+                },
+                addToCartQ(id, qty) {
+                    const product = db.getProducts().find(p => p.id == id);
+                    if (!product) return;
+                    let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
+                    const idx = cart.findIndex(i => i.id == id);
+                    if (idx > -1) cart[idx].qty += qty;
+                    else cart.push({ id: product.id, name: product.name, price: product.price, image: product.image, qty });
+                    localStorage.setItem('ps_cart', JSON.stringify(cart));
+                    this.updateCartCount();
+                    this.showNotif(product.name + ' savatga qo\'shildi!');
+                },
+                showNotif(msg) {
+                    const el = document.getElementById('notification');
+                    document.getElementById('notifText').textContent = msg;
+                    el.classList.remove('translate-y-20', 'opacity-0');
+                    el.classList.add('translate-y-0', 'opacity-100');
+                    setTimeout(() => {
+                        el.classList.add('translate-y-20', 'opacity-0');
+                        el.classList.remove('translate-y-0', 'opacity-100');
+                    }, 3000);
+                }
+            }
+        }
     </script>
 </body>
 </html>

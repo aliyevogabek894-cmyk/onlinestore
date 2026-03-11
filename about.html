@@ -5,86 +5,175 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biz Haqimizda - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .z-nav-item { font-size: 13px; font-weight: 600; color: #1B1B1B; padding: 10px 14px; white-space: nowrap; transition: color 0.15s; }
+        .z-nav-item:hover, .z-nav-item.active { color: #1A6CDB; }
+        .z-footer { background: #1B1B1B; color: #ccc; }
+        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
+        .z-footer a:hover { color: white; }
+        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="h-24 flex items-center px-8 border-b bg-white dark:bg-gray-900 justify-between">
-        <a href="index.html" class="text-2xl font-black text-dark">PREMIUM STORE</a>
-        <div class="flex items-center space-x-6" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
-            <button @click="isDark = toggleTheme()" 
-                    class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
-                <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
-            </button>
-            <template x-if="user && user.role === 'admin'">
-                <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
-            </template>
-            <a href="shop.html" class="text-indigo-600 font-bold">Shopga qaytish</a>
+<body class="bg-white min-h-screen">
+
+    <div class="bg-[#1B1B1B] text-white py-2 px-4 text-center text-[12px] font-semibold">🚚 Bepul yetkazish + 365 kun bepul qaytarish</div>
+
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+            <div class="flex items-center h-[72px] justify-between gap-6">
+                <a href="index.html" class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
+                <div class="flex items-center gap-4 text-sm font-semibold text-gray-500">
+                    <a href="shop.html" class="hover:text-[#1A6CDB] transition">Do'kon</a>
+                    <a href="contact.html" class="hover:text-[#1A6CDB] transition">Aloqa</a>
+                    <a href="cart.html" class="hover:text-[#1A6CDB] transition"><i class="fas fa-shopping-bag"></i></a>
+                </div>
+            </div>
+            <nav class="flex items-center border-t border-gray-100 overflow-x-auto -mx-4 px-4">
+                <a href="shop.html" class="z-nav-item">Barchasi</a>
+                <a href="shop.html?cat=Phones" class="z-nav-item">Telefonlar</a>
+                <a href="shop.html?cat=Laptops" class="z-nav-item">Noutbuklar</a>
+                <a href="about.html" class="z-nav-item active text-[#1A6CDB] border-b-2 border-[#1A6CDB]">Biz haqimizda</a>
+                <a href="contact.html" class="z-nav-item">Aloqa</a>
+            </nav>
         </div>
-    </nav>
+    </header>
 
-    <!-- scripts -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="assets/js/main.js"></script>
+    <main>
+        <!-- Breadcrumb & Title -->
+        <div class="bg-[#F8F8F8] border-b border-gray-200 py-12">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="flex items-center gap-2 text-xs text-gray-400 font-medium mb-4">
+                    <a href="index.html" class="hover:text-[#1A6CDB]">Bosh sahifa</a>
+                    <i class="fas fa-chevron-right text-[9px]"></i>
+                    <span class="text-gray-700 font-bold">Biz haqimizda</span>
+                </div>
+                <h1 class="text-4xl font-black text-[#1B1B1B] tracking-tighter">Biz haqimizda</h1>
+                <p class="text-gray-500 font-medium mt-3 text-base max-w-xl">O'zbekistonning eng ishonchli online elektronika do'koni — 2020-yildan buyon sifat va ishonch bilan xizmat qilamiz.</p>
+            </div>
+        </div>
 
-    <main class="mesh-gradient-vibrant min-h-screen pt-24 pb-24">
-        <section class="py-24">
-            <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
-                <div class="glass p-12 rounded-[4rem] shadow-2xl border border-white/20">
-                    <span class="text-indigo-400 font-black uppercase tracking-[0.3em] mb-4 block">Bizning hikoyamiz</span>
-                    <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white mb-8 leading-tight tracking-tighter">Sifat va <span class="text-indigo-600">Ishonch</span> birlashgan joyda</h1>
-                    <p class="text-xl text-gray-500 mb-8 leading-relaxed font-medium">2020-yilda tashkil etilgan Premium Store bugungi kunda O'zbekistondagi eng yetakchi elektronika va aksessuarlar do'konlaridan biri hisoblanadi. Bizning asosiy maqsadimiz - mijozlarga faqat original va yuqori sifatli mahsulotlarni yetkazib berish.</p>
-                    <div class="grid grid-cols-2 gap-8">
-                        <div class="glass p-6 rounded-3xl text-center">
-                            <h4 class="text-5xl font-black text-indigo-600 mb-2">50k+</h4>
-                            <p class="text-gray-400 font-bold tracking-widest uppercase text-[10px]">Baxtli mijozlar</p>
+        <!-- Mission -->
+        <section class="bg-[#1B1B1B] text-white py-20">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <div>
+                        <p class="text-[11px] font-black uppercase tracking-[0.4em] text-blue-400 mb-5">Bizning maqsad</p>
+                        <h2 class="text-4xl font-black tracking-tighter leading-tight mb-8">Sifat bilan ishonchni birlashtirgan do'kon</h2>
+                        <p class="text-gray-400 font-medium leading-relaxed mb-6 text-base">Har bir xaridingizda siz faqat original va yuqori sifatli mahsulotni olishingizga kafolatlaymiz. Biz mijozlarimizning vaqtini qadrlaymiz.</p>
+                        <p class="text-gray-400 font-medium leading-relaxed text-base">Bepul yetkazish, 365 kunlik qaytarish va 24/7 yordam — bu bizning standart xizmat sifatimiz.</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="bg-[#1A6CDB] p-10 text-center">
+                            <p class="text-4xl font-black">50k+</p>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-blue-200 mt-2">Baxtli mijoz</p>
                         </div>
-                        <div class="glass p-6 rounded-3xl text-center">
-                            <h4 class="text-5xl font-black text-indigo-600 mb-2">10k+</h4>
-                            <p class="text-gray-400 font-bold tracking-widest uppercase text-[10px]">Mahsulotlar</p>
+                        <div class="bg-gray-900 border border-gray-700 p-10 text-center">
+                            <p class="text-4xl font-black">10k+</p>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mt-2">Mahsulot</p>
+                        </div>
+                        <div class="bg-gray-900 border border-gray-700 p-10 text-center">
+                            <p class="text-4xl font-black">99%</p>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mt-2">Qoniqish darajasi</p>
+                        </div>
+                        <div class="bg-gray-900 border border-gray-700 p-10 text-center">
+                            <p class="text-4xl font-black">4+</p>
+                            <p class="text-[11px] font-black uppercase tracking-widest text-gray-400 mt-2">Yillik tajriba</p>
                         </div>
                     </div>
-                </div>
-                <div class="rounded-[4rem] overflow-hidden shadow-2xl rotate-3 scale-105 border-8 border-white/10 group hover:rotate-0 transition duration-1000">
-                    <img src="https://images.unsplash.com/photo-1556740758-90de374c12ad?w=1000&q=80" class="w-full h-full object-cover group-hover:scale-110 transition duration-1000">
                 </div>
             </div>
         </section>
 
-        <section class="py-24">
-            <div class="max-w-7xl mx-auto px-4 text-center">
-                <div class="glass inline-block px-12 py-4 rounded-full mb-16 border border-white/20">
-                    <h2 class="text-4xl font-black text-dark tracking-tighter">Nima uchun aynan biz?</h2>
+        <!-- Values -->
+        <section class="bg-white py-20 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="text-center mb-14">
+                    <p class="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400 mb-4">Nima uchun biz?</p>
+                    <h2 class="text-3xl font-black text-[#1B1B1B] tracking-tighter">Bizning afzalliklarimiz</h2>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl"></div>
-                        <div class="w-20 h-20 bg-indigo-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-indigo-600/30 group-hover:scale-110 transition duration-500">🚀</div>
-                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">Tezkor elatish</h3>
-                        <p class="text-gray-500 font-medium">O'zbekiston bo'ylab 24 soat ichida yetkazib beramiz.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="border border-gray-200 p-8 group hover:border-[#1A6CDB] transition bg-white">
+                        <div class="w-14 h-14 bg-[#1A6CDB] text-white flex items-center justify-center mb-6 group-hover:scale-110 transition"><i class="fas fa-shield-alt text-xl"></i></div>
+                        <h3 class="text-sm font-black text-[#1B1B1B] uppercase tracking-widest mb-3">Kafolat</h3>
+                        <p class="text-xs font-medium text-gray-400 leading-relaxed">Barcha mahsulotlar 1 yillik rasmiy kafolat bilan.</p>
                     </div>
-                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500/10 rounded-full blur-3xl"></div>
-                        <div class="w-20 h-20 bg-pink-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-pink-600/30 group-hover:scale-110 transition duration-500">🛡️</div>
-                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">Rasmiy Kafolat</h3>
-                        <p class="text-gray-500 font-medium">Barcha mahsulotlarimizga 1 yilgacha kafolat beriladi.</p>
+                    <div class="border border-gray-200 p-8 group hover:border-[#1A6CDB] transition bg-white">
+                        <div class="w-14 h-14 bg-[#1A6CDB] text-white flex items-center justify-center mb-6 group-hover:scale-110 transition"><i class="fas fa-truck text-xl"></i></div>
+                        <h3 class="text-sm font-black text-[#1B1B1B] uppercase tracking-widest mb-3">Tez yetkazish</h3>
+                        <p class="text-xs font-medium text-gray-400 leading-relaxed">1-3 kun ichida butun O'zbekistonga yetkazamiz.</p>
                     </div>
-                    <div class="glass p-12 rounded-[3.5rem] hover:bg-indigo-600/20 transition duration-700 group border border-white/20 shadow-2xl relative overflow-hidden">
-                        <div class="absolute -top-10 -right-10 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
-                        <div class="w-20 h-20 bg-cyan-600 text-white rounded-[2rem] flex items-center justify-center text-4xl mb-8 mx-auto shadow-xl shadow-cyan-600/30 group-hover:scale-110 transition duration-500">🎧</div>
-                        <h3 class="text-3xl font-black mb-4 text-dark tracking-tight">24/7 Yordam</h3>
-                        <p class="text-gray-500 font-medium">Sizning savollaringizga har doim javob berishga tayyormiz.</p>
+                    <div class="border border-gray-200 p-8 group hover:border-[#1A6CDB] transition bg-white">
+                        <div class="w-14 h-14 bg-[#1A6CDB] text-white flex items-center justify-center mb-6 group-hover:scale-110 transition"><i class="fas fa-undo text-xl"></i></div>
+                        <h3 class="text-sm font-black text-[#1B1B1B] uppercase tracking-widest mb-3">365 kun qaytarish</h3>
+                        <p class="text-xs font-medium text-gray-400 leading-relaxed">Mamnun bo'lmasangiz, hech qanday savol bermay qaytaramiz.</p>
+                    </div>
+                    <div class="border border-gray-200 p-8 group hover:border-[#1A6CDB] transition bg-white">
+                        <div class="w-14 h-14 bg-[#1A6CDB] text-white flex items-center justify-center mb-6 group-hover:scale-110 transition"><i class="fas fa-headset text-xl"></i></div>
+                        <h3 class="text-sm font-black text-[#1B1B1B] uppercase tracking-widest mb-3">24/7 Yordam</h3>
+                        <p class="text-xs font-medium text-gray-400 leading-relaxed">Har qanday muammoingizda doim yordam berishga tayyormiz.</p>
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Team -->
+        <section class="bg-[#F8F8F8] py-20 border-b border-gray-100">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+                <div class="text-center mb-14">
+                    <p class="text-[11px] font-black uppercase tracking-[0.4em] text-gray-400 mb-4">Mutaxassislar</p>
+                    <h2 class="text-3xl font-black text-[#1B1B1B] tracking-tighter">Bizning jamoa</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white border border-gray-200 p-10 text-center shadow-sm">
+                        <div class="w-24 h-24 bg-[#1A6CDB] text-white flex items-center justify-center mx-auto mb-6 text-3xl font-black">A</div>
+                        <h3 class="font-black text-[#1B1B1B] mb-1">Alisher Karimov</h3>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-[#1A6CDB] mb-4">Asoschisi & CEO</p>
+                        <p class="text-xs font-medium text-gray-400">10+ yil elektron tijorat sohasida tajriba.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 p-10 text-center shadow-sm">
+                        <div class="w-24 h-24 bg-[#1B1B1B] text-white flex items-center justify-center mx-auto mb-6 text-3xl font-black">M</div>
+                        <h3 class="font-black text-[#1B1B1B] mb-1">Malika Yusupova</h3>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-[#1A6CDB] mb-4">Savdo Direktori</p>
+                        <p class="text-xs font-medium text-gray-400">Mijozlar bilan ishlashda 8 yillik tajriba.</p>
+                    </div>
+                    <div class="bg-white border border-gray-200 p-10 text-center shadow-sm">
+                        <div class="w-24 h-24 bg-gray-600 text-white flex items-center justify-center mx-auto mb-6 text-3xl font-black">J</div>
+                        <h3 class="font-black text-[#1B1B1B] mb-1">Jasur Toshmatov</h3>
+                        <p class="text-[11px] font-black uppercase tracking-widest text-[#1A6CDB] mb-4">Texnik Rahbar</p>
+                        <p class="text-xs font-medium text-gray-400">Zamonaviy texnologiyalar bo'yicha keng bilim.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="bg-[#1A6CDB] py-16">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 text-center">
+                <h2 class="text-3xl font-black text-white tracking-tighter mb-4">Premium xarid tajribasi sizni kutmoqda</h2>
+                <p class="text-blue-100 font-medium mb-10">Minglab mahsulotlar, eng yaxshi narxlar, ishonchli xizmat.</p>
+                <a href="shop.html" class="inline-block bg-white text-[#1A6CDB] font-black px-12 py-4 text-sm hover:bg-gray-100 transition shadow-xl">Xaridni boshlash</a>
             </div>
         </section>
     </main>
+
+    <footer class="z-footer">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-14">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div class="col-span-2 md:col-span-1">
+                    <div class="text-[22px] font-black text-white mb-3">premium<span class="text-[#1A6CDB]">store</span></div>
+                    <p class="text-gray-500 text-sm leading-relaxed">Ishonchli elektronika do'koni.</p>
+                </div>
+                <div><h4>Do'kon</h4><ul><li><a href="shop.html">Barcha mahsulotlar</a></li><li><a href="shop.html?cat=Phones">Telefonlar</a></li><li><a href="shop.html?sale=1">Chegirmalar</a></li></ul></div>
+                <div><h4>Kompaniya</h4><ul><li><a href="about.html">Biz haqimizda</a></li><li><a href="contact.html">Aloqa</a></li></ul></div>
+                <div><h4>Yordam</h4><ul><li><a href="#">FAQ</a></li><li><a href="#">+998 71 200-00-00</a></li></ul></div>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <div class="max-w-[1440px] mx-auto px-8 py-5 text-center text-xs text-gray-600">© 2024 Premium Store. Barcha huquqlar himoyalangan.</div>
+        </div>
+    </footer>
 </body>
 </html>

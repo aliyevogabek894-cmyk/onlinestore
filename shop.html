@@ -3,170 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mahsulotlar - Premium Store</title>
+    <title>Do'kon - Premium Store | Barcha Mahsulotlar</title>
+    <meta name="description" content="Premium Store - barcha elektronika mahsulotlari. Telefon, noutbuk, audio, geyming va ko'proq.">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
+    <script src="assets/js/main.js"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .z-nav-item { font-size: 13px; font-weight: 600; color: #1B1B1B; padding: 10px 14px; white-space: nowrap; transition: color 0.15s; }
+        .z-nav-item:hover { color: #1A6CDB; }
+        .z-nav-item.sale { color: #D93025; }
+        .z-search-input { border: 2px solid #1B1B1B; height: 44px; border-radius: 0; outline: none; font-size: 14px; font-weight: 500; }
+        .z-search-input:focus { border-color: #1A6CDB; }
+        .z-search-btn { background: #1B1B1B; color: white; height: 44px; padding: 0 20px; font-weight: 700; font-size: 13px; border-radius: 0; transition: background 0.15s; }
+        .z-search-btn:hover { background: #1A6CDB; }
+        .z-product-card { border: 1px solid #e8e8e8; transition: box-shadow 0.2s, transform 0.2s; }
+        .z-product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
+        .z-tag-new { background: #1A6CDB; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
+        .z-tag-sale { background: #D93025; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
+        .star-rating { color: #F5A623; font-size: 12px; }
+        .z-footer { background: #1B1B1B; color: #ccc; }
+        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
+        .z-footer a:hover { color: white; }
+        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
+        .filter-checkbox:checked + label { background: #1B1B1B; color: white; border-color: #1B1B1B; }
+        .sort-select { border: 1px solid #e8e8e8; padding: 8px 12px; font-size: 13px; font-weight: 600; outline: none; color: #1B1B1B; }
+        .z-sidebar-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #1B1B1B; margin-bottom: 12px; }
+        .z-filter-btn { border: 1px solid #e8e8e8; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; color: #555; }
+        .z-filter-btn.active, .z-filter-btn:hover { border-color: #1B1B1B; background: #1B1B1B; color: white; }
+        [x-cloak] { display: none !important; }
+    </style>
 </head>
-<body x-data="shopPage()">
-    <!-- Navbar (Same as index) -->
-    <nav class="glass fixed w-full z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                    PREMIUM<span class="text-dark font-light ml-1">STORE</span>
-                </a>
-                <div class="hidden md:flex items-center space-x-8">
-                    <a href="index.html" class="text-dark hover:text-blue-600 font-medium transition">Bosh sahifa</a>
-                    <a href="shop.html" class="text-blue-600 font-bold transition">Mahsulotlar</a>
-                    <a href="about.html" class="text-dark hover:text-blue-600 font-medium transition">Biz haqimizda</a>
-                    <a href="contact.html" class="text-dark hover:text-blue-600 font-medium transition">Aloqa</a>
-                </div>
-                <div class="flex items-center space-x-5" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
-                    <!-- Theme Toggle -->
-                    <button @click="isDark = toggleTheme()" 
-                            class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
-                        <i x-show="!isDark" class="fas fa-moon text-xl"></i>
-                        <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
-                    </button>
+<body class="bg-[#F8F8F8]" x-data="shopPage()">
 
-                    <template x-if="user && user.role === 'admin'">
-                        <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
-                    </template>
+    <!-- Promo Bar -->
+    <div class="bg-[#1B1B1B] text-white py-2 px-4 text-center text-[12px] font-semibold">
+        🚚 Barcha buyurtmalarga BEPUL yetkazish &nbsp;|&nbsp; 📦 365 kunlik bepul qaytarish
+    </div>
 
-                    <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
-                        <i class="fas fa-shopping-cart text-xl"></i>
-                        <span class="cart-badge absolute -top-2 -right-2 bg-blue-600 text-white text-[10px] w-5 h-5 flex items-center justify-center rounded-full">0</span>
-                    </a>
-                    <button @click="mobileMenu = !mobileMenu" class="md:hidden text-dark text-2xl"><i class="fas fa-bars"></i></button>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <main class="pt-32 pb-24 mesh-gradient-vibrant min-h-screen">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="glass p-8 rounded-[3rem] mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-2xl">
-                <div>
-                    <h1 class="text-5xl font-black text-dark mb-2 tracking-tighter">Premium Galereya</h1>
-                    <p class="text-gray-500 font-medium">Eng so'nggi va eng sifatli mahsulotlar to'plami.</p>
-                </div>
-                
-                <div class="w-full md:w-auto flex flex-col sm:flex-row gap-4">
-                    <div class="relative">
-                        <input x-model="searchQuery" type="text" placeholder="Mahsulot qidirish..." class="w-full sm:w-72 bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500 shadow-xl transition">
-                        <i class="fas fa-search absolute right-6 top-1/2 -translate-y-1/2 text-gray-400"></i>
+    <!-- Header -->
+    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8">
+            <div class="flex items-center h-[72px] gap-6">
+                <a href="index.html" class="flex-shrink-0">
+                    <div class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B] leading-none">
+                        premium<span class="text-[#1A6CDB]">store</span>
                     </div>
-                    <select x-model="activeCategory" class="bg-white/50 dark:bg-gray-900/50 backdrop-blur-xl border border-white/20 rounded-2xl px-6 py-4 outline-none focus:ring-2 focus:ring-blue-500 shadow-xl transition cursor-pointer text-dark">
-                        <option value="Hammasi">Barcha kategoriyalar</option>
-                        <option value="Phones">Telefonlar</option>
-                        <option value="Laptops">Noutbuklar</option>
-                        <option value="Audio">Audio</option>
-                        <option value="Smart Watches">Smart soatlar</option>
-                        <option value="Gaming">Geyming</option>
-                        <option value="Accessories">Aksessuarlar</option>
-                        <option value="Cameras">Kameralar</option>
-                        <option value="Home Tech">Uy texnikasi</option>
-                    </select>
+                </a>
+                <div class="flex-1 flex">
+                    <input type="text" x-model="searchQ" @keydown.enter="applySearch()" placeholder="Mahsulot qidiring..." class="z-search-input flex-1 px-4">
+                    <button @click="applySearch()" class="z-search-btn">
+                        <i class="fas fa-search text-sm mr-2"></i><span class="hidden sm:inline">Qidirish</span>
+                    </button>
+                </div>
+                <div class="flex items-center gap-1 flex-shrink-0">
+                    <template x-if="!currentUser">
+                        <a href="login.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                            <i class="far fa-user text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                        </a>
+                    </template>
+                    <template x-if="currentUser">
+                        <a href="profile.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                            <div class="w-[22px] h-[22px] rounded-full bg-[#1A6CDB] text-white text-[11px] font-black flex items-center justify-center" x-text="currentUser.name.charAt(0)"></div>
+                        </a>
+                    </template>
+                    <a href="cart.html" class="flex items-center px-3 py-2 hover:bg-gray-50 rounded group relative">
+                        <div class="relative">
+                            <i class="fas fa-shopping-bag text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                            <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-2 -right-2 bg-[#D93025] text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center"></span>
+                        </div>
+                    </a>
+                    <template x-if="currentUser && currentUser.role === 'admin'">
+                        <a href="admin.html" class="px-3 py-2 hover:bg-gray-50 rounded">
+                            <i class="fas fa-shield-alt text-[18px] text-[#1A6CDB]"></i>
+                        </a>
+                    </template>
                 </div>
             </div>
+            <nav class="flex items-center border-t border-gray-100 overflow-x-auto -mx-4 px-4 md:-mx-8 md:px-8">
+                <a href="shop.html" class="z-nav-item" :class="!activeCategory ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Barchasi</a>
+                <a href="shop.html?cat=Phones" class="z-nav-item" :class="activeCategory === 'Phones' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Telefonlar</a>
+                <a href="shop.html?cat=Laptops" class="z-nav-item" :class="activeCategory === 'Laptops' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Noutbuklar</a>
+                <a href="shop.html?cat=Audio" class="z-nav-item" :class="activeCategory === 'Audio' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Audio</a>
+                <a href="shop.html?cat=Gaming" class="z-nav-item" :class="activeCategory === 'Gaming' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Geyming</a>
+                <a href="shop.html?cat=Accessories" class="z-nav-item" :class="activeCategory === 'Accessories' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Aksessuarlar</a>
+                <a href="shop.html?sale=1" class="z-nav-item sale">Chegirma 🔥</a>
+            </nav>
+        </div>
+    </header>
 
-            <!-- Products Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                <template x-for="product in products" :key="product.id">
-                    <div x-show="(activeCategory === 'Hammasi' || product.category === activeCategory) && matchesSearch(product)" 
-                         class="glass rounded-[2.5rem] p-5 shadow-2xl card-hover group border border-white/20">
-                        <div class="relative aspect-square rounded-[2rem] overflow-hidden mb-6 shadow-inner bg-gray-100/10">
-                            <img :src="product.image" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
-                            <button class="absolute top-4 right-4 w-12 h-12 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center text-gray-400 hover:text-red-500 transition shadow-xl"><i class="far fa-heart text-xl"></i></button>
-                            <div class="absolute bottom-4 left-4">
-                                <span x-text="product.category" class="px-4 py-1.5 bg-indigo-600/90 backdrop-blur-md text-white text-[10px] font-black uppercase tracking-widest rounded-full shadow-lg dark:neon-glow"></span>
-                            </div>
+    <!-- Page Content -->
+    <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-8">
+
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 text-xs text-gray-400 font-medium mb-6">
+            <a href="index.html" class="hover:text-[#1A6CDB]">Bosh sahifa</a>
+            <i class="fas fa-chevron-right text-[9px]"></i>
+            <span class="text-gray-700 font-bold" x-text="activeCategory || 'Barcha mahsulotlar'"></span>
+        </div>
+
+        <div class="flex gap-8">
+
+            <!-- ===== SIDEBAR ===== -->
+            <aside class="hidden lg:block w-60 flex-shrink-0">
+
+                <!-- Category Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Kategoriya</h3>
+                    <div class="space-y-1">
+                        <button @click="setCategory('')" :class="!activeCategory ? 'font-black text-[#1A6CDB]' : 'text-gray-600'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium">Barchasi</button>
+                        <template x-for="cat in categories">
+                            <button @click="setCategory(cat)" :class="activeCategory === cat ? 'font-black text-[#1A6CDB]' : 'text-gray-600'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium" x-text="cat"></button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Narx oralig'i</h3>
+                    <div class="space-y-2">
+                        <template x-for="range in priceRanges">
+                            <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left" x-text="range.label"></button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Condition Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Holati</h3>
+                    <div class="space-y-2">
+                        <button @click="filterNew = null; applyFilters()" :class="filterNew === null ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Barchasi</button>
+                        <button @click="filterNew = true; applyFilters()" :class="filterNew === true ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Yangi mahsulotlar</button>
+                        <button @click="filterSale = true; applyFilters()" :class="filterSale ? 'border-[#D93025] bg-[#D93025] text-white' : 'text-gray-600 hover:border-[#D93025]'" class="z-filter-btn block w-full text-left text-[#D93025]">Chegirmalilari</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- ===== MAIN PRODUCT GRID ===== -->
+            <div class="flex-1">
+
+                <!-- Top Bar: count + sort -->
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 bg-white border border-gray-200 px-5 py-3">
+                    <p class="text-sm font-semibold text-gray-600">
+                        <span class="font-black text-[#1B1B1B]" x-text="filtered.length"></span> ta mahsulot topildi
+                        <span x-show="activeCategory" class="text-gray-400"> — <span x-text="activeCategory"></span></span>
+                    </p>
+                    <div class="flex items-center gap-3">
+                        <!-- Mobile filter toggle -->
+                        <button class="lg:hidden flex items-center gap-2 text-sm font-bold text-gray-600 border border-gray-200 px-4 py-2 hover:border-[#1B1B1B]" @click="mobileFilter = !mobileFilter">
+                            <i class="fas fa-filter text-xs"></i> Filtr
+                        </button>
+                        <select x-model="sortBy" @change="applyFilters()" class="sort-select">
+                            <option value="default">Saralash</option>
+                            <option value="price_asc">Narx: Past → Yuqori</option>
+                            <option value="price_desc">Narx: Yuqori → Past</option>
+                            <option value="rating">Reyting bo'yicha</option>
+                            <option value="name">Nom bo'yicha</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Mobile Filters -->
+                <div x-show="mobileFilter" x-cloak class="lg:hidden bg-white border border-gray-200 p-5 mb-4 grid grid-cols-2 gap-4">
+                    <div>
+                        <h3 class="z-sidebar-title">Kategoriya</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <button @click="setCategory('')" :class="!activeCategory ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn">Barchasi</button>
+                            <template x-for="cat in categories">
+                                <button @click="setCategory(cat)" :class="activeCategory === cat ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="cat"></button>
+                            </template>
                         </div>
-                        <div class="px-2">
-                            <h3 class="text-xl font-black text-dark dark:text-neon mb-2 hover:text-indigo-600 transition leading-tight">
-                                <a :href="'product-detail.html?id=' + product.id" x-text="product.name"></a>
-                            </h3>
-                            <div class="flex items-center justify-between mt-6">
-                                <div class="flex flex-col">
-                                    <span x-show="product.oldPrice" x-text="formatPrice(product.oldPrice)" class="text-xs text-red-500 line-through mb-1 opacity-60"></span>
-                                    <span x-text="formatPrice(product.price)" class="text-2xl font-black text-dark dark:text-white"></span>
+                    </div>
+                    <div>
+                        <h3 class="z-sidebar-title">Narx</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <template x-for="range in priceRanges">
+                                <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="range.label"></button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Products Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    <template x-for="product in paginated" :key="product.id">
+                        <a :href="'product-detail.html?id=' + product.id" class="z-product-card bg-white block group">
+                            <div class="relative overflow-hidden bg-gray-50 aspect-square">
+                                <img :src="product.image" :alt="product.name" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300">
+                                <div class="absolute top-2 left-2 flex flex-col gap-1">
+                                    <span x-show="product.isNew" class="z-tag-new">YANGI</span>
+                                    <span x-show="product.oldPrice" class="z-tag-sale">CHEGIRMA</span>
                                 </div>
-                                <button @click="addToCart(product.id)" class="w-14 h-14 bg-indigo-600 text-white rounded-2xl flex items-center justify-center hover:bg-dark hover:scale-105 transition active:scale-95 shadow-xl shadow-indigo-600/30 dark:neon-glow">
-                                    <i class="fas fa-shopping-basket text-xl"></i>
+                                <button @click.prevent="addToCart(product)" class="absolute bottom-2 right-2 bg-[#1A6CDB] text-white w-9 h-9 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all shadow">
+                                    <i class="fas fa-cart-plus text-sm"></i>
                                 </button>
                             </div>
-                        </div>
+                            <div class="p-4 border-t border-gray-100">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1" x-text="product.category"></p>
+                                <h3 class="text-sm font-bold text-[#1B1B1B] line-clamp-2 leading-snug mb-2 group-hover:text-[#1A6CDB] transition" x-text="product.name"></h3>
+                                <div class="star-rating mb-2">
+                                    <template x-for="s in product.rating"><i class="fas fa-star"></i></template>
+                                </div>
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="text-sm font-black text-[#1B1B1B]" x-text="fmt(product.price)"></span>
+                                    <span x-show="product.oldPrice" class="text-xs text-gray-400 line-through" x-text="fmt(product.oldPrice)"></span>
+                                </div>
+                            </div>
+                        </a>
+                    </template>
+                    <!-- Empty state -->
+                    <div x-show="filtered.length === 0" class="col-span-full py-20 text-center">
+                        <i class="fas fa-search text-6xl text-gray-200 mb-4 block"></i>
+                        <p class="text-gray-400 font-bold text-lg">Hech narsa topilmadi</p>
+                        <p class="text-gray-300 text-sm mt-2">Filtrlarni o'zgartirib ko'ring</p>
+                        <button @click="resetFilters()" class="mt-6 bg-[#1B1B1B] text-white px-8 py-3 font-bold text-sm hover:bg-[#1A6CDB] transition">Filtrlarni tozalash</button>
                     </div>
-                </template>
-            </div>
-            
-            <!-- Empty State -->
-            <div x-show="products.filter(p => (activeCategory === 'Hammasi' || p.category === activeCategory) && matchesSearch(p)).length === 0" 
-                 class="py-32 text-center glass rounded-[3rem] mt-12 border border-white/20 overflow-hidden relative">
-                <div class="absolute inset-0 opacity-10 mesh-gradient-vibrant"></div>
-                <div class="relative z-10 text-gray-400">
-                    <div class="w-32 h-32 bg-gray-100/20 rounded-full flex items-center justify-center mx-auto mb-8 text-indigo-500 shadow-2xl">
-                        <i class="fas fa-search-minus text-5xl"></i>
-                    </div>
-                    <h3 class="text-3xl font-black text-dark mb-3 tracking-tighter">Hech narsa topilmadi</h3>
-                    <p class="text-lg font-medium">Boshqa kalit so'zlar bilan qidirib ko'ring yoki kategoriyani o'zgartiring.</p>
+                </div>
+
+                <!-- Pagination -->
+                <div x-show="totalPages > 1" class="flex items-center justify-center gap-2 mt-10">
+                    <button @click="page > 1 && (page--, scroll(0,0))" :disabled="page === 1" class="w-10 h-10 border border-gray-200 flex items-center justify-center text-gray-500 hover:border-[#1B1B1B] disabled:opacity-30 transition">
+                        <i class="fas fa-chevron-left text-xs"></i>
+                    </button>
+                    <template x-for="p in totalPages">
+                        <button @click="page = p; scroll(0,0)" :class="page === p ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : 'border-gray-200 text-gray-600 hover:border-[#1B1B1B]'" class="w-10 h-10 border flex items-center justify-center text-sm font-bold transition" x-text="p"></button>
+                    </template>
+                    <button @click="page < totalPages && (page++, scroll(0,0))" :disabled="page === totalPages" class="w-10 h-10 border border-gray-200 flex items-center justify-center text-gray-500 hover:border-[#1B1B1B] disabled:opacity-30 transition">
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
-    <!-- Footer (Same as index) -->
-    <footer class="bg-dark text-white pt-24 pb-12">
-        <!-- ... (Same footer as index.html) ... -->
+    <!-- =====FOOTER ===== -->
+    <footer class="z-footer mt-16">
+        <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-14">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
+                <div class="col-span-2 md:col-span-4 lg:col-span-1">
+                    <div class="text-[22px] font-black tracking-[-0.04em] text-white leading-none mb-4">premium<span class="text-[#1A6CDB]">store</span></div>
+                    <p class="text-gray-500 text-sm font-medium leading-relaxed mb-6">O'zbekistonda eng ishonchli online elektronika do'koni.</p>
+                    <div class="flex gap-3">
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#1A6CDB] hover:text-white transition text-sm"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#e1306c] hover:text-white transition text-sm"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Do'kon</h4>
+                    <ul>
+                        <li><a href="shop.html?cat=Phones">Telefonlar</a></li>
+                        <li><a href="shop.html?cat=Laptops">Noutbuklar</a></li>
+                        <li><a href="shop.html?cat=Audio">Audio</a></li>
+                        <li><a href="shop.html?cat=Gaming">Geyming</a></li>
+                        <li><a href="shop.html?sale=1">Chegirmalar 🔥</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Kompaniya</h4>
+                    <ul>
+                        <li><a href="about.html">Biz haqimizda</a></li>
+                        <li><a href="contact.html">Aloqa</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Yordam</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Qaytarish siyosati</a></li>
+                        <li><a href="#">+998 71 200-00-00</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-white/10">
+            <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
+                <p class="text-gray-600 text-xs">© 2024 Premium Store. Barcha huquqlar himoyalangan.</p>
+                <div class="flex gap-2">
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">VISA</div>
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">Mastercard</div>
+                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">Humo</div>
+                </div>
+            </div>
+        </div>
     </footer>
 
-    <script src="assets/js/main.js"></script>
+    <!-- Toast -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-[#1B1B1B] text-white px-6 py-4 shadow-2xl max-w-sm flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 z-[9999]">
+        <i class="fas fa-check-circle text-green-400"></i>
+        <span id="toastText" class="text-sm font-semibold"></span>
+    </div>
+
     <script>
         function shopPage() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const initialCat = urlParams.get('cat') || 'Hammasi';
-            const initialSearch = urlParams.get('q') || '';
-
             return {
-                mobileMenu: false,
-                activeCategory: initialCat,
-                searchQuery: initialSearch,
-                products: db.getProducts(),
-                formatPrice(price) {
-                    return price.toLocaleString() + " so'm";
+                currentUser: JSON.parse(localStorage.getItem('ps_current_user')),
+                allProducts: [],
+                filtered: [],
+                paginated: [],
+                categories: ['Phones', 'Laptops', 'Audio', 'Gaming', 'Smart Watches', 'Accessories'],
+                priceRanges: [
+                    { label: 'Barchasi', value: '' },
+                    { label: '0 – 1,000,000', value: '0-1000000' },
+                    { label: '1,000,000 – 5,000,000', value: '1000000-5000000' },
+                    { label: '5,000,000 – 15,000,000', value: '5000000-15000000' },
+                    { label: '15,000,000+', value: '15000000-999999999' }
+                ],
+                activeCategory: '',
+                activePriceRange: '',
+                filterNew: null,
+                filterSale: false,
+                sortBy: 'default',
+                searchQ: '',
+                page: 1,
+                perPage: 24,
+                totalPages: 1,
+                cartCount: 0,
+                mobileFilter: false,
+                init() {
+                    this.allProducts = db.getProducts();
+                    const params = new URLSearchParams(location.search);
+                    if (params.get('cat')) this.activeCategory = params.get('cat');
+                    if (params.get('q')) this.searchQ = params.get('q');
+                    if (params.get('sale')) this.filterSale = true;
+                    this.applyFilters();
+                    this.updateCartCount();
                 },
-                matchesSearch(product) {
-                    const q = this.searchQuery.toLowerCase();
-                    const nameMatch = product.name.toLowerCase().includes(q);
-                    const catMatch = product.category.toLowerCase().includes(q);
-                    // Also check localized names if needed, but name includes 'Telefon' usually
-                    const categoryMap = {
-                        'Phones': 'telefon',
-                        'Laptops': 'noutbuk',
-                        'Audio': 'audio',
-                        'Gaming': 'geyming'
-                    };
-                    const localizedCatMatch = categoryMap[product.category] ? categoryMap[product.category].includes(q) : false;
-                    
-                    return nameMatch || catMatch || localizedCatMatch;
+                setCategory(cat) {
+                    this.activeCategory = cat;
+                    this.page = 1;
+                    this.applyFilters();
+                    this.mobileFilter = false;
                 },
-                addToCart(id) {
-                    if (window.addToCart) {
-                        window.addToCart(id);
-                    } else {
-                        const product = this.products.find(p => p.id === id);
-                        alert(product.name + " savatchaga qo'shildi!");
+                setPriceRange(val) {
+                    this.activePriceRange = val;
+                    this.page = 1;
+                    this.applyFilters();
+                },
+                applySearch() {
+                    this.page = 1;
+                    this.applyFilters();
+                },
+                applyFilters() {
+                    let res = [...this.allProducts];
+                    if (this.activeCategory) res = res.filter(p => p.category === this.activeCategory);
+                    if (this.searchQ) { const q = this.searchQ.toLowerCase(); res = res.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)); }
+                    if (this.filterNew === true) res = res.filter(p => p.isNew);
+                    if (this.filterSale) res = res.filter(p => p.oldPrice);
+                    if (this.activePriceRange) {
+                        const [min, max] = this.activePriceRange.split('-').map(Number);
+                        res = res.filter(p => p.price >= min && p.price <= max);
                     }
+                    if (this.sortBy === 'price_asc') res.sort((a, b) => a.price - b.price);
+                    else if (this.sortBy === 'price_desc') res.sort((a, b) => b.price - a.price);
+                    else if (this.sortBy === 'rating') res.sort((a, b) => b.rating - a.rating);
+                    else if (this.sortBy === 'name') res.sort((a, b) => a.name.localeCompare(b.name));
+                    this.filtered = res;
+                    this.totalPages = Math.ceil(res.length / this.perPage) || 1;
+                    if (this.page > this.totalPages) this.page = 1;
+                    this.paginated = res.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+                },
+                resetFilters() {
+                    this.activeCategory = '';
+                    this.activePriceRange = '';
+                    this.filterNew = null;
+                    this.filterSale = false;
+                    this.sortBy = 'default';
+                    this.searchQ = '';
+                    this.applyFilters();
+                },
+                addToCart(p) {
+                    let cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
+                    const idx = cart.findIndex(i => i.id == p.id);
+                    if (idx > -1) cart[idx].qty++;
+                    else cart.push({ id: p.id, name: p.name, price: p.price, image: p.image, qty: 1 });
+                    localStorage.setItem('ps_cart', JSON.stringify(cart));
+                    this.updateCartCount();
+                    this.showToast(p.name + " savatga qo'shildi!");
+                },
+                updateCartCount() {
+                    const cart = JSON.parse(localStorage.getItem('ps_cart') || '[]');
+                    this.cartCount = cart.reduce((s, i) => s + i.qty, 0);
+                },
+                fmt(p) {
+                    if (!p && p !== 0) return '';
+                    return new Intl.NumberFormat('uz-UZ').format(p) + " so'm";
+                },
+                showToast(msg) {
+                    const el = document.getElementById('toast');
+                    document.getElementById('toastText').textContent = msg;
+                    el.classList.remove('translate-y-20', 'opacity-0');
+                    el.classList.add('translate-y-0', 'opacity-100');
+                    setTimeout(() => { el.classList.add('translate-y-20', 'opacity-0'); el.classList.remove('translate-y-0', 'opacity-100'); }, 2500);
                 }
             }
         }

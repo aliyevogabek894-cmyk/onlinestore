@@ -5,70 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kirish - Premium Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="assets/js/db.js"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        .z-input { border: 2px solid #e8e8e8; padding: 14px 16px; font-size: 14px; font-weight: 500; outline: none; transition: border-color 0.15s; width: 100%; border-radius: 0; }
+        .z-input:focus { border-color: #1A6CDB; }
+        .z-btn { background: #1A6CDB; color: white; font-weight: 800; font-size: 14px; padding: 16px; width: 100%; text-align: center; transition: background 0.15s; border-radius: 0; cursor: pointer; border: none; }
+        .z-btn:hover { background: #1558b8; }
+    </style>
 </head>
-<body class="mesh-gradient-vibrant min-h-screen flex items-center justify-center p-6 lg:p-12 relative overflow-hidden">
-    <div class="absolute inset-0 z-0 opacity-20 mesh-gradient-vibrant scale-150 rotate-12"></div>
-    <div class="glass w-full max-w-xl rounded-[4rem] p-16 shadow-2xl border border-white/20 relative z-10 overflow-hidden">
-        <div class="absolute -top-32 -left-32 w-64 h-64 bg-indigo-600/20 rounded-full blur-[100px]"></div>
-        <div class="relative z-10">
-            <div class="text-center mb-12">
-                <a href="index.html" class="text-4xl font-black tracking-tighter text-indigo-600 mb-8 block drop-shadow-sm">PREMIUM<span class="text-dark dark:text-white font-light ml-1 opacity-50">HUB</span></a>
-                <h1 class="text-5xl font-black text-dark dark:text-white tracking-tighter mb-4">Xush kelibsiz!</h1>
-                <p class="text-gray-500 font-bold max-w-xs mx-auto text-lg leading-relaxed">Profilingizga kirish uchun ma'lumotlarni kiriting.</p>
+<body class="bg-[#F2F2F2] min-h-screen" x-data="loginPage()">
+
+    <!-- Minimal Header -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
+            <a href="index.html" class="text-[22px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
+            <div class="flex items-center gap-4 text-[12px] text-gray-500 font-medium">
+                <i class="fas fa-lock text-green-500"></i>
+                <span>Xavfsiz ulanish</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex items-center justify-center min-h-[calc(100vh-73px)] py-12 px-4">
+        <div class="w-full max-w-[440px]">
+            <!-- Card -->
+            <div class="bg-white border border-gray-200 shadow-sm p-10">
+                <div class="text-center mb-8">
+                    <h1 class="text-2xl font-black text-[#1B1B1B] tracking-tight">Hisobingizga kiring</h1>
+                    <p class="text-sm text-gray-500 font-medium mt-2">Buyurtma tarixi va maqomingizni ko'ring</p>
+                </div>
+
+                <!-- Error/Success messages -->
+                <div x-show="error" x-cloak class="bg-red-50 border border-red-200 text-red-600 text-sm font-medium px-4 py-3 mb-6" x-text="error"></div>
+
+                <form @submit.prevent="login()" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Email manzil</label>
+                        <input type="email" x-model="email" required class="z-input" placeholder="siz@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Parol</label>
+                        <div class="relative">
+                            <input :type="showPass ? 'text' : 'password'" x-model="password" required class="z-input pr-12" placeholder="••••••••">
+                            <button type="button" @click="showPass = !showPass" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                                <i :class="showPass ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between pt-1">
+                        <label class="flex items-center gap-2 cursor-pointer">
+                            <input type="checkbox" class="w-4 h-4 accent-[#1A6CDB]">
+                            <span class="text-sm text-gray-500 font-medium">Eslab qol</span>
+                        </label>
+                        <a href="#" class="text-sm font-semibold text-[#1A6CDB] hover:underline">Parolni unutdim?</a>
+                    </div>
+                    <button type="submit" class="z-btn mt-4">Kirish</button>
+                </form>
+
+                <div class="border-t border-gray-100 mt-8 pt-6 text-center">
+                    <p class="text-sm text-gray-500">Hisobingiz yo'qmi? <a href="register.html" class="font-bold text-[#1A6CDB] hover:underline">Ro'yxatdan o'tish</a></p>
+                </div>
             </div>
 
-            <form class="space-y-8" id="loginForm">
-                <div class="space-y-4">
-                    <label class="font-black text-xs uppercase tracking-widest text-gray-500 ml-6">Elektron pochta</label>
-                    <div class="relative">
-                        <input type="email" id="email" required placeholder="example@mail.com" class="w-full glass p-6 rounded-3xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark dark:text-white font-bold transition shadow-inner">
-                        <i class="fas fa-envelope absolute right-8 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    </div>
-                </div>
-                <div class="space-y-4">
-                    <label class="font-black text-xs uppercase tracking-widest text-gray-500 ml-6">Maxfiy parol</label>
-                    <div class="relative">
-                        <input type="password" id="password" required placeholder="••••••••" class="w-full glass p-6 rounded-3xl outline-none focus:ring-4 focus:ring-indigo-600/20 text-dark dark:text-white font-bold transition shadow-inner">
-                        <i class="fas fa-lock absolute right-8 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                    </div>
-                </div>
-                <button type="submit" class="w-full bg-dark dark:bg-indigo-600 text-white py-6 rounded-[2rem] font-black text-xl hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-indigo-600/30 tracking-tighter">
-                    Tizimga kirish
-                </button>
-            </form>
-
-            <script src="assets/js/db.js"></script>
-            <script>
-                document.getElementById('loginForm').addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const email = document.getElementById('email').value;
-                    const password = document.getElementById('password').value;
-
-                    const users = db.getUsers();
-                    const user = users.find(u => u.email === email && u.password === password);
-
-                    if (user) {
-                        localStorage.setItem('ps_current_user', JSON.stringify(user));
-                        alert("Xush kelibsiz, " + user.name + "!");
-                        window.location.href = 'index.html';
-                    } else {
-                        alert("Email yoki parol noto'g'ri!");
-                    }
-                });
-            </script>
-
-            <p class="text-center mt-12 text-gray-500 font-bold">
-                Akkountingiz yo'qmi? <a href="register.html" class="text-indigo-600 dark:text-indigo-400 font-black border-b-2 border-indigo-600/20 hover:border-indigo-600 transition-all ml-2 pb-1">Ro'yxatdan o'tish</a>
-            </p>
+            <!-- Trust signals -->
+            <div class="flex items-center justify-center gap-8 mt-8 text-[11px] text-gray-400 font-medium">
+                <span><i class="fas fa-shield-alt text-green-500 mr-1"></i> 256-bit SSL</span>
+                <span><i class="fas fa-lock text-green-500 mr-1"></i> Xavfsiz</span>
+                <span><i class="fas fa-user-shield text-green-500 mr-1"></i> Maxfiy</span>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <script>
+        function loginPage() {
+            return {
+                email: '',
+                password: '',
+                error: '',
+                showPass: false,
+                login() {
+                    this.error = '';
+                    const users = db.getUsers();
+                    const user = users.find(u => u.email === this.email && u.password === this.password);
+                    if (!user) { this.error = 'Email yoki parol noto\'g\'ri. Iltimos, tekshirib ko\'ring.'; return; }
+                    localStorage.setItem('ps_current_user', JSON.stringify(user));
+                    window.location.href = user.role === 'admin' ? 'admin.html' : 'index.html';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

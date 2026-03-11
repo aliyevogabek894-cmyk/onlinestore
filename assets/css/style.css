@@ -1,150 +1,175 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
 
 :root {
-    /* Light Mode - Refined & Airy */
-    --primary: #4f46e5; /* Indigo 600 */
-    --primary-hover: #4338ca; /* Indigo 700 */
-    --accent: #f59e0b;
-    --bg-main: #fcfcfd;
-    --bg-card: #ffffff;
-    --text-main: #1e293b; /* Slate 800 */
-    --text-muted: #64748b; /* Slate 500 */
-    --glass-bg: rgba(255, 255, 255, 0.8);
-    --border: rgba(0, 0, 0, 0.06);
-    --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
+    /* Zappos-Inspired Palette: Clean, Trustworthy, Professional */
+    --primary: #003953; /* Zappos Dark Blue */
+    --primary-hover: #002a3d;
+    --accent: #0076B6; /* Link Blue */
+    --sale: #D93930; /* Sale Red */
+    --promo: #FFF200; /* Promo Yellow */
+    --bg-main: #FFFFFF;
+    --bg-secondary: #F5F5F5;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --border: #DDDDDD;
+    --border-light: #EEEEEE;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 body.dark {
-    /* Vibrant Midnight Mode - High Intensity Neon */
-    --primary: #818cf8; /* Indigo 400 - Brighter */
-    --primary-hover: #6366f1; /* Indigo 500 */
-    --accent: #22d3ee; /* Bright Cyan */
-    --bg-main: #06061e; /* Deep Vibrant Navy-Indigo */
-    --bg-card: #0c0c2d; /* Lighter, more colorful card */
-    --text-main: #ffffff; /* Pure white for maximum pop */
-    --text-muted: #94a3b8; /* Slate 400 */
-    --glass-bg: rgba(15, 15, 50, 0.6); /* Vibrant glass transparency */
-    --border: rgba(255, 255, 255, 0.15); /* Brighter, more visible borders */
-    --card-shadow: 0 0 30px rgba(99, 102, 241, 0.2); /* Subtle indigo glow */
-}
-
-/* Hyper-Vibrant Dark Mesh Gradient */
-body.dark .mesh-gradient-vibrant,
-.mesh-gradient-dark {
-    background: 
-        radial-gradient(at 0% 100%, #1e1b4b 0px, transparent 50%),
-        radial-gradient(at 100% 0%, #4c1d95 0px, transparent 50%),
-        radial-gradient(at 100% 100%, #1e3a8a 0px, transparent 50%),
-        radial-gradient(at 0% 0%, #db2777 0px, transparent 50%);
-    background-size: 200% 200%;
+    /* Dark Mode - Clean & Readable */
+    --bg-main: #121212;
+    --bg-secondary: #1E1E1E;
+    --text-main: #FFFFFF;
+    --text-muted: #A0A0A0;
+    --border: #333333;
+    --border-light: #222222;
+    --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 body {
     font-family: 'Inter', sans-serif;
     color: var(--text-main);
     background-color: var(--bg-main);
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
     overflow-x: hidden;
 }
 
-/* Hyper-Vibrant Mesh Gradients */
-.mesh-gradient-vibrant {
-    background: 
-        radial-gradient(at 0% 100%, #4f46e5 0px, transparent 50%),
-        radial-gradient(at 100% 0%, #ec4899 0px, transparent 50%),
-        radial-gradient(at 100% 100%, #f59e0b 0px, transparent 50%),
-        radial-gradient(at 0% 0%, #06b6d4 0px, transparent 50%);
-    background-size: 200% 200%;
-    animation: meshFlow 20s ease infinite;
+.serif {
+    font-family: 'Playfair Display', serif;
 }
 
-@keyframes meshFlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+/* Base Layout Components */
+.container-custom {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 24px;
 }
 
-/* Neon Glow Accents */
-.neon-glow {
-    box-shadow: 0 0 15px var(--primary);
-    border: 1px solid var(--primary);
+/* Header & Nav */
+.header-main {
+    background: var(--bg-main);
+    border-bottom: 4px solid var(--primary);
 }
 
-.text-neon {
-    text-shadow: 0 0 10px var(--primary);
+.search-bar {
+    border: 1px solid var(--border);
+    transition: border-color 0.2s;
 }
 
-.bg-white { background-color: var(--bg-card) !important; }
-.bg-gray-50 { background-color: var(--bg-main) !important; }
-.bg-gray-100 { background-color: var(--bg-main) !important; }
-.text-dark { color: var(--text-main) !important; }
-.text-gray-900 { color: var(--text-main) !important; }
-.text-gray-800 { color: var(--text-main) !important; }
-.text-gray-500, .text-gray-400 { color: var(--text-muted) !important; }
-.shadow-xl, .shadow-2xl { box-shadow: var(--card-shadow) !important; }
+.search-bar:focus-within {
+    border-color: var(--text-main);
+}
 
+/* Buttons */
+.btn-primary {
+    background-color: var(--text-main);
+    color: #FFFFFF;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+    opacity: 0.8;
+}
+
+/* Zappos-Style Product Card */
+.product-card {
+    background: var(--bg-main);
+    border: 1px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.product-card:hover {
+    border-color: var(--border);
+}
+
+.product-card img {
+    background-color: var(--bg-secondary);
+}
+
+.brand-name {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.price-box {
+    font-weight: 800;
+    color: var(--text-main);
+}
+
+.price-sale {
+    color: var(--sale);
+}
+
+/* Legacy Overrides for compatibility during transition */
 .glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: var(--bg-main) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
     border: 1px solid var(--border) !important;
+    box-shadow: none !important;
 }
 
-body.dark .glass {
-    border: 1.5px solid rgba(255, 255, 255, 0.1) !important;
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.1);
-}
-
-.premium-gradient {
-    background: linear-gradient(135deg, #0f172a 0%, #020617 100%);
-}
-
-body.dark .premium-gradient {
-    background: linear-gradient(135deg, #06061e 0%, #0c0c2d 100%);
+.mesh-gradient-vibrant, .mesh-gradient-dark {
+    background: var(--bg-main) !important;
+    animation: none !important;
 }
 
 .card-hover {
-    background-color: var(--bg-card);
+    transition: all 0.2s ease-out;
+    background: var(--bg-main);
     border: 1px solid var(--border);
-    transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card-hover:hover {
-    transform: translateY(-12px) scale(1.02);
-    border-color: var(--accent);
-    box-shadow: 0 30px 60px -12px rgba(34, 211, 238, 0.3) !important;
+    transform: none;
+    border-color: var(--text-main);
+    box-shadow: var(--card-shadow) !important;
 }
 
-.neon-glow {
-    box-shadow: 0 0 20px var(--accent);
+/* Utility */
+.bg-promo { background-color: var(--promo) !important; }
+.text-sale { color: var(--sale) !important; }
+.bg-primary-zappos { background-color: var(--primary) !important; }
+
+/* Sticky Mobile Add to Bag */
+.mobile-sticky-cta {
+    display: none;
 }
 
-.text-neon {
-    text-shadow: 0 0 10px var(--accent);
-    color: var(--accent) !important;
+@media (max-width: 768px) {
+    .mobile-sticky-cta {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: var(--bg-main);
+        padding: 12px 24px;
+        border-top: 1px solid var(--border);
+        z-index: 50;
+    }
 }
-
-body.dark .bg-indigo-600 { background-color: #6366f1 !important; }
-body.dark .bg-indigo-600\/10 { background-color: rgba(129, 140, 248, 0.15) !important; }
-body.dark .bg-indigo-600\/20 { background-color: rgba(129, 140, 248, 0.25) !important; }
-body.dark .bg-indigo-600\/90 { background-color: rgba(129, 140, 248, 0.9) !important; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-    width: 8px;
+    width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-    background: var(--bg-main);
+    background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--text-muted);
-    border-radius: 4px;
+    background: var(--border);
+    border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--primary);
+    background: var(--text-muted);
 }
 
 [x-cloak] { display: none !important; }
