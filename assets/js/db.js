@@ -120,6 +120,8 @@ const db = {
         const users = db.getUsers();
         user.id = Date.now();
         user.joinedDate = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
+        // First user is admin, or if email matches specific admin email
+        user.role = (users.length === 0 || user.email === 'admin@premium.uz') ? 'admin' : 'user';
         users.push(user);
         localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
         return user;

@@ -17,12 +17,15 @@
 <body class="bg-gray-50">
     <nav class="h-24 flex items-center px-8 border-b bg-white dark:bg-gray-900 justify-between">
         <a href="index.html" class="text-2xl font-black text-dark">PREMIUM STORE</a>
-        <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+        <div class="flex items-center space-x-6" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
             <button @click="isDark = toggleTheme()" 
                     class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
                 <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                 <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
             </button>
+            <template x-if="user && user.role === 'admin'">
+                <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
+            </template>
             <a href="shop.html" class="text-indigo-600 font-bold">Shopga qaytish</a>
         </div>
     </nav>
@@ -36,7 +39,7 @@
             <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
                 <div class="glass p-12 rounded-[4rem] shadow-2xl border border-white/20">
                     <span class="text-indigo-400 font-black uppercase tracking-[0.3em] mb-4 block">Bizning hikoyamiz</span>
-                    <h1 class="text-6xl font-black text-dark mb-8 leading-tight tracking-tighter">Sifat va <span class="text-indigo-600">Ishonch</span> birlashgan joyda</h1>
+                    <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white mb-8 leading-tight tracking-tighter">Sifat va <span class="text-indigo-600">Ishonch</span> birlashgan joyda</h1>
                     <p class="text-xl text-gray-500 mb-8 leading-relaxed font-medium">2020-yilda tashkil etilgan Premium Store bugungi kunda O'zbekistondagi eng yetakchi elektronika va aksessuarlar do'konlaridan biri hisoblanadi. Bizning asosiy maqsadimiz - mijozlarga faqat original va yuqori sifatli mahsulotlarni yetkazib berish.</p>
                     <div class="grid grid-cols-2 gap-8">
                         <div class="glass p-6 rounded-3xl text-center">

@@ -16,27 +16,38 @@
         } else {
             document.documentElement.classList.remove('dark');
         }
+
+        // Admin Access Check
+        const user = JSON.parse(localStorage.getItem('ps_current_user'));
+        if (!user || user.role !== 'admin') {
+            alert('Siz admin emassiz!');
+            window.location.href = 'index.html';
+        }
     </script>
 </head>
 
-<body class="mesh-gradient-vibrant min-h-screen font-sans selection:bg-indigo-500/30" x-data="adminPanel()">
+<body class="mesh-gradient-vibrant min-h-screen font-sans selection:bg-indigo-500/30" x-data="adminPanel()" :class="mobileMenu ? 'overflow-hidden' : ''">
 
     <!-- Sidebar -->
-    <div class="fixed left-0 top-0 h-full w-64 glass-dark text-white p-8 hidden lg:block border-r border-white/10 z-50">
-        <h1 class="text-3xl font-black mb-12 tracking-tighter text-indigo-400">ADMIN<span
-                class="text-white font-light opacity-50">.HUB</span></h1>
+    <div :class="mobileMenu ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+        class="fixed left-0 top-0 h-full w-64 glass-dark text-white p-8 border-r border-white/10 z-50 transition-transform duration-300 lg:block bg-indigo-950/90 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none">
+        <div class="flex justify-between items-center mb-12">
+            <h1 class="text-3xl font-black tracking-tighter text-indigo-400">ADMIN<span
+                    class="text-white font-light opacity-50">.HUB</span></h1>
+            <button @click="mobileMenu = false" class="lg:hidden text-2xl"><i class="fas fa-times"></i></button>
+        </div>
         <nav class="space-y-6">
-            <button @click="view = 'dashboard'"
+            <button @click="view = 'dashboard'; mobileMenu = false"
                 :class="view === 'dashboard' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
                 class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-chart-pie mr-4 text-xl"></i> Dashboard
             </button>
-            <button @click="view = 'products'"
+            <button @click="view = 'products'; mobileMenu = false"
                 :class="view === 'products' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
                 class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-boxes-stacked mr-4 text-xl"></i> Mahsulotlar
             </button>
-            <button @click="view = 'users'"
+            <button @click="view = 'users'; mobileMenu = false"
                 :class="view === 'users' ? 'bg-indigo-600 shadow-lg shadow-indigo-600/40 text-white' : 'text-gray-400 hover:text-white hover:bg-white/5'"
                 class="w-full text-left px-5 py-4 rounded-2xl transition-all duration-300 flex items-center font-bold">
                 <i class="fas fa-user-group mr-4 text-xl"></i> Foydalanuvchilar
@@ -53,10 +64,13 @@
     <!-- Main Content -->
     <div class="lg:ml-64 p-10">
         <!-- Top Header -->
-        <header class="flex justify-between items-center mb-16 px-4">
-            <div>
-                <h2 class="text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="viewTitle()"></h2>
-                <p class="text-gray-500 font-medium mt-2">Boshqaruv paneli orqali do'konni nazorat qiling.</p>
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-16 px-4 gap-8">
+            <div class="flex items-center w-full justify-between md:justify-start">
+                <div>
+                    <h2 class="text-3xl md:text-5xl font-black text-dark dark:text-white tracking-tighter" x-text="viewTitle()"></h2>
+                    <p class="text-gray-500 font-medium mt-2 text-sm md:text-base">Boshqaruv paneli orqali do'konni nazorat qiling.</p>
+                </div>
+                <button @click="mobileMenu = true" class="lg:hidden text-dark dark:text-white text-3xl p-4 glass rounded-2xl"><i class="fas fa-bars"></i></button>
             </div>
             <div class="flex items-center space-x-6"
                 x-data="{ isDark: document.documentElement.classList.contains('dark') }">
@@ -140,8 +154,7 @@
                                     Kategoriya</th>
                                 <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em]">
                                     Narx</th>
-                                <th
-                                    class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em] text-right">
+                                <th class="px-10 py-6 font-black text-indigo-600 uppercase text-xs tracking-[0.2em] text-right">
                                     Amallar</th>
                             </tr>
                         </thead>
@@ -306,6 +319,7 @@
         function adminPanel() {
             return {
                 view: 'dashboard',
+                mobileMenu: false,
                 products: db.getProducts(),
                 users: db.getUsers(),
                 adminSearch: '',

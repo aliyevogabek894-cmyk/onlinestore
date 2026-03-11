@@ -19,12 +19,15 @@
     <!-- Navbar -->
     <nav class="h-20 flex items-center px-8 border-b justify-between">
         <a href="index.html" class="text-2xl font-black text-dark">PREMIUM STORE</a>
-        <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+        <div class="flex items-center space-x-6" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
             <button @click="isDark = toggleTheme()" 
                     class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
                 <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                 <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
             </button>
+            <template x-if="user && user.role === 'admin'">
+                <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
+            </template>
             <a href="shop.html" class="text-indigo-600 font-bold">Shopga qaytish</a>
         </div>
     </nav>
@@ -35,7 +38,7 @@
     <main class="mesh-gradient-vibrant min-h-screen py-24 px-4 flex items-center">
         <div class="max-w-7xl mx-auto w-full">
             <div class="glass p-12 rounded-[4rem] text-center mb-16 border border-white/20 shadow-2xl">
-                <h1 class="text-6xl font-black text-dark mb-6 tracking-tighter">Biz bilan <span class="text-indigo-600">Bog'laning</span></h1>
+                <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white mb-6 tracking-tighter">Biz bilan <span class="text-indigo-600">Bog'laning</span></h1>
                 <p class="text-xl text-gray-500 max-w-2xl mx-auto font-medium leading-relaxed">Har qanday savol yoki takliflaringiz bo'lsa, quyidagi forma orqali yozishingiz mumkin. Biz sizga yordam berishdan mamnunmiz.</p>
             </div>
     

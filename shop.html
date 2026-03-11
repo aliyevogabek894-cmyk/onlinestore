@@ -31,13 +31,17 @@
                     <a href="about.html" class="text-dark hover:text-blue-600 font-medium transition">Biz haqimizda</a>
                     <a href="contact.html" class="text-dark hover:text-blue-600 font-medium transition">Aloqa</a>
                 </div>
-                <div class="flex items-center space-x-5" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+                <div class="flex items-center space-x-5" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
                     <!-- Theme Toggle -->
                     <button @click="isDark = toggleTheme()" 
                             class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
                         <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                         <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
                     </button>
+
+                    <template x-if="user && user.role === 'admin'">
+                        <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
+                    </template>
 
                     <a href="cart.html" class="text-dark hover:text-blue-600 transition relative">
                         <i class="fas fa-shopping-cart text-xl"></i>

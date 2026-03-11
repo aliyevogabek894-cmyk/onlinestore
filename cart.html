@@ -40,13 +40,16 @@
     <nav class="glass fixed w-full z-40">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
             <a href="index.html" class="text-3xl font-extrabold tracking-tighter text-dark">PREMIUM STORE</a>
-            <div class="flex items-center space-x-6" x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+            <div class="flex items-center space-x-6" x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }">
                 <!-- Theme Toggle -->
                 <button @click="isDark = toggleTheme()" 
                         class="p-2.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition duration-300">
                     <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                     <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
                 </button>
+                <template x-if="user && user.role === 'admin'">
+                    <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
+                </template>
                 <a href="shop.html" class="text-blue-600 font-bold"><i class="fas fa-arrow-left mr-2"></i> Shopga qaytish</a>
             </div>
         </div>
@@ -56,8 +59,8 @@
         <div class="max-w-6xl mx-auto">
             <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6 px-4">
                 <div>
-                    <h1 class="text-6xl font-black text-dark dark:text-white tracking-tighter">Savat</h1>
-                    <p class="text-gray-500 font-medium mt-2">Tanlagan mahsulotlaringizni ko'zdan kechiring.</p>
+                    <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white tracking-tighter">Savat</h1>
+                    <p class="text-gray-500 font-medium mt-1 sm:mt-2 text-sm sm:text-base">Tanlagan mahsulotlaringiz.</p>
                 </div>
                 <div class="glass px-8 py-4 rounded-3xl border border-white/20 shadow-xl flex items-center space-x-4">
                     <i class="fas fa-shield-check text-indigo-600 text-xl"></i>
@@ -81,21 +84,21 @@
                     </template>
 
                     <template x-for="item in localCart" :key="item.id">
-                        <div class="glass p-8 rounded-[3rem] border border-white/20 shadow-2xl flex flex-col sm:flex-row items-center space-y-6 sm:space-y-0 sm:space-x-8 group hover:bg-white/10 transition-all duration-500">
-                            <div class="w-32 h-32 rounded-[2rem] overflow-hidden bg-white/5 border border-white/10 shadow-inner group-hover:scale-110 transition duration-500 flex-shrink-0">
+                        <div class="glass p-4 sm:p-8 rounded-3xl sm:rounded-[3rem] border border-white/20 shadow-2xl flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-8 group hover:bg-white/10 transition-all duration-500">
+                            <div class="w-20 h-20 sm:w-32 sm:h-32 rounded-2xl sm:rounded-[2rem] overflow-hidden bg-white/5 border border-white/10 shadow-inner group-hover:scale-110 transition duration-500 flex-shrink-0">
                                 <img :src="item.image" class="w-full h-full object-cover">
                             </div>
                             <div class="flex-1 text-center sm:text-left">
-                                <h3 x-text="item.name" class="text-2xl font-black text-dark dark:text-white mb-2 tracking-tight"></h3>
-                                <p x-text="formatPrice(item.price)" class="text-indigo-600 dark:text-indigo-400 font-black text-lg"></p>
+                                <h3 x-text="item.name" class="text-lg sm:text-2xl font-black text-dark dark:text-white mb-1 tracking-tight"></h3>
+                                <p x-text="formatPrice(item.price)" class="text-indigo-600 dark:text-indigo-400 font-black text-base sm:text-lg"></p>
                             </div>
-                            <div class="flex items-center glass rounded-2xl p-2 border border-white/10 shadow-inner bg-white/5">
-                                <button @click="updateQty(item.id, -1)" class="w-10 h-10 rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">-</button>
-                                <span class="mx-5 font-black text-lg text-dark dark:text-white" x-text="item.quantity"></span>
-                                <button @click="updateQty(item.id, 1)" class="w-10 h-10 rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">+</button>
+                            <div class="flex items-center glass rounded-xl sm:rounded-2xl p-1 sm:p-2 border border-white/10 shadow-inner bg-white/5">
+                                <button @click="updateQty(item.id, -1)" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">-</button>
+                                <span class="mx-3 sm:mx-5 font-black text-base sm:text-lg text-dark dark:text-white" x-text="item.quantity"></span>
+                                <button @click="updateQty(item.id, 1)" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl hover:bg-white/20 text-dark dark:text-white font-black transition">+</button>
                             </div>
-                            <button @click="removeItem(item.id)" class="w-12 h-12 bg-red-500/10 text-red-500 rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
-                                <i class="fas fa-trash-can"></i>
+                            <button @click="removeItem(item.id)" class="w-10 h-10 sm:w-12 sm:h-12 bg-red-500/10 text-red-500 rounded-xl sm:rounded-2xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center">
+                                <i class="fas fa-trash-can text-sm sm:text-base"></i>
                             </button>
                         </div>
                     </template>

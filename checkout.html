@@ -29,12 +29,16 @@
     <nav class="glass fixed w-full z-40 transition-all duration-500">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex justify-between items-center">
             <a href="index.html" class="text-4xl font-black tracking-tighter text-indigo-600 drop-shadow-sm">PREMIUM<span class="text-dark dark:text-white font-light ml-1 opacity-50">HUB</span></a>
-            <div x-data="{ isDark: document.documentElement.classList.contains('dark') }">
+            <div x-data="{ user: JSON.parse(localStorage.getItem('ps_current_user')), isDark: document.documentElement.classList.contains('dark') }" class="flex items-center space-x-6">
+                <!-- Theme Toggle -->
                 <button @click="isDark = toggleTheme()" 
                         class="p-3 rounded-2xl glass hover:bg-white/20 text-gray-500 dark:text-gray-400 hover:text-indigo-600 transition-all duration-300 shadow-xl border border-white/20">
                     <i x-show="!isDark" class="fas fa-moon text-xl"></i>
                     <i x-show="isDark" class="fas fa-sun text-xl" x-cloak></i>
                 </button>
+                <template x-if="user && user.role === 'admin'">
+                    <a href="admin.html" class="text-gray-400 hover:text-blue-600 transition" title="Admin Panel"><i class="fas fa-user-shield text-xl"></i></a>
+                </template>
             </div>
         </div>
     </nav>
@@ -46,7 +50,7 @@
             
             <div class="relative z-10">
                 <div class="text-center mb-16">
-                    <h1 class="text-6xl font-black text-dark dark:text-white tracking-tighter mb-4">Rasmiylashtirish</h1>
+                    <h1 class="text-4xl sm:text-6xl font-black text-dark dark:text-white tracking-tighter mb-4">Rasmiylashtirish</h1>
                     <p class="text-gray-500 font-bold text-xl leading-relaxed max-w-lg mx-auto">Ma'lumotlaringizni kiriting va biz siz bilan tez orada bog'lanamiz.</p>
                 </div>
 
