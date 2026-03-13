@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -13,10 +13,10 @@
 </head>
 <body class="dark-mode min-h-screen" x-data="registerPage()">
 
-    <header class="bg-white border-b border-gray-200">
+    <header class="glass-header">
         <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
-            <a href="index.html" class="text-[22px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
-            <div class="flex items-center gap-4 text-[12px] text-gray-500 font-medium">
+            <a href="index.html" class="text-[22px] font-black tracking-[-0.04em] ">premium<span class="text-[#1A6CDB]">store</span></a>
+            <div class="flex items-center gap-4 text-[12px] text-[#94A3B8] font-medium">
                 <i class="fas fa-lock text-green-500"></i>
                 <span>Xavfsiz ulanish</span>
             </div>
@@ -25,49 +25,49 @@
 
     <main class="flex items-center justify-center min-h-[calc(100vh-73px)] py-12 px-4">
         <div class="w-full max-w-[480px]">
-            <div class="bg-white border border-gray-200 shadow-sm p-10">
+            <div class="glass-card border border-white/10 shadow-sm p-10">
                 <div class="text-center mb-8">
-                    <h1 class="text-2xl font-black text-[#1B1B1B] tracking-tight">Yangi hisob yarating</h1>
-                    <p class="text-sm text-gray-500 font-medium mt-2">Bepul yetkazish va 365 kun qaytarish imkoniyati</p>
+                    <h1 class="text-2xl font-black  tracking-tight">Yangi hisob yarating</h1>
+                    <p class="text-sm text-[#94A3B8] font-medium mt-2">Bepul yetkazish va 365 kun qaytarish imkoniyati</p>
                 </div>
 
                 <div x-show="error" x-cloak class="bg-red-50 border border-red-200 text-red-600 text-sm font-medium px-4 py-3 mb-4" x-text="error"></div>
-                <div x-show="success" x-cloak class="bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 mb-4">✅ Muvaffaqiyatli ro'yxatdan o'tdingiz! Kirish sahifasiga yo'naltirilmoqda...</div>
+                <div x-show="success" x-cloak class="bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 mb-4">вњ… Muvaffaqiyatli ro'yxatdan o'tdingiz! Kirish sahifasiga yo'naltirilmoqda...</div>
 
                 <form @submit.prevent="register()" class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Ism</label>
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Ism</label>
                             <input type="text" x-model="name" required class="z-input" placeholder="Alisher">
                         </div>
                         <div>
-                            <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Familya</label>
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Familya</label>
                             <input type="text" x-model="surname" class="z-input" placeholder="Umarov">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Email manzil</label>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Email manzil</label>
                         <input type="email" x-model="email" required class="z-input" placeholder="siz@example.com">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Parol</label>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Parol</label>
                         <input type="password" x-model="password" required minlength="6" class="z-input" placeholder="Kamida 6 belgi">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Parolni tasdiqlang</label>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Parolni tasdiqlang</label>
                         <input type="password" x-model="confirm" required class="z-input" placeholder="Parolni qaytaring">
                     </div>
                     <div class="flex items-start gap-3 pt-1">
                         <input type="checkbox" x-model="agreed" id="terms" class="mt-1 w-4 h-4 accent-[#1A6CDB] flex-shrink-0">
-                        <label for="terms" class="text-xs text-gray-500 font-medium cursor-pointer leading-relaxed">
+                        <label for="terms" class="text-xs text-[#94A3B8] font-medium cursor-pointer leading-relaxed">
                             <a href="#" class="text-[#1A6CDB] hover:underline">Foydalanish shartlari</a> va <a href="#" class="text-[#1A6CDB] hover:underline">Maxfiylik siyosati</a> bilan roziman
                         </label>
                     </div>
                     <button type="submit" class="z-btn mt-2">Hisob yaratish</button>
                 </form>
 
-                <div class="border-t border-gray-100 mt-8 pt-6 text-center">
-                    <p class="text-sm text-gray-500">Hisobingiz bormi? <a href="login.html" class="font-bold text-[#1A6CDB] hover:underline">Kirish</a></p>
+                <div class="border-t border-white/5 mt-8 pt-6 text-center">
+                    <p class="text-sm text-[#94A3B8]">Hisobingiz bormi? <a href="login.html" class="font-bold text-[#1A6CDB] hover:underline">Kirish</a></p>
                 </div>
             </div>
 
@@ -101,3 +101,4 @@
     </script>
 </body>
 </html>
+

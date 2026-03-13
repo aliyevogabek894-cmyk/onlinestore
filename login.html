@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -14,10 +14,10 @@
 <body class="dark-mode min-h-screen" x-data="loginPage()">
 
     <!-- Minimal Header -->
-    <header class="bg-white border-b border-gray-200">
+    <header class="glass-header">
         <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
-            <a href="index.html" class="text-[22px] font-black tracking-[-0.04em] text-[#1B1B1B]">premium<span class="text-[#1A6CDB]">store</span></a>
-            <div class="flex items-center gap-4 text-[12px] text-gray-500 font-medium">
+            <a href="index.html" class="text-[22px] font-black tracking-[-0.04em] ">premium<span class="text-[#1A6CDB]">store</span></a>
+            <div class="flex items-center gap-4 text-[12px] text-[#94A3B8] font-medium">
                 <i class="fas fa-lock text-green-500"></i>
                 <span>Xavfsiz ulanish</span>
             </div>
@@ -27,10 +27,10 @@
     <main class="flex items-center justify-center min-h-[calc(100vh-73px)] py-12 px-4">
         <div class="w-full max-w-[440px]">
             <!-- Card -->
-            <div class="bg-white border border-gray-200 shadow-sm p-10">
+            <div class="glass-card border border-white/10 shadow-sm p-10">
                 <div class="text-center mb-8">
-                    <h1 class="text-2xl font-black text-[#1B1B1B] tracking-tight">Hisobingizga kiring</h1>
-                    <p class="text-sm text-gray-500 font-medium mt-2">Buyurtma tarixi va maqomingizni ko'ring</p>
+                    <h1 class="text-2xl font-black  tracking-tight">Hisobingizga kiring</h1>
+                    <p class="text-sm text-[#94A3B8] font-medium mt-2">Buyurtma tarixi va maqomingizni ko'ring</p>
                 </div>
 
                 <!-- Error/Success messages -->
@@ -38,14 +38,14 @@
 
                 <form @submit.prevent="login()" class="space-y-4">
                     <div>
-                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Email manzil</label>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Email manzil</label>
                         <input type="email" x-model="email" required class="z-input" placeholder="siz@example.com">
                     </div>
                     <div>
-                        <label class="block text-[11px] font-black uppercase tracking-widest text-gray-500 mb-2">Parol</label>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Parol</label>
                         <div class="relative">
-                            <input :type="showPass ? 'text' : 'password'" x-model="password" required class="z-input pr-12" placeholder="••••••••">
-                            <button type="button" @click="showPass = !showPass" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                            <input :type="showPass ? 'text' : 'password'" x-model="password" required class="z-input pr-12" placeholder="вЂўвЂўвЂўвЂўвЂўвЂўвЂўвЂў">
+                            <button type="button" @click="showPass = !showPass" class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-[#94A3B8]">
                                 <i :class="showPass ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
                             </button>
                         </div>
@@ -53,15 +53,15 @@
                     <div class="flex items-center justify-between pt-1">
                         <label class="flex items-center gap-2 cursor-pointer">
                             <input type="checkbox" class="w-4 h-4 accent-[#1A6CDB]">
-                            <span class="text-sm text-gray-500 font-medium">Eslab qol</span>
+                            <span class="text-sm text-[#94A3B8] font-medium">Eslab qol</span>
                         </label>
                         <a href="#" class="text-sm font-semibold text-[#1A6CDB] hover:underline">Parolni unutdim?</a>
                     </div>
                     <button type="submit" class="z-btn mt-4">Kirish</button>
                 </form>
 
-                <div class="border-t border-gray-100 mt-8 pt-6 text-center">
-                    <p class="text-sm text-gray-500">Hisobingiz yo'qmi? <a href="register.html" class="font-bold text-[#1A6CDB] hover:underline">Ro'yxatdan o'tish</a></p>
+                <div class="border-t border-white/5 mt-8 pt-6 text-center">
+                    <p class="text-sm text-[#94A3B8]">Hisobingiz yo'qmi? <a href="register.html" class="font-bold text-[#1A6CDB] hover:underline">Ro'yxatdan o'tish</a></p>
                 </div>
             </div>
 
@@ -95,3 +95,4 @@
     </script>
 </body>
 </html>
+

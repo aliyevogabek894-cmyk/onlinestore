@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -16,16 +16,16 @@
 <body class="dark-mode min-h-screen" x-data="shopPage()">
 
     <!-- Promo Bar -->
-    <div class="bg-[#1B1B1B] text-white py-2 px-4 text-center text-[12px] font-semibold">
-        🚚 Barcha buyurtmalarga BEPUL yetkazish &nbsp;|&nbsp; 📦 365 kunlik bepul qaytarish
+    <div class="glass-card text-white py-2 px-4 text-center text-[12px] font-semibold">
+        рџљљ Barcha buyurtmalarga BEPUL yetkazish &nbsp;|&nbsp; рџ“¦ 365 kunlik bepul qaytarish
     </div>
 
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+    <header class="glass-header sticky top-0 z-50">
         <div class="max-w-[1440px] mx-auto px-4 md:px-8">
             <div class="flex flex-col sm:flex-row items-center sm:h-[72px] gap-4 sm:gap-6 py-3 sm:py-0">
                 <a href="index.html" class="flex-shrink-0">
-                    <div class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B] leading-none">
+                    <div class="text-[24px] font-black tracking-[-0.04em]  leading-none">
                         premium<span class="text-[#1A6CDB]">store</span>
                     </div>
                 </a>
@@ -37,56 +37,56 @@
                 </div>
                 <div class="flex items-center gap-1 flex-shrink-0">
                     <template x-if="!currentUser">
-                        <a href="login.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
-                            <i class="far fa-user text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                        <a href="login.html" class="flex flex-col items-center px-3 py-2 hover:glass-card rounded group">
+                            <i class="far fa-user text-[18px] text-[#94A3B8] group-hover:text-[#1A6CDB]"></i>
                         </a>
                     </template>
                     <template x-if="currentUser">
-                        <a href="profile.html" class="flex flex-col items-center px-3 py-2 hover:bg-gray-50 rounded group">
+                        <a href="profile.html" class="flex flex-col items-center px-3 py-2 hover:glass-card rounded group">
                             <div class="w-[22px] h-[22px] rounded-full bg-[#1A6CDB] text-white text-[11px] font-black flex items-center justify-center" x-text="currentUser.name.charAt(0)"></div>
                         </a>
                     </template>
-                    <a href="cart.html" class="flex items-center px-3 py-2 hover:bg-gray-50 rounded group relative">
+                    <a href="cart.html" class="flex items-center px-3 py-2 hover:glass-card rounded group relative">
                         <div class="relative">
-                            <i class="fas fa-shopping-bag text-[18px] text-gray-600 group-hover:text-[#1A6CDB]"></i>
+                            <i class="fas fa-shopping-bag text-[18px] text-[#94A3B8] group-hover:text-[#1A6CDB]"></i>
                             <span x-show="cartCount > 0" x-text="cartCount" class="absolute -top-2 -right-2 bg-[#D93025] text-white text-[9px] font-black rounded-full w-4 h-4 flex items-center justify-center"></span>
                         </div>
                     </a>
                     <template x-if="currentUser && currentUser.role === 'admin'">
-                        <a href="admin.html" class="px-3 py-2 hover:bg-gray-50 rounded">
+                        <a href="admin.html" class="px-3 py-2 hover:glass-card rounded">
                             <i class="fas fa-shield-alt text-[18px] text-[#1A6CDB]"></i>
                         </a>
                     </template>
                 </div>
             </div>
-            <nav class="flex items-center border-t border-gray-100 overflow-x-auto -mx-4 px-4 md:-mx-8 md:px-8" x-data="{ open: null }">
+            <nav class="flex items-center border-t border-white/5 overflow-x-auto -mx-4 px-4 md:-mx-8 md:px-8" x-data="{ open: null }">
                 <a href="shop.html" @click="setCategory('')" class="z-nav-item" :class="!activeCategory ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Barchasi</a>
 
                 <!-- Telefonlar -->
                 <div class="relative" @mouseenter="open='phones'" @mouseleave="open=null">
                     <a href="shop.html?cat=Phones" class="z-nav-item flex items-center gap-1" :class="activeCategory==='Phones' || open==='phones' ? 'text-[#1A6CDB] border-b-2 border-[#1A6CDB]' : ''">Telefonlar <i class="fas fa-chevron-down text-[9px]"></i></a>
-                    <div x-show="open==='phones'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[480px] p-6 grid grid-cols-3 gap-5">
+                    <div x-show="open==='phones'" x-cloak class="absolute top-full left-0 glass-card border border-white/10 shadow-xl z-[200] w-[480px] p-6 grid grid-cols-3 gap-5">
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
                             <ul class="space-y-1.5">
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple iPhone</a></li>
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Samsung Galaxy</a></li>
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Xiaomi</a></li>
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Realme</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Apple iPhone</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Samsung Galaxy</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Xiaomi</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Realme</a></li>
                             </ul>
                         </div>
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur bo'yicha</p>
                             <ul class="space-y-1.5">
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Flagman</a></li>
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'rta segment</a></li>
-                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Byudjet</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Flagman</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">O'rta segment</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Byudjet</a></li>
                             </ul>
                         </div>
                         <div class="bg-[#1A6CDB] p-4 text-white">
                             <p class="text-[10px] font-black text-blue-200 mb-1">Yangi</p>
                             <p class="font-black mb-1">iPhone 15 Pro</p>
-                            <a href="shop.html?cat=Phones" class="text-[11px] font-bold bg-white text-[#1A6CDB] px-2 py-1 inline-block">Ko'rish →</a>
+                            <a href="shop.html?cat=Phones" class="text-[11px] font-bold glass-card text-[#1A6CDB] px-2 py-1 inline-block">Ko'rish в†’</a>
                         </div>
                     </div>
                 </div>
@@ -94,22 +94,22 @@
                 <!-- Noutbuklar -->
                 <div class="relative" @mouseenter="open='laptops'" @mouseleave="open=null">
                     <a href="shop.html?cat=Laptops" class="z-nav-item flex items-center gap-1" :class="activeCategory==='Laptops' || open==='laptops' ? 'text-[#1A6CDB] border-b-2 border-[#1A6CDB]' : ''">Noutbuklar <i class="fas fa-chevron-down text-[9px]"></i></a>
-                    <div x-show="open==='laptops'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[380px] p-6 grid grid-cols-2 gap-5">
+                    <div x-show="open==='laptops'" x-cloak class="absolute top-full left-0 glass-card border border-white/10 shadow-xl z-[200] w-[380px] p-6 grid grid-cols-2 gap-5">
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
                             <ul class="space-y-1.5">
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple MacBook</a></li>
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Dell XPS</a></li>
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Lenovo</a></li>
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Asus ROG</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Apple MacBook</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Dell XPS</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Lenovo</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Asus ROG</a></li>
                             </ul>
                         </div>
                         <div>
                             <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur</p>
                             <ul class="space-y-1.5">
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Ishbilarmonlar</a></li>
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'yinchilar</a></li>
-                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Kreativlar</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Ishbilarmonlar</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">O'yinchilar</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-[#94A3B8] hover:text-[#1A6CDB] transition block">Kreativlar</a></li>
                             </ul>
                         </div>
                     </div>
@@ -130,21 +130,21 @@
                 <!-- Brendlar -->
                 <div class="relative" @mouseenter="open='brands'" @mouseleave="open=null">
                     <a href="about.html" class="z-nav-item flex items-center gap-1" :class="open==='brands' ? 'text-[#1A6CDB]' : ''">Brendlar <i class="fas fa-chevron-down text-[9px]"></i></a>
-                    <div x-show="open==='brands'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[360px] p-6">
+                    <div x-show="open==='brands'" x-cloak class="absolute top-full left-0 glass-card border border-white/10 shadow-xl z-[200] w-[360px] p-6">
                         <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Mashhur brendlar</p>
                         <div class="grid grid-cols-3 gap-2">
-                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Apple</a>
-                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Samsung</a>
-                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Sony</a>
-                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Dell</a>
-                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Lenovo</a>
-                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Bose</a>
+                            <a href="shop.html?cat=Phones" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Apple</a>
+                            <a href="shop.html?cat=Phones" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Samsung</a>
+                            <a href="shop.html?cat=Audio" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Sony</a>
+                            <a href="shop.html?cat=Laptops" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Dell</a>
+                            <a href="shop.html?cat=Laptops" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Lenovo</a>
+                            <a href="shop.html?cat=Audio" class="border border-white/10 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Bose</a>
                         </div>
                     </div>
                 </div>
 
                 <!-- Chegirma -->
-                <a href="shop.html?sale=1" class="z-nav-item sale font-black">Chegirma 🔥</a>
+                <a href="shop.html?sale=1" class="z-nav-item sale font-black">Chegirma рџ”Ґ</a>
             </nav>
         </div>
     </header>
@@ -165,38 +165,38 @@
             <aside class="hidden lg:block w-60 flex-shrink-0">
 
                 <!-- Category Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Kategoriya</h3>
                     <div class="space-y-1">
-                        <button @click="setCategory('')" :class="!activeCategory ? 'font-black text-[#1A6CDB]' : 'text-gray-600'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium">Barchasi</button>
+                        <button @click="setCategory('')" :class="!activeCategory ? 'font-black text-[#1A6CDB]' : 'text-[#94A3B8]'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium">Barchasi</button>
                         <template x-for="cat in categories">
-                            <button @click="setCategory(cat)" :class="activeCategory === cat ? 'font-black text-[#1A6CDB]' : 'text-gray-600'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium" x-text="cat"></button>
+                            <button @click="setCategory(cat)" :class="activeCategory === cat ? 'font-black text-[#1A6CDB]' : 'text-[#94A3B8]'" class="w-full text-left text-sm py-1 hover:text-[#1A6CDB] transition font-medium" x-text="cat"></button>
                         </template>
                     </div>
                 </div>
 
                 <!-- Price Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Narx oralig'i</h3>
                     <div class="space-y-2">
                         <template x-for="range in priceRanges">
-                            <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left" x-text="range.label"></button>
+                            <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'border-[#1B1B1B] glass-card text-white' : 'text-[#94A3B8] hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left" x-text="range.label"></button>
                         </template>
                     </div>
                 </div>
 
                 <!-- Condition Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Holati</h3>
                     <div class="space-y-2">
-                        <button @click="filterNew = null; filterSale = false; applyFilters()" :class="filterNew === null && !filterSale ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Barchasi</button>
-                        <button @click="filterNew = true; filterSale = false; applyFilters()" :class="filterNew === true ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">⭐ Yangi mahsulotlar</button>
-                        <button @click="filterSale = true; filterNew = null; applyFilters()" :class="filterSale ? 'border-[#D93025] bg-[#D93025] text-white' : 'text-gray-600 hover:border-[#D93025] hover:text-[#D93025]'" class="z-filter-btn block w-full text-left">🔥 Chegirmalilari</button>
+                        <button @click="filterNew = null; filterSale = false; applyFilters()" :class="filterNew === null && !filterSale ? 'border-[#1B1B1B] glass-card text-white' : 'text-[#94A3B8] hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Barchasi</button>
+                        <button @click="filterNew = true; filterSale = false; applyFilters()" :class="filterNew === true ? 'border-[#1B1B1B] glass-card text-white' : 'text-[#94A3B8] hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">в­ђ Yangi mahsulotlar</button>
+                        <button @click="filterSale = true; filterNew = null; applyFilters()" :class="filterSale ? 'border-[#D93025] bg-[#D93025] text-white' : 'text-[#94A3B8] hover:border-[#D93025] hover:text-[#D93025]'" class="z-filter-btn block w-full text-left">рџ”Ґ Chegirmalilari</button>
                     </div>
                 </div>
 
                 <!-- Color Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Rang</h3>
                     <div class="flex flex-wrap gap-2">
                         <template x-for="color in colors">
@@ -208,7 +208,7 @@
                                 class="w-7 h-7 rounded-full border border-gray-300 transition-all duration-150 relative"
                             >
                                 <span x-show="activeColors.includes(color.name)" class="absolute inset-0 flex items-center justify-center">
-                                    <i class="fas fa-check text-[9px]" :class="['white','yellow'].includes(color.name) ? 'text-gray-500' : 'text-white'"></i>
+                                    <i class="fas fa-check text-[9px]" :class="['white','yellow'].includes(color.name) ? 'text-[#94A3B8]' : 'text-white'"></i>
                                 </span>
                             </button>
                         </template>
@@ -219,13 +219,13 @@
                 </div>
 
                 <!-- Size Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">O'lcham / Xotira</h3>
                     <div class="flex flex-wrap gap-2">
                         <template x-for="sz in sizes">
                             <button
                                 @click="toggleSize(sz)"
-                                :class="activeSizes.includes(sz) ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'"
+                                :class="activeSizes.includes(sz) ? 'border-[#1B1B1B] glass-card text-white' : 'text-[#94A3B8] hover:border-[#1B1B1B]'"
                                 class="z-filter-btn text-xs"
                                 x-text="sz"
                             ></button>
@@ -234,7 +234,7 @@
                 </div>
 
                 <!-- Brand Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Brend</h3>
                     <div class="space-y-2 max-h-52 overflow-y-auto pr-1">
                         <template x-for="brand in brands">
@@ -246,18 +246,18 @@
                                     @change="applyFilters()"
                                     class="w-4 h-4 accent-[#1A6CDB] flex-shrink-0"
                                 >
-                                <span class="text-sm font-medium text-gray-600 group-hover:text-[#1A6CDB] transition" x-text="brand"></span>
+                                <span class="text-sm font-medium text-[#94A3B8] group-hover:text-[#1A6CDB] transition" x-text="brand"></span>
                             </label>
                         </template>
                     </div>
                 </div>
 
                 <!-- Rating Filter -->
-                <div class="bg-white border border-gray-200 p-5 mb-4">
+                <div class="glass-card border border-white/10 p-5 mb-4">
                     <h3 class="z-sidebar-title">Minimal Reyting</h3>
                     <div class="space-y-2">
                         <template x-for="r in [5,4,3]">
-                            <button @click="minRating = minRating === r ? 0 : r; applyFilters()" :class="minRating === r ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn flex items-center gap-1.5 w-full text-left">
+                            <button @click="minRating = minRating === r ? 0 : r; applyFilters()" :class="minRating === r ? 'border-[#1B1B1B] glass-card text-white' : 'text-[#94A3B8] hover:border-[#1B1B1B]'" class="z-filter-btn flex items-center gap-1.5 w-full text-left">
                                 <template x-for="s in r"><i class="fas fa-star text-yellow-400 text-xs"></i></template>
                                 <span class="ml-1 text-xs" x-show="minRating !== r">va yuqori</span>
                             </button>
@@ -266,7 +266,7 @@
                 </div>
 
                 <!-- Reset All Button -->
-                <button @click="resetFilters()" class="w-full border-2 border-[#1B1B1B] text-[#1B1B1B] font-black text-xs py-3 hover:bg-[#1B1B1B] hover:text-white transition uppercase tracking-widest">
+                <button @click="resetFilters()" class="w-full border-2 border-[#1B1B1B]  font-black text-xs py-3 hover:bg-[#1B1B1B] hover:text-white transition uppercase tracking-widest">
                     <i class="fas fa-times mr-2"></i> Barcha filtrlarni tozalash
                 </button>
             </aside>
@@ -275,20 +275,20 @@
             <div class="flex-1">
 
                 <!-- Top Bar: count + sort -->
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 bg-white border border-gray-200 px-5 py-3">
-                    <p class="text-sm font-semibold text-gray-600">
-                        <span class="font-black text-[#1B1B1B]" x-text="filtered.length"></span> ta mahsulot topildi
-                        <span x-show="activeCategory" class="text-gray-400"> — <span x-text="activeCategory"></span></span>
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 glass-card border border-white/10 px-5 py-3">
+                    <p class="text-sm font-semibold text-[#94A3B8]">
+                        <span class="font-black " x-text="filtered.length"></span> ta mahsulot topildi
+                        <span x-show="activeCategory" class="text-gray-400"> вЂ” <span x-text="activeCategory"></span></span>
                     </p>
                     <div class="flex items-center gap-3">
                         <!-- Mobile filter toggle -->
-                        <button class="lg:hidden flex items-center gap-2 text-sm font-bold text-gray-600 border border-gray-200 px-4 py-2 hover:border-[#1B1B1B]" @click="mobileFilter = !mobileFilter">
+                        <button class="lg:hidden flex items-center gap-2 text-sm font-bold text-[#94A3B8] border border-white/10 px-4 py-2 hover:border-[#1B1B1B]" @click="mobileFilter = !mobileFilter">
                             <i class="fas fa-filter text-xs"></i> Filtr
                         </button>
                         <select x-model="sortBy" @change="applyFilters()" class="sort-select">
                             <option value="default">Saralash</option>
-                            <option value="price_asc">Narx: Past → Yuqori</option>
-                            <option value="price_desc">Narx: Yuqori → Past</option>
+                            <option value="price_asc">Narx: Past в†’ Yuqori</option>
+                            <option value="price_desc">Narx: Yuqori в†’ Past</option>
                             <option value="rating">Reyting bo'yicha</option>
                             <option value="name">Nom bo'yicha</option>
                         </select>
@@ -296,13 +296,13 @@
                 </div>
 
                 <!-- Mobile Filters -->
-                <div x-show="mobileFilter" x-cloak class="lg:hidden bg-white border border-gray-200 p-5 mb-4 grid grid-cols-2 gap-4">
+                <div x-show="mobileFilter" x-cloak class="lg:hidden glass-card border border-white/10 p-5 mb-4 grid grid-cols-2 gap-4">
                     <div>
                         <h3 class="z-sidebar-title">Kategoriya</h3>
                         <div class="flex flex-wrap gap-2">
-                            <button @click="setCategory('')" :class="!activeCategory ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn">Barchasi</button>
+                            <button @click="setCategory('')" :class="!activeCategory ? 'glass-card text-white border-[#1B1B1B]' : ''" class="z-filter-btn">Barchasi</button>
                             <template x-for="cat in categories">
-                                <button @click="setCategory(cat)" :class="activeCategory === cat ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="cat"></button>
+                                <button @click="setCategory(cat)" :class="activeCategory === cat ? 'glass-card text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="cat"></button>
                             </template>
                         </div>
                     </div>
@@ -310,7 +310,7 @@
                         <h3 class="z-sidebar-title">Narx</h3>
                         <div class="flex flex-wrap gap-2">
                             <template x-for="range in priceRanges">
-                                <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="range.label"></button>
+                                <button @click="setPriceRange(range.value)" :class="activePriceRange === range.value ? 'glass-card text-white border-[#1B1B1B]' : ''" class="z-filter-btn" x-text="range.label"></button>
                             </template>
                         </div>
                     </div>
@@ -319,8 +319,8 @@
                 <!-- Products Grid -->
                 <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                     <template x-for="product in paginated" :key="product.id">
-                        <a :href="'product-detail.html?id=' + product.id" class="z-product-card bg-white block group">
-                            <div class="relative overflow-hidden bg-gray-50 aspect-square">
+                        <a :href="'product-detail.html?id=' + product.id" class="z-product-card glass-card block group">
+                            <div class="relative overflow-hidden glass-card aspect-square">
                                 <img :src="product.image" :alt="product.name" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-300">
                                 <div class="absolute top-2 left-2 flex flex-col gap-1">
                                     <span x-show="product.isNew" class="z-tag-new">YANGI</span>
@@ -330,14 +330,14 @@
                                     <i class="fas fa-cart-plus text-sm"></i>
                                 </button>
                             </div>
-                            <div class="p-4 border-t border-gray-100">
+                            <div class="p-4 border-t border-white/5">
                                 <p class="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1" x-text="product.category"></p>
-                                <h3 class="text-sm font-bold text-[#1B1B1B] line-clamp-2 leading-snug mb-2 group-hover:text-[#1A6CDB] transition" x-text="product.name"></h3>
+                                <h3 class="text-sm font-bold  line-clamp-2 leading-snug mb-2 group-hover:text-[#1A6CDB] transition" x-text="product.name"></h3>
                                 <div class="star-rating mb-2">
                                     <template x-for="s in product.rating"><i class="fas fa-star"></i></template>
                                 </div>
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-sm font-black text-[#1B1B1B]" x-text="fmt(product.price)"></span>
+                                    <span class="text-sm font-black " x-text="fmt(product.price)"></span>
                                     <span x-show="product.oldPrice" class="text-xs text-gray-400 line-through" x-text="fmt(product.oldPrice)"></span>
                                 </div>
                             </div>
@@ -348,19 +348,19 @@
                         <i class="fas fa-search text-6xl text-gray-200 mb-4 block"></i>
                         <p class="text-gray-400 font-bold text-lg">Hech narsa topilmadi</p>
                         <p class="text-gray-300 text-sm mt-2">Filtrlarni o'zgartirib ko'ring</p>
-                        <button @click="resetFilters()" class="mt-6 bg-[#1B1B1B] text-white px-8 py-3 font-bold text-sm hover:bg-[#1A6CDB] transition">Filtrlarni tozalash</button>
+                        <button @click="resetFilters()" class="mt-6 glass-card text-white px-8 py-3 font-bold text-sm hover:bg-[#1A6CDB] transition">Filtrlarni tozalash</button>
                     </div>
                 </div>
 
                 <!-- Pagination -->
                 <div x-show="totalPages > 1" class="flex items-center justify-center gap-2 mt-10">
-                    <button @click="page > 1 && (page--, scroll(0,0))" :disabled="page === 1" class="w-10 h-10 border border-gray-200 flex items-center justify-center text-gray-500 hover:border-[#1B1B1B] disabled:opacity-30 transition">
+                    <button @click="page > 1 && (page--, scroll(0,0))" :disabled="page === 1" class="w-10 h-10 border border-white/10 flex items-center justify-center text-[#94A3B8] hover:border-[#1B1B1B] disabled:opacity-30 transition">
                         <i class="fas fa-chevron-left text-xs"></i>
                     </button>
                     <template x-for="p in totalPages">
-                        <button @click="page = p; scroll(0,0)" :class="page === p ? 'bg-[#1B1B1B] text-white border-[#1B1B1B]' : 'border-gray-200 text-gray-600 hover:border-[#1B1B1B]'" class="w-10 h-10 border flex items-center justify-center text-sm font-bold transition" x-text="p"></button>
+                        <button @click="page = p; scroll(0,0)" :class="page === p ? 'glass-card text-white border-[#1B1B1B]' : 'border-white/10 text-[#94A3B8] hover:border-[#1B1B1B]'" class="w-10 h-10 border flex items-center justify-center text-sm font-bold transition" x-text="p"></button>
                     </template>
-                    <button @click="page < totalPages && (page++, scroll(0,0))" :disabled="page === totalPages" class="w-10 h-10 border border-gray-200 flex items-center justify-center text-gray-500 hover:border-[#1B1B1B] disabled:opacity-30 transition">
+                    <button @click="page < totalPages && (page++, scroll(0,0))" :disabled="page === totalPages" class="w-10 h-10 border border-white/10 flex items-center justify-center text-[#94A3B8] hover:border-[#1B1B1B] disabled:opacity-30 transition">
                         <i class="fas fa-chevron-right text-xs"></i>
                     </button>
                 </div>
@@ -374,10 +374,10 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10">
                 <div class="col-span-2 md:col-span-4 lg:col-span-1">
                     <div class="text-[22px] font-black tracking-[-0.04em] text-white leading-none mb-4">premium<span class="text-[#1A6CDB]">store</span></div>
-                    <p class="text-gray-500 text-sm font-medium leading-relaxed mb-6">O'zbekistonda eng ishonchli online elektronika do'koni.</p>
+                    <p class="text-[#94A3B8] text-sm font-medium leading-relaxed mb-6">O'zbekistonda eng ishonchli online elektronika do'koni.</p>
                     <div class="flex gap-3">
-                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#1A6CDB] hover:text-white transition text-sm"><i class="fab fa-telegram"></i></a>
-                        <a href="#" class="w-9 h-9 bg-white/10 flex items-center justify-center text-gray-400 hover:bg-[#e1306c] hover:text-white transition text-sm"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 glass-card/10 flex items-center justify-center text-gray-400 hover:bg-[#1A6CDB] hover:text-white transition text-sm"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="w-9 h-9 glass-card/10 flex items-center justify-center text-gray-400 hover:bg-[#e1306c] hover:text-white transition text-sm"><i class="fab fa-instagram"></i></a>
                     </div>
                 </div>
                 <div>
@@ -387,7 +387,7 @@
                         <li><a href="shop.html?cat=Laptops">Noutbuklar</a></li>
                         <li><a href="shop.html?cat=Audio">Audio</a></li>
                         <li><a href="shop.html?cat=Gaming">Geyming</a></li>
-                        <li><a href="shop.html?sale=1">Chegirmalar 🔥</a></li>
+                        <li><a href="shop.html?sale=1">Chegirmalar рџ”Ґ</a></li>
                     </ul>
                 </div>
                 <div>
@@ -409,11 +409,11 @@
         </div>
         <div class="border-t border-white/10">
             <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-                <p class="text-gray-600 text-xs">© 2024 Premium Store. Barcha huquqlar himoyalangan.</p>
+                <p class="text-[#94A3B8] text-xs">В© 2024 Premium Store. Barcha huquqlar himoyalangan.</p>
                 <div class="flex gap-2">
-                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">VISA</div>
-                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">Mastercard</div>
-                    <div class="bg-white/10 px-3 py-1.5 text-gray-400 text-xs">Humo</div>
+                    <div class="glass-card/10 px-3 py-1.5 text-gray-400 text-xs">VISA</div>
+                    <div class="glass-card/10 px-3 py-1.5 text-gray-400 text-xs">Mastercard</div>
+                    <div class="glass-card/10 px-3 py-1.5 text-gray-400 text-xs">Humo</div>
                 </div>
             </div>
         </div>
@@ -421,7 +421,7 @@
 
   <!-- Mobile floating cart button -->
   <div class="lg:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-[9998] w-full px-4">
-      <a href="cart.html" class="bg-[#1B1B1B] text-white rounded-full shadow-xl px-4 py-3 flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+      <a href="cart.html" class="glass-card text-white rounded-full shadow-xl px-4 py-3 flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
           <i class="fas fa-shopping-bag text-sm"></i>
           <span class="text-sm font-bold">Savat</span>
           <span
@@ -433,7 +433,7 @@
   </div>
 
     <!-- Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 bg-[#1B1B1B] text-white px-6 py-4 shadow-2xl max-w-sm flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 z-[9999]">
+    <div id="toast" class="fixed bottom-6 right-6 glass-card text-white px-6 py-4 shadow-2xl max-w-sm flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 z-[9999]">
         <i class="fas fa-check-circle text-green-400"></i>
         <span id="toastText" class="text-sm font-semibold"></span>
     </div>
@@ -448,9 +448,9 @@
                 categories: ['Phones', 'Laptops', 'Audio', 'Gaming', 'Smart Watches', 'Accessories'],
                 priceRanges: [
                     { label: 'Barchasi', value: '' },
-                    { label: '0 – 1,000,000', value: '0-1000000' },
-                    { label: '1,000,000 – 5,000,000', value: '1000000-5000000' },
-                    { label: '5,000,000 – 15,000,000', value: '5000000-15000000' },
+                    { label: '0 вЂ“ 1,000,000', value: '0-1000000' },
+                    { label: '1,000,000 вЂ“ 5,000,000', value: '1000000-5000000' },
+                    { label: '5,000,000 вЂ“ 15,000,000', value: '5000000-15000000' },
                     { label: '15,000,000+', value: '15000000-999999999' }
                 ],
                 colors: [
@@ -542,7 +542,7 @@
                         res = res.filter(p => p.price >= min && p.price <= max);
                     }
 
-                    // Brand filter — match brand names in product name
+                    // Brand filter вЂ” match brand names in product name
                     if (this.activeBrands.length > 0) {
                         res = res.filter(p => {
                             const nameLower = p.name.toLowerCase();
@@ -555,7 +555,7 @@
                         res = res.filter(p => (p.rating || 0) >= this.minRating);
                     }
 
-                    // Color filter — cosmetic, matches color name in product name or description
+                    // Color filter вЂ” cosmetic, matches color name in product name or description
                     if (this.activeColors.length > 0) {
                         const colorMap = {
                             black: ['black', 'qora', 'space', 'midnight', 'graphite', 'dark'],
@@ -632,3 +632,4 @@
     </script>
 </body>
 </html>
+
