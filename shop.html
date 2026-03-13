@@ -11,33 +11,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
     <script src="assets/js/main.js"></script>
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        .z-nav-item { font-size: 13px; font-weight: 600; color: #1B1B1B; padding: 10px 14px; white-space: nowrap; transition: color 0.15s; }
-        .z-nav-item:hover { color: #1A6CDB; }
-        .z-nav-item.sale { color: #D93025; }
-        .z-search-input { border: 2px solid #1B1B1B; height: 44px; border-radius: 0; outline: none; font-size: 14px; font-weight: 500; }
-        .z-search-input:focus { border-color: #1A6CDB; }
-        .z-search-btn { background: #1B1B1B; color: white; height: 44px; padding: 0 20px; font-weight: 700; font-size: 13px; border-radius: 0; transition: background 0.15s; }
-        .z-search-btn:hover { background: #1A6CDB; }
-        .z-product-card { border: 1px solid #e8e8e8; transition: box-shadow 0.2s, transform 0.2s; }
-        .z-product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
-        .z-tag-new { background: #1A6CDB; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
-        .z-tag-sale { background: #D93025; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
-        .star-rating { color: #F5A623; font-size: 12px; }
-        .z-footer { background: #1B1B1B; color: #ccc; }
-        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
-        .z-footer a:hover { color: white; }
-        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
-        .filter-checkbox:checked + label { background: #1B1B1B; color: white; border-color: #1B1B1B; }
-        .sort-select { border: 1px solid #e8e8e8; padding: 8px 12px; font-size: 13px; font-weight: 600; outline: none; color: #1B1B1B; }
-        .z-sidebar-title { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #1B1B1B; margin-bottom: 12px; }
-        .z-filter-btn { border: 1px solid #e8e8e8; padding: 7px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; color: #555; }
-        .z-filter-btn.active, .z-filter-btn:hover { border-color: #1B1B1B; background: #1B1B1B; color: white; }
-        [x-cloak] { display: none !important; }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-[#F8F8F8]" x-data="shopPage()">
+<body class="dark-mode min-h-screen" x-data="shopPage()">
 
     <!-- Promo Bar -->
     <div class="bg-[#1B1B1B] text-white py-2 px-4 text-center text-[12px] font-semibold">
@@ -47,7 +23,7 @@
     <!-- Header -->
     <header class="bg-white border-b border-gray-200 sticky top-0 z-50">
         <div class="max-w-[1440px] mx-auto px-4 md:px-8">
-            <div class="flex items-center h-[72px] gap-6">
+            <div class="flex flex-col sm:flex-row items-center sm:h-[72px] gap-4 sm:gap-6 py-3 sm:py-0">
                 <a href="index.html" class="flex-shrink-0">
                     <div class="text-[24px] font-black tracking-[-0.04em] text-[#1B1B1B] leading-none">
                         premium<span class="text-[#1A6CDB]">store</span>
@@ -83,14 +59,92 @@
                     </template>
                 </div>
             </div>
-            <nav class="flex items-center border-t border-gray-100 overflow-x-auto -mx-4 px-4 md:-mx-8 md:px-8">
-                <a href="shop.html" class="z-nav-item" :class="!activeCategory ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Barchasi</a>
-                <a href="shop.html?cat=Phones" class="z-nav-item" :class="activeCategory === 'Phones' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Telefonlar</a>
-                <a href="shop.html?cat=Laptops" class="z-nav-item" :class="activeCategory === 'Laptops' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Noutbuklar</a>
-                <a href="shop.html?cat=Audio" class="z-nav-item" :class="activeCategory === 'Audio' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Audio</a>
-                <a href="shop.html?cat=Gaming" class="z-nav-item" :class="activeCategory === 'Gaming' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Geyming</a>
-                <a href="shop.html?cat=Accessories" class="z-nav-item" :class="activeCategory === 'Accessories' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Aksessuarlar</a>
-                <a href="shop.html?sale=1" class="z-nav-item sale">Chegirma 🔥</a>
+            <nav class="flex items-center border-t border-gray-100 overflow-x-auto -mx-4 px-4 md:-mx-8 md:px-8" x-data="{ open: null }">
+                <a href="shop.html" @click="setCategory('')" class="z-nav-item" :class="!activeCategory ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Barchasi</a>
+
+                <!-- Telefonlar -->
+                <div class="relative" @mouseenter="open='phones'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Phones" class="z-nav-item flex items-center gap-1" :class="activeCategory==='Phones' || open==='phones' ? 'text-[#1A6CDB] border-b-2 border-[#1A6CDB]' : ''">Telefonlar <i class="fas fa-chevron-down text-[9px]"></i></a>
+                    <div x-show="open==='phones'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[480px] p-6 grid grid-cols-3 gap-5">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple iPhone</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Samsung Galaxy</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Xiaomi</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Realme</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur bo'yicha</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Flagman</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'rta segment</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Byudjet</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-[#1A6CDB] p-4 text-white">
+                            <p class="text-[10px] font-black text-blue-200 mb-1">Yangi</p>
+                            <p class="font-black mb-1">iPhone 15 Pro</p>
+                            <a href="shop.html?cat=Phones" class="text-[11px] font-bold bg-white text-[#1A6CDB] px-2 py-1 inline-block">Ko'rish →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noutbuklar -->
+                <div class="relative" @mouseenter="open='laptops'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Laptops" class="z-nav-item flex items-center gap-1" :class="activeCategory==='Laptops' || open==='laptops' ? 'text-[#1A6CDB] border-b-2 border-[#1A6CDB]' : ''">Noutbuklar <i class="fas fa-chevron-down text-[9px]"></i></a>
+                    <div x-show="open==='laptops'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[380px] p-6 grid grid-cols-2 gap-5">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple MacBook</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Dell XPS</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Lenovo</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Asus ROG</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Ishbilarmonlar</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'yinchilar</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Kreativlar</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio -->
+                <a href="shop.html?cat=Audio" class="z-nav-item" :class="activeCategory==='Audio' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Audio</a>
+
+                <!-- Geyming -->
+                <a href="shop.html?cat=Gaming" class="z-nav-item" :class="activeCategory==='Gaming' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Geyming</a>
+
+                <!-- Smart Soatlar -->
+                <a href="shop.html?cat=Smart Watches" class="z-nav-item" :class="activeCategory==='Smart Watches' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Smart Soatlar</a>
+
+                <!-- Aksessuarlar -->
+                <a href="shop.html?cat=Accessories" class="z-nav-item" :class="activeCategory==='Accessories' ? 'border-b-2 border-[#1A6CDB] text-[#1A6CDB]' : ''">Aksessuarlar</a>
+
+                <!-- Brendlar -->
+                <div class="relative" @mouseenter="open='brands'" @mouseleave="open=null">
+                    <a href="about.html" class="z-nav-item flex items-center gap-1" :class="open==='brands' ? 'text-[#1A6CDB]' : ''">Brendlar <i class="fas fa-chevron-down text-[9px]"></i></a>
+                    <div x-show="open==='brands'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[360px] p-6">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Mashhur brendlar</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Apple</a>
+                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Samsung</a>
+                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Sony</a>
+                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Dell</a>
+                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Lenovo</a>
+                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-2.5 text-center text-xs font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Bose</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chegirma -->
+                <a href="shop.html?sale=1" class="z-nav-item sale font-black">Chegirma 🔥</a>
             </nav>
         </div>
     </header>
@@ -135,11 +189,86 @@
                 <div class="bg-white border border-gray-200 p-5 mb-4">
                     <h3 class="z-sidebar-title">Holati</h3>
                     <div class="space-y-2">
-                        <button @click="filterNew = null; applyFilters()" :class="filterNew === null ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Barchasi</button>
-                        <button @click="filterNew = true; applyFilters()" :class="filterNew === true ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Yangi mahsulotlar</button>
-                        <button @click="filterSale = true; applyFilters()" :class="filterSale ? 'border-[#D93025] bg-[#D93025] text-white' : 'text-gray-600 hover:border-[#D93025]'" class="z-filter-btn block w-full text-left text-[#D93025]">Chegirmalilari</button>
+                        <button @click="filterNew = null; filterSale = false; applyFilters()" :class="filterNew === null && !filterSale ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">Barchasi</button>
+                        <button @click="filterNew = true; filterSale = false; applyFilters()" :class="filterNew === true ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn block w-full text-left">⭐ Yangi mahsulotlar</button>
+                        <button @click="filterSale = true; filterNew = null; applyFilters()" :class="filterSale ? 'border-[#D93025] bg-[#D93025] text-white' : 'text-gray-600 hover:border-[#D93025] hover:text-[#D93025]'" class="z-filter-btn block w-full text-left">🔥 Chegirmalilari</button>
                     </div>
                 </div>
+
+                <!-- Color Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Rang</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="color in colors">
+                            <button
+                                @click="toggleColor(color.name)"
+                                :title="color.label"
+                                :style="'background:' + color.hex"
+                                :class="activeColors.includes(color.name) ? 'ring-2 ring-offset-1 ring-[#1A6CDB] scale-110' : 'hover:scale-110'"
+                                class="w-7 h-7 rounded-full border border-gray-300 transition-all duration-150 relative"
+                            >
+                                <span x-show="activeColors.includes(color.name)" class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-check text-[9px]" :class="['white','yellow'].includes(color.name) ? 'text-gray-500' : 'text-white'"></i>
+                                </span>
+                            </button>
+                        </template>
+                    </div>
+                    <div x-show="activeColors.length > 0" class="mt-3">
+                        <button @click="activeColors = []; applyFilters()" class="text-[11px] font-bold text-[#D93025] hover:underline">Rangni tozalash</button>
+                    </div>
+                </div>
+
+                <!-- Size Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">O'lcham / Xotira</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="sz in sizes">
+                            <button
+                                @click="toggleSize(sz)"
+                                :class="activeSizes.includes(sz) ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'"
+                                class="z-filter-btn text-xs"
+                                x-text="sz"
+                            ></button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Brand Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Brend</h3>
+                    <div class="space-y-2 max-h-52 overflow-y-auto pr-1">
+                        <template x-for="brand in brands">
+                            <label class="flex items-center gap-3 cursor-pointer group py-0.5">
+                                <input
+                                    type="checkbox"
+                                    :value="brand"
+                                    x-model="activeBrands"
+                                    @change="applyFilters()"
+                                    class="w-4 h-4 accent-[#1A6CDB] flex-shrink-0"
+                                >
+                                <span class="text-sm font-medium text-gray-600 group-hover:text-[#1A6CDB] transition" x-text="brand"></span>
+                            </label>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Rating Filter -->
+                <div class="bg-white border border-gray-200 p-5 mb-4">
+                    <h3 class="z-sidebar-title">Minimal Reyting</h3>
+                    <div class="space-y-2">
+                        <template x-for="r in [5,4,3]">
+                            <button @click="minRating = minRating === r ? 0 : r; applyFilters()" :class="minRating === r ? 'border-[#1B1B1B] bg-[#1B1B1B] text-white' : 'text-gray-600 hover:border-[#1B1B1B]'" class="z-filter-btn flex items-center gap-1.5 w-full text-left">
+                                <template x-for="s in r"><i class="fas fa-star text-yellow-400 text-xs"></i></template>
+                                <span class="ml-1 text-xs" x-show="minRating !== r">va yuqori</span>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+
+                <!-- Reset All Button -->
+                <button @click="resetFilters()" class="w-full border-2 border-[#1B1B1B] text-[#1B1B1B] font-black text-xs py-3 hover:bg-[#1B1B1B] hover:text-white transition uppercase tracking-widest">
+                    <i class="fas fa-times mr-2"></i> Barcha filtrlarni tozalash
+                </button>
             </aside>
 
             <!-- ===== MAIN PRODUCT GRID ===== -->
@@ -290,6 +419,19 @@
         </div>
     </footer>
 
+  <!-- Mobile floating cart button -->
+  <div class="lg:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-[9998] w-full px-4">
+      <a href="cart.html" class="bg-[#1B1B1B] text-white rounded-full shadow-xl px-4 py-3 flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+          <i class="fas fa-shopping-bag text-sm"></i>
+          <span class="text-sm font-bold">Savat</span>
+          <span
+              x-show="cartCount > 0"
+              x-text="cartCount"
+              class="ml-1 bg-[#D93025] text-white text-xs font-black rounded-full w-5 h-5 flex items-center justify-center"
+          ></span>
+      </a>
+  </div>
+
     <!-- Toast -->
     <div id="toast" class="fixed bottom-6 right-6 bg-[#1B1B1B] text-white px-6 py-4 shadow-2xl max-w-sm flex items-center gap-3 transition-all duration-300 translate-y-20 opacity-0 z-[9999]">
         <i class="fas fa-check-circle text-green-400"></i>
@@ -311,8 +453,26 @@
                     { label: '5,000,000 – 15,000,000', value: '5000000-15000000' },
                     { label: '15,000,000+', value: '15000000-999999999' }
                 ],
+                colors: [
+                    { name: 'black',   label: 'Qora',     hex: '#1B1B1B' },
+                    { name: 'white',   label: 'Oq',       hex: '#F5F5F5' },
+                    { name: 'silver',  label: 'Kumush',   hex: '#C0C0C0' },
+                    { name: 'blue',    label: 'Ko\'k',    hex: '#1A6CDB' },
+                    { name: 'red',     label: 'Qizil',    hex: '#D93025' },
+                    { name: 'gold',    label: 'Oltin',    hex: '#D4AF37' },
+                    { name: 'green',   label: 'Yashil',   hex: '#22C55E' },
+                    { name: 'purple',  label: 'Binafsha', hex: '#9333EA' },
+                    { name: 'orange',  label: 'To\'q sariq', hex: '#F97316' },
+                    { name: 'yellow',  label: 'Sariq',    hex: '#FBBF24' },
+                ],
+                sizes: ['64GB', '128GB', '256GB', '512GB', '1TB', '2TB', '8GB RAM', '16GB RAM', '32GB RAM'],
+                brands: ['Apple', 'Samsung', 'Sony', 'Dell', 'Lenovo', 'HP', 'Asus', 'Xiaomi', 'Logitech', 'JBL', 'Bose', 'Nintendo', 'Xbox', 'DJI'],
                 activeCategory: '',
                 activePriceRange: '',
+                activeColors: [],
+                activeSizes: [],
+                activeBrands: [],
+                minRating: 0,
                 filterNew: null,
                 filterSale: false,
                 sortBy: 'default',
@@ -342,24 +502,85 @@
                     this.page = 1;
                     this.applyFilters();
                 },
+                toggleColor(name) {
+                    const idx = this.activeColors.indexOf(name);
+                    if (idx > -1) this.activeColors.splice(idx, 1);
+                    else this.activeColors.push(name);
+                    this.page = 1;
+                    this.applyFilters();
+                },
+                toggleSize(sz) {
+                    const idx = this.activeSizes.indexOf(sz);
+                    if (idx > -1) this.activeSizes.splice(idx, 1);
+                    else this.activeSizes.push(sz);
+                    this.page = 1;
+                    this.applyFilters();
+                },
                 applySearch() {
                     this.page = 1;
                     this.applyFilters();
                 },
                 applyFilters() {
                     let res = [...this.allProducts];
+
+                    // Category
                     if (this.activeCategory) res = res.filter(p => p.category === this.activeCategory);
-                    if (this.searchQ) { const q = this.searchQ.toLowerCase(); res = res.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q)); }
+
+                    // Search
+                    if (this.searchQ) {
+                        const q = this.searchQ.toLowerCase();
+                        res = res.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+                    }
+
+                    // New / Sale condition
                     if (this.filterNew === true) res = res.filter(p => p.isNew);
                     if (this.filterSale) res = res.filter(p => p.oldPrice);
+
+                    // Price range
                     if (this.activePriceRange) {
                         const [min, max] = this.activePriceRange.split('-').map(Number);
                         res = res.filter(p => p.price >= min && p.price <= max);
                     }
+
+                    // Brand filter — match brand names in product name
+                    if (this.activeBrands.length > 0) {
+                        res = res.filter(p => {
+                            const nameLower = p.name.toLowerCase();
+                            return this.activeBrands.some(b => nameLower.includes(b.toLowerCase()));
+                        });
+                    }
+
+                    // Rating filter
+                    if (this.minRating > 0) {
+                        res = res.filter(p => (p.rating || 0) >= this.minRating);
+                    }
+
+                    // Color filter — cosmetic, matches color name in product name or description
+                    if (this.activeColors.length > 0) {
+                        const colorMap = {
+                            black: ['black', 'qora', 'space', 'midnight', 'graphite', 'dark'],
+                            white: ['white', 'oq', 'starlight', 'silver white', 'snow'],
+                            silver: ['silver', 'kumush', 'platinum'],
+                            blue: ['blue', 'ko\'k', 'azure', 'pacific', 'sierra'],
+                            red: ['red', 'qizil', 'product red', 'crimson'],
+                            gold: ['gold', 'oltin', 'golden', 'champagne'],
+                            green: ['green', 'yashil', 'alpine', 'forest'],
+                            purple: ['purple', 'violet', 'binafsha', 'lavender'],
+                            orange: ['orange', 'to\'q sariq', 'coral'],
+                            yellow: ['yellow', 'sariq']
+                        };
+                        res = res.filter(p => {
+                            const txt = (p.name + ' ' + (p.description || '')).toLowerCase();
+                            return this.activeColors.some(c => (colorMap[c] || [c]).some(kw => txt.includes(kw)));
+                        });
+                    }
+
+                    // Sorting
                     if (this.sortBy === 'price_asc') res.sort((a, b) => a.price - b.price);
                     else if (this.sortBy === 'price_desc') res.sort((a, b) => b.price - a.price);
                     else if (this.sortBy === 'rating') res.sort((a, b) => b.rating - a.rating);
                     else if (this.sortBy === 'name') res.sort((a, b) => a.name.localeCompare(b.name));
+
                     this.filtered = res;
                     this.totalPages = Math.ceil(res.length / this.perPage) || 1;
                     if (this.page > this.totalPages) this.page = 1;
@@ -368,10 +589,15 @@
                 resetFilters() {
                     this.activeCategory = '';
                     this.activePriceRange = '';
+                    this.activeColors = [];
+                    this.activeSizes = [];
+                    this.activeBrands = [];
+                    this.minRating = 0;
                     this.filterNew = null;
                     this.filterSale = false;
                     this.sortBy = 'default';
                     this.searchQ = '';
+                    this.page = 1;
                     this.applyFilters();
                 },
                 addToCart(p) {
@@ -396,7 +622,10 @@
                     document.getElementById('toastText').textContent = msg;
                     el.classList.remove('translate-y-20', 'opacity-0');
                     el.classList.add('translate-y-0', 'opacity-100');
-                    setTimeout(() => { el.classList.add('translate-y-20', 'opacity-0'); el.classList.remove('translate-y-0', 'opacity-100'); }, 2500);
+                    setTimeout(() => {
+                        el.classList.add('translate-y-20', 'opacity-0');
+                        el.classList.remove('translate-y-0', 'opacity-100');
+                    }, 2500);
                 }
             }
         }

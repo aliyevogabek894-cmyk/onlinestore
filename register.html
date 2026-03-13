@@ -9,16 +9,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        .z-input { border: 2px solid #e8e8e8; padding: 14px 16px; font-size: 14px; font-weight: 500; outline: none; transition: border-color 0.15s; width: 100%; border-radius: 0; }
-        .z-input:focus { border-color: #1A6CDB; }
-        .z-btn { background: #1A6CDB; color: white; font-weight: 800; font-size: 14px; padding: 16px; width: 100%; text-align: center; transition: background 0.15s; border-radius: 0; cursor: pointer; border: none; }
-        .z-btn:hover { background: #1558b8; }
-        [x-cloak] { display: none !important; }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-[#F2F2F2] min-h-screen" x-data="registerPage()">
+<body class="dark-mode min-h-screen" x-data="registerPage()">
 
     <header class="bg-white border-b border-gray-200">
         <div class="max-w-[1440px] mx-auto px-8 py-4 flex items-center justify-between">
@@ -96,9 +89,10 @@
                     if (this.password !== this.confirm) { this.error = 'Parollar mos kelmadi.'; return; }
                     if (this.password.length < 6) { this.error = 'Parol kamida 6 belgi bo\'lishi kerak.'; return; }
                     const users = db.getUsers();
-                    if (users.find(u => u.email === this.email)) { this.error = 'Bu email allaqachon ro\'yxatdan o\'tgan.'; return; }
+                    const emailNorm = this.email.trim().toLowerCase();
+                    if (users.find(u => (u.email || '').toLowerCase() === emailNorm)) { this.error = 'Bu email allaqachon ro\'yxatdan o\'tgan.'; return; }
                     const fullName = this.surname ? this.name + ' ' + this.surname : this.name;
-                    const newUser = db.addUser({ name: fullName, email: this.email, password: this.password, role: 'user', joinedDate: new Date().toLocaleDateString('uz-UZ') });
+                    db.registerUser({ name: fullName, email: emailNorm, password: this.password });
                     this.success = true;
                     setTimeout(() => window.location.href = 'login.html', 1800);
                 }

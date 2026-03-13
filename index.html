@@ -12,53 +12,9 @@
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="assets/js/db.js"></script>
     <script src="assets/js/main.js"></script>
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        :root {
-            --zappos-blue: #1A6CDB;
-            --zappos-dark: #1B1B1B;
-            --zappos-red: #D93025;
-            --zappos-yellow: #FFCB00;
-        }
-        .z-header { border-bottom: 1px solid #e8e8e8; }
-        .z-nav-item { font-size: 13px; font-weight: 600; color: #1B1B1B; padding: 10px 14px; white-space: nowrap; transition: color 0.15s; }
-        .z-nav-item:hover { color: #1A6CDB; }
-        .z-nav-item.sale { color: #D93025; }
-        .z-search-input { border: 2px solid #1B1B1B; height: 44px; border-radius: 0; outline: none; font-size: 14px; font-weight: 500; }
-        .z-search-input:focus { border-color: #1A6CDB; }
-        .z-search-btn { background: #1B1B1B; color: white; height: 44px; padding: 0 20px; font-weight: 700; font-size: 13px; border-radius: 0; transition: background 0.15s; }
-        .z-search-btn:hover { background: #1A6CDB; }
-        .z-btn-primary { background: #1A6CDB; color: white; font-weight: 700; font-size: 14px; letter-spacing: 0.02em; padding: 12px 28px; border-radius: 4px; transition: background 0.15s; display: inline-block; }
-        .z-btn-primary:hover { background: #1558b8; }
-        .z-btn-outline { border: 2px solid #1B1B1B; color: #1B1B1B; font-weight: 700; font-size: 14px; padding: 11px 28px; border-radius: 4px; transition: all 0.15s; display: inline-block; }
-        .z-btn-outline:hover { background: #1B1B1B; color: white; }
-        .z-product-card { border: 1px solid #e8e8e8; transition: box-shadow 0.2s, transform 0.2s; }
-        .z-product-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
-        .z-product-card:hover .z-product-name { color: #1A6CDB; }
-        .z-tag-new { background: #1A6CDB; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
-        .z-tag-sale { background: #D93025; color: white; font-size: 10px; font-weight: 800; letter-spacing: 0.1em; padding: 3px 8px; }
-        .z-hero-banner { background: #F2F2F2; position: relative; overflow: hidden; }
-        .z-section-title { font-size: 22px; font-weight: 800; color: #1B1B1B; letter-spacing: -0.02em; }
-        .z-cat-card { position: relative; overflow: hidden; cursor: pointer; }
-        .z-cat-card img { transition: transform 0.4s; display: block; width: 100%; aspect-ratio: 3/4; object-fit: cover; }
-        .z-cat-card:hover img { transform: scale(1.04); }
-        .z-cat-card .z-cat-label { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.5); color: white; font-weight: 800; font-size: 14px; text-align: center; padding: 14px; letter-spacing: 0.05em; text-transform: uppercase; }
-        .star-rating { color: #F5A623; font-size: 12px; }
-        .z-footer { background: #1B1B1B; color: #ccc; }
-        .z-footer a { color: #aaa; font-size: 13px; line-height: 2.2; transition: color 0.15s; }
-        .z-footer a:hover { color: white; }
-        .z-footer h4 { color: white; font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 14px; }
-        .z-promo-bar { background: #1B1B1B; color: white; font-size: 12px; font-weight: 600; }
-        .z-top-banner { background: #E8F0FE; font-size: 13px; font-weight: 600; color: #1B1B1B; border-bottom: 1px solid #d0d9f0; }
-        .scroll-carousel { display: flex; gap: 16px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-bottom: 4px; }
-        .scroll-carousel::-webkit-scrollbar { display: none; }
-        .scroll-carousel > * { scroll-snap-align: start; flex-shrink: 0; }
-        .z-brand-img { width: 120px; height: 70px; object-fit: contain; border: 1px solid #e8e8e8; padding: 10px; background: white; transition: border-color 0.15s; }
-        .z-brand-img:hover { border-color: #1A6CDB; }
-        [x-cloak] { display: none !important; }
-    </style>
+    <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-white" x-data="homePage()">
+<body class="dark-mode" x-data="homePage()">
 
     <!-- ===== TOP PROMO BAR ===== -->
     <div class="z-promo-bar py-2 px-4 text-center">
@@ -70,7 +26,7 @@
         <div class="max-w-[1440px] mx-auto px-4 md:px-8">
 
             <!-- Row 1: Logo + Search + Icons -->
-            <div class="flex items-center h-[72px] gap-6">
+            <div class="flex flex-col sm:flex-row items-center sm:h-[72px] gap-4 sm:gap-6 py-3 sm:py-0">
                 <!-- Logo -->
                 <a href="index.html" class="flex-shrink-0">
                     <div class="text-[26px] font-black tracking-[-0.04em] text-[#1B1B1B] leading-none">
@@ -135,18 +91,198 @@
                 </div>
             </div>
 
-            <!-- Row 2: Category Navigation -->
-            <nav class="flex items-center border-t border-gray-100 overflow-x-auto scrollbar-hide -mx-4 px-4 md:-mx-8 md:px-8">
-                <a href="shop.html?cat=all" class="z-nav-item">Barchasi</a>
-                <a href="shop.html?cat=Phones" class="z-nav-item">Telefonlar</a>
-                <a href="shop.html?cat=Laptops" class="z-nav-item">Noutbuklar</a>
-                <a href="shop.html?cat=Audio" class="z-nav-item">Audio</a>
-                <a href="shop.html?cat=Gaming" class="z-nav-item">Geyming</a>
+            <!-- Row 2: Category Navigation with Dropdown Menus (desktop) -->
+            <nav class="hidden lg:flex items-center border-t border-gray-100 -mx-4 px-4 md:-mx-8 md:px-8 overflow-x-auto" x-data="{ open: null }">
+
+                <!-- Telefonlar -->
+                <div class="relative" @mouseenter="open='phones'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Phones" class="z-nav-item flex items-center gap-1" :class="open==='phones' ? 'text-[#1A6CDB]' : ''">
+                        Telefonlar <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='phones'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[520px] p-6 grid grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple iPhone</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Samsung Galaxy</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Xiaomi</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Realme</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Huawei</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur bo'yicha</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Flaqman telefonlar</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'rta segment</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Byudjet</a></li>
+                                <li><a href="shop.html?cat=Phones" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming telefonlar</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-[#1A6CDB] p-4 text-white">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-blue-200 mb-2">Maxsus taklif</p>
+                            <p class="font-black text-base mb-1">Yangi iPhone 15</p>
+                            <p class="text-xs text-blue-100 mb-3">Titanium. A17 Pro.</p>
+                            <a href="shop.html?cat=Phones" class="text-xs font-bold bg-white text-[#1A6CDB] px-3 py-1.5 inline-block hover:bg-blue-50 transition">Ko'rish →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Noutbuklar -->
+                <div class="relative" @mouseenter="open='laptops'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Laptops" class="z-nav-item flex items-center gap-1" :class="open==='laptops' ? 'text-[#1A6CDB]' : ''">
+                        Noutbuklar <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='laptops'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[520px] p-6 grid grid-cols-3 gap-6">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple MacBook</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Dell XPS</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Lenovo ThinkPad</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">HP Spectre</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Asus ROG</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Tur bo'yicha</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Ishbilarmonlar uchun</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">O'yinchilar uchun</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Kreativlar uchun</a></li>
+                                <li><a href="shop.html?cat=Laptops" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Talabalar uchun</a></li>
+                            </ul>
+                        </div>
+                        <div class="bg-[#1B1B1B] p-4 text-white">
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Yangi</p>
+                            <p class="font-black text-base mb-1">MacBook Pro M3</p>
+                            <p class="text-xs text-gray-400 mb-3">Eng qudratli chip.</p>
+                            <a href="shop.html?cat=Laptops" class="text-xs font-bold bg-white text-[#1B1B1B] px-3 py-1.5 inline-block hover:bg-gray-100 transition">Ko'rish →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio -->
+                <div class="relative" @mouseenter="open='audio'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Audio" class="z-nav-item flex items-center gap-1" :class="open==='audio' ? 'text-[#1A6CDB]' : ''">
+                        Audio <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='audio'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[380px] p-6 grid grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Qurilmalar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Quloqchinlar</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Bluetooth karnaylar</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Soundbarlar</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Mikrofonlar</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Brendlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Sony</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Apple AirPods</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Bose</a></li>
+                                <li><a href="shop.html?cat=Audio" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">JBL</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Geyming -->
+                <div class="relative" @mouseenter="open='gaming'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Gaming" class="z-nav-item flex items-center gap-1" :class="open==='gaming' ? 'text-[#1A6CDB]' : ''">
+                        Geyming <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='gaming'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[420px] p-6 grid grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Qurilmalar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">PlayStation 5</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Xbox Series X</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Nintendo Switch</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming PC</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming Dronlar</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Aksessuarlar</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gamepad / Controller</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming sichqoncha</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming klaviatura</a></li>
+                                <li><a href="shop.html?cat=Gaming" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Gaming quloqchin</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Soatlar -->
                 <a href="shop.html?cat=Smart Watches" class="z-nav-item">Smart Soatlar</a>
-                <a href="shop.html?cat=Accessories" class="z-nav-item">Aksessuarlar</a>
-                <a href="about.html" class="z-nav-item">Brendlar</a>
-                <a href="shop.html?sale=1" class="z-nav-item sale">Chegirma 🔥</a>
+
+                <!-- Aksessuarlar -->
+                <div class="relative" @mouseenter="open='acc'" @mouseleave="open=null">
+                    <a href="shop.html?cat=Accessories" class="z-nav-item flex items-center gap-1" :class="open==='acc' ? 'text-[#1A6CDB]' : ''">
+                        Aksessuarlar <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='acc'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[340px] p-6 grid grid-cols-2 gap-6">
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Turlari</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Klaviatura va sichqoncha</a></li>
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Kabel va adaptor</a></li>
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Qoplamalar</a></li>
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Zaryadlovchilar</a></li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-3">Ofis uchun</p>
+                            <ul class="space-y-1.5">
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Monitor</a></li>
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Web kamera</a></li>
+                                <li><a href="shop.html?cat=Accessories" class="text-sm font-medium text-gray-600 hover:text-[#1A6CDB] transition block">Printer / Skaner</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brendlar -->
+                <div class="relative" @mouseenter="open='brands'" @mouseleave="open=null">
+                    <a href="about.html" class="z-nav-item flex items-center gap-1" :class="open==='brands' ? 'text-[#1A6CDB]' : ''">
+                        Brendlar <i class="fas fa-chevron-down text-[9px] mt-0.5"></i>
+                    </a>
+                    <div x-show="open==='brands'" x-cloak class="absolute top-full left-0 bg-white border border-gray-200 shadow-xl z-[200] w-[400px] p-6">
+                        <p class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-4">Mashhur brendlar</p>
+                        <div class="grid grid-cols-3 gap-3">
+                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Apple</a>
+                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Samsung</a>
+                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Sony</a>
+                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Dell</a>
+                            <a href="shop.html?cat=Laptops" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Lenovo</a>
+                            <a href="shop.html?cat=Gaming" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Xbox</a>
+                            <a href="shop.html?cat=Accessories" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Logitech</a>
+                            <a href="shop.html?cat=Audio" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Bose</a>
+                            <a href="shop.html?cat=Phones" class="border border-gray-200 p-3 text-center text-sm font-black text-gray-700 hover:border-[#1A6CDB] hover:text-[#1A6CDB] transition">Xiaomi</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chegirma -->
+                <a href="shop.html?sale=1" class="z-nav-item sale font-black">Chegirma 🔥</a>
             </nav>
+
+            <!-- Mobile quick category chips -->
+            <div class="lg:hidden border-t border-gray-100 mt-2 -mx-4 px-4">
+                <div class="flex items-center gap-2 overflow-x-auto py-3 text-sm">
+                    <a href="shop.html" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap font-semibold text-gray-700">Barchasi</a>
+                    <a href="shop.html?cat=Phones" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap text-gray-700">Telefonlar</a>
+                    <a href="shop.html?cat=Laptops" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap text-gray-700">Noutbuklar</a>
+                    <a href="shop.html?cat=Audio" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap text-gray-700">Audio</a>
+                    <a href="shop.html?cat=Gaming" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap text-gray-700">Geyming</a>
+                    <a href="shop.html?cat=Smart Watches" class="px-3 py-1.5 rounded-full border border-gray-200 bg-white whitespace-nowrap text-gray-700">Soatlar</a>
+                    <a href="shop.html?sale=1" class="px-3 py-1.5 rounded-full border border-[#D93025] bg-red-50 whitespace-nowrap text-[#D93025] font-semibold">Chegirma</a>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -161,15 +297,15 @@
         ]" x-init="setInterval(() => slide = (slide + 1) % slides.length, 5000)">
             <div class="max-w-[1440px] mx-auto">
                 <template x-for="(s, i) in slides">
-                    <div x-show="slide === i" x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" :class="s.bg" class="bg-gradient-to-r min-h-[460px] flex items-center px-8 md:px-16 relative overflow-hidden" style="display:none" x-cloak>
+                    <div x-show="slide === i" x-transition:enter="transition-opacity duration-500" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity duration-500" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" :class="s.bg" class="bg-gradient-to-r min-h-[380px] md:min-h-[460px] flex items-center px-4 sm:px-8 md:px-16 relative overflow-hidden" style="display:none" x-cloak>
                         <!-- Background decoration -->
                         <div class="absolute inset-0 opacity-5">
                             <div class="absolute top-0 right-0 w-96 h-96 bg-white rounded-full -translate-y-1/2 translate-x-1/2"></div>
                         </div>
                         <div class="flex-1 text-white z-10 max-w-xl">
-                            <span :class="s.color" class="text-sm font-black uppercase tracking-[0.3em] mb-4 block" x-text="s.tag"></span>
-                            <h2 class="text-5xl md:text-6xl font-black mb-4 leading-tight tracking-tighter" x-text="s.title"></h2>
-                            <p class="text-gray-300 text-lg mb-10 font-medium leading-relaxed" x-text="s.sub"></p>
+                            <span :class="s.color" class="text-xs sm:text-sm font-black uppercase tracking-[0.3em] mb-4 block" x-text="s.tag"></span>
+                            <h2 class="text-3xl sm:text-5xl md:text-6xl font-black mb-4 leading-tight tracking-tighter" x-text="s.title"></h2>
+                            <p class="text-gray-300 text-sm sm:text-lg mb-8 sm:mb-10 font-medium leading-relaxed" x-text="s.sub"></p>
                             <div class="flex gap-4 flex-wrap">
                                 <a :href="s.link" class="bg-white text-[#1B1B1B] font-black text-sm px-8 py-4 hover:bg-gray-100 transition tracking-wide">
                                     <span x-text="s.btn"></span>
@@ -572,6 +708,19 @@
             </div>
         </div>
     </footer>
+
+    <!-- Mobile floating cart button -->
+    <div class="lg:hidden fixed bottom-5 left-1/2 -translate-x-1/2 z-[9998] w-full px-4">
+        <a href="cart.html" class="bg-[#1B1B1B] text-white rounded-full shadow-xl px-4 py-3 flex items-center justify-center gap-2 w-full max-w-xs mx-auto">
+            <i class="fas fa-shopping-bag text-sm"></i>
+            <span class="text-sm font-bold">Savat</span>
+            <span
+                x-show="cartCount > 0"
+                x-text="cartCount"
+                class="ml-1 bg-[#D93025] text-white text-xs font-black rounded-full w-5 h-5 flex items-center justify-center"
+            ></span>
+        </a>
+    </div>
 
     <!-- Notification Toast -->
     <div id="notification" class="fixed bottom-6 right-6 z-[9999] transition-all duration-300 translate-y-20 opacity-0">

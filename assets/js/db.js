@@ -118,10 +118,13 @@ const db = {
     },
     registerUser: (user) => {
         const users = db.getUsers();
+        // emailni normalizatsiya qilamiz (bo'shliqlarni olib tashlab, kichik harfga o'tkazamiz)
+        const normalizedEmail = (user.email || '').trim().toLowerCase();
+        user.email = normalizedEmail;
         user.id = Date.now();
         user.joinedDate = new Date().toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' });
-        // First user is admin, or if email matches specific admin email
-        user.role = (users.length === 0 || user.email === 'admin@premium.uz') ? 'admin' : 'user';
+        // Birinchi foydalanuvchi yoki emaili admin@premium.uz bo'lsa admin bo'ladi
+        user.role = (users.length === 0 || normalizedEmail === 'admin@premium.uz') ? 'admin' : 'user';
         users.push(user);
         localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
         return user;
