@@ -300,11 +300,13 @@
                 },
                 filteredProducts() {
                     const q = this.adminSearch.toLowerCase();
-                    return this.products.filter(p => {
-                        const nameMatch = p.name.toLowerCase().includes(q);
-                        const catMatch = p.category.toLowerCase().includes(q);
-                        return nameMatch || catMatch;
-                    });
+                    return this.products
+                        .filter(p => {
+                            const nameMatch = p.name.toLowerCase().includes(q);
+                            const catMatch = p.category.toLowerCase().includes(q);
+                            return nameMatch || catMatch;
+                        })
+                        .sort((a, b) => b.id - a.id); // Newest first
                 },
                 viewTitle() {
                     return {
@@ -325,9 +327,25 @@
                     }
                 },
                 saveNewProduct() {
-                    db.addProduct({ ...this.newProduct, price: Number(this.newProduct.price) });
+                    if (!this.newProduct.name || !this.newProduct.price) {
+                        alert("Iltimos, barcha maydonlarni to'ldiring!");
+                        return;
+                    }
+                    
+                    const productToAdd = { 
+                        ...this.newProduct, 
+                        price: Number(this.newProduct.price),
+                        rating: 5,
+                        isNew: true,
+                        isPopular: false,
+                        stock: Number(this.newProduct.stock) || 10
+                    };
+
+                    db.addProduct(productToAdd);
                     this.products = db.getProducts();
                     this.showAddModal = false;
+                    
+                    // Reset form
                     this.newProduct = {
                         name: '',
                         category: 'Phones',
@@ -336,7 +354,8 @@
                         description: 'Premium mahsulot.',
                         stock: 10
                     };
-                    alert("Mahsulot qo'shildi!");
+                    
+                    alert("Mahsulot muvaffaqiyatli qo'shildi! U ro'yxatning boshida ko'rinadi.");
                 },
                 exportUsersToExcel() {
                     if (this.users.length === 0) {
