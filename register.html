@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
@@ -32,7 +32,7 @@
                 </div>
 
                 <div x-show="error" x-cloak class="bg-red-50 border border-red-200 text-red-600 text-sm font-medium px-4 py-3 mb-4" x-text="error"></div>
-                <div x-show="success" x-cloak class="bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 mb-4">вњ… Muvaffaqiyatli ro'yxatdan o'tdingiz! Kirish sahifasiga yo'naltirilmoqda...</div>
+                <div x-show="success" x-cloak class="bg-green-50 border border-green-200 text-green-700 text-sm font-medium px-4 py-3 mb-4">Muvaffaqiyatli ro'yxatdan o'tdingiz! Kirish sahifasiga yo'naltirilmoqda...</div>
 
                 <form @submit.prevent="register()" class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
@@ -48,6 +48,10 @@
                     <div>
                         <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Email manzil</label>
                         <input type="email" x-model="email" required class="z-input" placeholder="siz@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Telefon raqam</label>
+                        <input type="tel" x-model="phone" required class="z-input" placeholder="+998 90 123-45-67">
                     </div>
                     <div>
                         <label class="block text-[11px] font-black uppercase tracking-widest text-[#94A3B8] mb-2">Parol</label>
@@ -82,7 +86,7 @@
     <script>
         function registerPage() {
             return {
-                name: '', surname: '', email: '', password: '', confirm: '', agreed: false, error: '', success: false,
+                name: '', surname: '', email: '', phone: '', password: '', confirm: '', agreed: false, error: '', success: false,
                 register() {
                     this.error = '';
                     if (!this.agreed) { this.error = 'Shartlarga rozilik bildiring.'; return; }
@@ -92,7 +96,12 @@
                     const emailNorm = this.email.trim().toLowerCase();
                     if (users.find(u => (u.email || '').toLowerCase() === emailNorm)) { this.error = 'Bu email allaqachon ro\'yxatdan o\'tgan.'; return; }
                     const fullName = this.surname ? this.name + ' ' + this.surname : this.name;
-                    db.registerUser({ name: fullName, email: emailNorm, password: this.password });
+                    db.registerUser({ 
+                        name: fullName, 
+                        email: emailNorm, 
+                        phone: this.phone,
+                        password: this.password 
+                    });
                     this.success = true;
                     setTimeout(() => window.location.href = 'login.html', 1800);
                 }
@@ -101,4 +110,3 @@
     </script>
 </body>
 </html>
-
