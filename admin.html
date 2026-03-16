@@ -19,7 +19,7 @@
         }
     </script>
 </head>
-<body x-data="adminPanel" class="dark-mode min-h-screen font-sans flex flex-col md:flex-row ">
+<body x-data="adminPanel()" class="dark-mode min-h-screen font-sans flex flex-col md:flex-row ">
     
     <!-- Sidebar -->
     <aside class="w-full md:w-72 bg-gray-900 text-white flex flex-col md:fixed md:h-full z-50">
@@ -281,8 +281,8 @@
     </template>
 
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('adminPanel', () => ({
+        function adminPanel() {
+            return {
                 user: JSON.parse(localStorage.getItem('ps_current_user')),
                 view: 'dashboard',
                 products: db.getProducts(),
@@ -299,7 +299,8 @@
                     stock: 10
                 },
                 init() {
-                    console.log("Admin Panel initialized");
+                    console.log("Admin Panel Ready");
+                    window.adminPanelData = this;
                 },
                 filteredProducts() {
                     const q = this.adminSearch.toLowerCase();
@@ -428,8 +429,8 @@
 
                     XLSX.writeFile(workbook, `Buyurtma_qilganlar_${new Date().toISOString().slice(0,10)}.xlsx`);
                 }
-            }));
-        });
+            };
+        }
     </script>
 </body>
 </html>
